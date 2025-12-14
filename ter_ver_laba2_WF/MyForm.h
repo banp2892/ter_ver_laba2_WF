@@ -210,6 +210,9 @@ namespace terverlaba2WF {
             // dataGridView_Results
             // 
             this->dataGridView_Results->AllowUserToAddRows = false;
+            this->dataGridView_Results->AllowUserToDeleteRows = false;
+            this->dataGridView_Results->AllowUserToResizeColumns = false;
+            this->dataGridView_Results->AllowUserToResizeRows = false;
             this->dataGridView_Results->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
                 | System::Windows::Forms::AnchorStyles::Left)
                 | System::Windows::Forms::AnchorStyles::Right));
@@ -355,9 +358,7 @@ namespace terverlaba2WF {
             this->zedGraphControl1->ScrollMinY2 = 0;
             this->zedGraphControl1->Size = System::Drawing::Size(493, 414);
             this->zedGraphControl1->TabIndex = 10;
-            this->intervali_path_3_datagrid->AllowUserToResizeRows = false;
-            this->intervali_path_3_datagrid->AllowUserToResizeColumns = false;
-            this->intervali_path_3_datagrid->AllowUserToAddRows = false;
+            
             // 
             // mera_rashojdenia
             // 
@@ -384,7 +385,7 @@ namespace terverlaba2WF {
             this->gistogramma->ScrollMinY2 = 0;
             this->gistogramma->Size = System::Drawing::Size(493, 414);
             this->gistogramma->TabIndex = 12;
-           
+            
             // 
             // part2_table
             // 
@@ -439,6 +440,8 @@ namespace terverlaba2WF {
             // intervali_path_3_datagrid
             // 
             this->intervali_path_3_datagrid->AllowUserToAddRows = false;
+            this->intervali_path_3_datagrid->AllowUserToResizeColumns = false;
+            this->intervali_path_3_datagrid->AllowUserToResizeRows = false;
             this->intervali_path_3_datagrid->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
                 | System::Windows::Forms::AnchorStyles::Left)
                 | System::Windows::Forms::AnchorStyles::Right));
@@ -788,7 +791,6 @@ namespace terverlaba2WF {
     {
         int k_val = 0;
 
-        // 1. Попытка считать значение k
         try
         {
             k_val = Int32::Parse(k_intervalov_path_3->Text);
@@ -798,25 +800,24 @@ namespace terverlaba2WF {
             return;
         }
 
-        // 2. Проверка условия: k должно быть >= 2 (минимум 2 интервала для 1 границы)
-        if (k_val >= 2)
+        // 2. Проверка условия: k должно быть >= 1
+        if (k_val >= 1) // Теперь k может быть 1, если требуется 1 строка для ввода
         {
-            // Число границ, которые нужно ввести: k - 1
-            int required_rows = k_val - 1;
+            // ВАЖНОЕ ИЗМЕНЕНИЕ:
+            // Устанавливаем количество строк равное введенному значению k_val, 
+            // чтобы получить желаемое количество строк для ввода.
+            int required_rows = k_val;
 
             if (intervali_path_3_datagrid->RowCount != required_rows)
             {
-                // 3. Инициализация таблицы для ввода границ z_i
-
+                // 3. Инициализация таблицы
                 intervali_path_3_datagrid->ReadOnly = false;
                 intervali_path_3_datagrid->Visible = true;
 
-                // Очистка и установка строк
                 intervali_path_3_datagrid->Rows->Clear();
-                intervali_path_3_datagrid->RowCount = required_rows;
+                intervali_path_3_datagrid->RowCount = required_rows; // <-- Теперь k строк
 
-                // Установка подписи заголовка столбца
-                // Предполагаем, что столбец 0 называется dataGridViewTextBoxColumn_z_i
+                // Установка подписи заголовка столбца (УЗЛЫ)
                 this->intervali_path_3_datagrid->Columns[0]->HeaderText = L"Узлы";
 
                 // Устанавливаем заголовки строк
@@ -824,7 +825,7 @@ namespace terverlaba2WF {
                     intervali_path_3_datagrid->Rows[i]->HeaderCell->Value = String::Format("Граница z{0}", i + 1);
                 }
 
-                // ... (Остальные настройки видимости столбцов) ...
+                // ... (Остальные настройки) ...
             }
         }
         // 4. Если k < 2, скрываем таблицу
@@ -833,7 +834,11 @@ namespace terverlaba2WF {
             intervali_path_3_datagrid->Rows->Clear();
             intervali_path_3_datagrid->Visible = false;
             intervali_path_3_datagrid->ReadOnly = true;
+
         }
+        this->intervali_path_3_datagrid->Columns[0]->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
+        this->intervali_path_3_datagrid->Columns[0]->AutoSizeMode =
+            System::Windows::Forms::DataGridViewAutoSizeColumnMode::Fill;
     }
 
 
