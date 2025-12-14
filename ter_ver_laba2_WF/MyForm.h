@@ -27,11 +27,7 @@ namespace terverlaba2WF {
         {
             InitializeComponent();
 
-            if (!String::IsNullOrEmpty(this->k_intervalov_path_3->Text))
-            {
-                // Принудительный вызов обработчика TextChanged для начальной инициализации
-                k_intervalov_path_3_TextChanged(this->k_intervalov_path_3, nullptr);
-            }
+           
         }
 
         
@@ -86,7 +82,8 @@ namespace terverlaba2WF {
     private: System::Windows::Forms::Label^ gist_label;
     private: System::Windows::Forms::Label^ k_enterval_label;
     private: System::Windows::Forms::TextBox^ k_intervalov_path_3;
-    private: System::Windows::Forms::DataGridView^ intervali_path_3_datagrid;
+
+
 
 
 
@@ -139,11 +136,9 @@ namespace terverlaba2WF {
             this->gist_label = (gcnew System::Windows::Forms::Label());
             this->k_enterval_label = (gcnew System::Windows::Forms::Label());
             this->k_intervalov_path_3 = (gcnew System::Windows::Forms::TextBox());
-            this->intervali_path_3_datagrid = (gcnew System::Windows::Forms::DataGridView());
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Results))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Stats))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->part2_table))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->intervali_path_3_datagrid))->BeginInit();
             this->SuspendLayout();
             // 
             // label_k
@@ -422,7 +417,7 @@ namespace terverlaba2WF {
             // k_enterval_label
             // 
             this->k_enterval_label->AutoSize = true;
-            this->k_enterval_label->Location = System::Drawing::Point(1183, 113);
+            this->k_enterval_label->Location = System::Drawing::Point(719, 24);
             this->k_enterval_label->Name = L"k_enterval_label";
             this->k_enterval_label->Size = System::Drawing::Size(195, 13);
             this->k_enterval_label->TabIndex = 16;
@@ -430,35 +425,18 @@ namespace terverlaba2WF {
             // 
             // k_intervalov_path_3
             // 
-            this->k_intervalov_path_3->Location = System::Drawing::Point(1278, 142);
+            this->k_intervalov_path_3->Location = System::Drawing::Point(814, 50);
             this->k_intervalov_path_3->Name = L"k_intervalov_path_3";
             this->k_intervalov_path_3->Size = System::Drawing::Size(100, 20);
             this->k_intervalov_path_3->TabIndex = 17;
             this->k_intervalov_path_3->Text = L"10";
-            this->k_intervalov_path_3->TextChanged += gcnew System::EventHandler(this, &MyForm::k_intervalov_path_3_TextChanged);
-            // 
-            // intervali_path_3_datagrid
-            // 
-            this->intervali_path_3_datagrid->AllowUserToAddRows = false;
-            this->intervali_path_3_datagrid->AllowUserToResizeColumns = false;
-            this->intervali_path_3_datagrid->AllowUserToResizeRows = false;
-            this->intervali_path_3_datagrid->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
-                | System::Windows::Forms::AnchorStyles::Left)
-                | System::Windows::Forms::AnchorStyles::Right));
-            this->intervali_path_3_datagrid->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-            this->intervali_path_3_datagrid->Location = System::Drawing::Point(1228, 168);
-            this->intervali_path_3_datagrid->Name = L"intervali_path_3_datagrid";
-            this->intervali_path_3_datagrid->RowHeadersVisible = false;
-            this->intervali_path_3_datagrid->Size = System::Drawing::Size(150, 480);
-            this->intervali_path_3_datagrid->TabIndex = 18;
-            this->intervali_path_3_datagrid->EditingControlShowing += gcnew System::Windows::Forms::DataGridViewEditingControlShowingEventHandler(this, &MyForm::intervali_path_3_datagrid_EditingControlShowing);
+            
             // 
             // MyForm
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
             this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
             this->ClientSize = System::Drawing::Size(1453, 709);
-            this->Controls->Add(this->intervali_path_3_datagrid);
             this->Controls->Add(this->k_intervalov_path_3);
             this->Controls->Add(this->k_enterval_label);
             this->Controls->Add(this->gist_label);
@@ -481,7 +459,6 @@ namespace terverlaba2WF {
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Results))->EndInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Stats))->EndInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->part2_table))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->intervali_path_3_datagrid))->EndInit();
             this->ResumeLayout(false);
             this->PerformLayout();
 
@@ -787,78 +764,10 @@ namespace terverlaba2WF {
     }
 
 
-    private: System::Void k_intervalov_path_3_TextChanged(System::Object^ sender, System::EventArgs^ e)
-    {
-        int k_val = 0;
-
-        try
-        {
-            k_val = Int32::Parse(k_intervalov_path_3->Text);
-        }
-        catch (System::FormatException^)
-        {
-            return;
-        }
-
-        // 2. Проверка условия: k должно быть >= 1
-        if (k_val >= 1) // Теперь k может быть 1, если требуется 1 строка для ввода
-        {
-            // ВАЖНОЕ ИЗМЕНЕНИЕ:
-            // Устанавливаем количество строк равное введенному значению k_val, 
-            // чтобы получить желаемое количество строк для ввода.
-            int required_rows = k_val;
-
-            if (intervali_path_3_datagrid->RowCount != required_rows)
-            {
-                // 3. Инициализация таблицы
-                intervali_path_3_datagrid->ReadOnly = false;
-                intervali_path_3_datagrid->Visible = true;
-
-                intervali_path_3_datagrid->Rows->Clear();
-                intervali_path_3_datagrid->RowCount = required_rows; // <-- Теперь k строк
-
-                // Установка подписи заголовка столбца (УЗЛЫ)
-                this->intervali_path_3_datagrid->Columns[0]->HeaderText = L"Узлы";
-
-                // Устанавливаем заголовки строк
-                for (int i = 0; i < required_rows; i++) {
-                    intervali_path_3_datagrid->Rows[i]->HeaderCell->Value = String::Format("Граница z{0}", i + 1);
-                }
-
-                // ... (Остальные настройки) ...
-            }
-        }
-        // 4. Если k < 2, скрываем таблицу
-        else
-        {
-            intervali_path_3_datagrid->Rows->Clear();
-            intervali_path_3_datagrid->Visible = false;
-            intervali_path_3_datagrid->ReadOnly = true;
-
-        }
-        this->intervali_path_3_datagrid->Columns[0]->SortMode = System::Windows::Forms::DataGridViewColumnSortMode::NotSortable;
-        this->intervali_path_3_datagrid->Columns[0]->AutoSizeMode =
-            System::Windows::Forms::DataGridViewAutoSizeColumnMode::Fill;
-    }
+    
 
 
-    private: System::Void intervali_path_3_datagrid_EditingControlShowing(System::Object^ sender, System::Windows::Forms::DataGridViewEditingControlShowingEventArgs^ e)
-    {
-        // Проверяем, что редактируется ячейка в первом столбце (для ввода границы z_i)
-        if (intervali_path_3_datagrid->CurrentCell->ColumnIndex == 0)
-        {
-            System::Windows::Forms::TextBox^ tb = dynamic_cast<System::Windows::Forms::TextBox^>(e->Control);
-
-            if (tb != nullptr)
-            {
-                // Сначала отписываемся от предыдущих обработчиков
-                tb->KeyPress -= gcnew System::Windows::Forms::KeyPressEventHandler(this, &MyForm::TextBox_OnlyDouble_KeyPress);
-
-                // Привязываем наш обработчик, который разрешает только числа, Backspace и десятичный разделитель
-                tb->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &MyForm::TextBox_OnlyDouble_KeyPress);
-            }
-        }
-    }
+    
 
 
 
@@ -897,7 +806,13 @@ namespace terverlaba2WF {
         e->Handled = true;
     }
 }
-    };
+    private: System::Void path_3_auto_Click(System::Object^ sender, System::EventArgs^ e) {
+
+
+
+
+    }
+};
 
     
 
