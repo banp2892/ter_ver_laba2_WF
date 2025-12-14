@@ -1,0 +1,50 @@
+#pragma once
+#include <vector>
+#include <iostream>
+#include <cmath>
+#include <algorithm>
+#include <numeric>
+
+using namespace std;
+
+class MyMath
+{
+
+public:
+    int k;
+    double lambda_k;
+    int N;
+    double Lambda;
+    double E_eta;
+    double D_eta;
+    vector<double> sample;
+    double sum;
+    double x_bar;
+    double S_sq;
+    double R_bar;
+    // Добавленные поля для результатов Части 2
+    double Me_eta; // Теоретическая медиана
+    double Me_hat; // Выборочная медиана
+    double D_statistic; // Статистика Колмогорова-Смирнова
+    double max_density_deviation; // Максимальное отклонение плотности
+
+    // Конструктор для инициализации
+    MyMath(int k_val, double lambda_k_val, int N_val) :
+        k(k_val), lambda_k(lambda_k_val), N(N_val), Lambda(0.0), E_eta(0.0), D_eta(0.0),
+        sum(0.0), x_bar(0.0), S_sq(0.0), R_bar(0.0), Me_eta(0.0), Me_hat(0.0),
+        D_statistic(0.0), max_density_deviation(0.0)
+    {
+    }
+
+    double generate_exponential(double Lambda);
+
+    // Теоретическая функция распределения F(x) = 1 - exp(-Lambda * x)
+    double theoretical_cdf(double x, double Lambda);
+
+    // Теоретическая плотность распределения f(x) = Lambda * exp(-Lambda * x)
+    double theoretical_pdf(double x, double Lambda);
+
+    void part_1();
+    void part_2();
+    // void part_3(double alpha); // Для следующего шага
+};
