@@ -55,16 +55,15 @@ void MyMath::part_1()
 
 }
 
-void MyMath::part_2(int m)
+void MyMath::part_2() // m здесь теперь не используется, но оставлено для совместимости
 {
     // Проверка на пустую выборку
     if (N == 0 || sample.empty()) return;
 
-    // 1. Расчет размаха выборки R_bar (необходим для автоматического разбиения)
+    // 1. Расчет размаха выборки R_bar
     R_bar = sample.back() - sample.front();
 
     // 2. Расчет медиан
-    // Теоретическая медиана для экспоненциального распределения: Me = ln(2) / Lambda
     Me_eta = log(2.0) / Lambda;
 
     if (N % 2 != 0) {
@@ -89,6 +88,18 @@ void MyMath::part_2(int m)
         D_statistic = std::max({ D_statistic, D_top, D_bottom });
     }
 
+    // ⭐ Теперь part_2 завершается здесь. Логика гистограммы вынесена.
+
+    // Если нужно, вызываем логику гистограммы:
+    // part_2_gist(m); 
+    // Однако, лучше вызывать part_2_gist() из MyForm, когда границы готовы.
+}
+
+void MyMath::part_2_gist(int m)
+{
+    // Проверка
+    if (N == 0 || sample.empty()) return;
+
     // =================================================================
     // 4. ОПРЕДЕЛЕНИЕ ИНТЕРВАЛЬНОГО РЯДА (ЛОГИКА ВЫБОРА ГРАНИЦ)
     // =================================================================
@@ -99,15 +110,19 @@ void MyMath::part_2(int m)
     double a_j_start = sample.front();
 
     // --- ПРИОРИТЕТ 1: m > 0. Используем gistogramma_vector, если он заполнен ---
-    if (m > 0 && gistogramma_vector.size() > 1)
+    // (gistogramma_vector теперь заполняется из MyForm после вызова ShowGistogrammaInputDialog)
+    if (m > 0 && !gistogramma_vector.empty()) // Изменено условие для проверки
     {
-        // 1. Используем границы, введенные пользователем через форму (они уже в gistogramma_vector)
+        // 1. Используем границы, введенные пользователем (они уже в gistogramma_vector)
+        // ВНИМАНИЕ: Если gistogramma_vector заполнен, его размер должен быть >= 2
         bounds = gistogramma_vector;
         k_intervals = bounds.size() - 1;
 
-        // Сортировка и пересчет размаха на случай, если пользователь ввел границы не по порядку
+        // Сортировка и пересчет размаха (на случай, если пользователь ввел не по порядку, 
+        // хотя InputForm должен это проверять)
         std::sort(bounds.begin(), bounds.end());
         R_bar = bounds.back() - bounds.front();
+        gistogramma_vector = bounds;
     }
     else // m <= 0 ИЛИ m > 0, но пользователь не ввел границы (gistogramma_vector пуст)
     {
@@ -132,13 +147,12 @@ void MyMath::part_2(int m)
             bounds.push_back(a_j_start + (double)i * delta_prime);
         }
         R_bar = safe_R_bar;
+
+        // --- ОБЯЗАТЕЛЬНОЕ ЗАПОЛНЕНИЕ gistogramma_vector ---
+        gistogramma_vector = bounds;
     }
 
-    // --- ОБЯЗАТЕЛЬНОЕ ЗАПОЛНЕНИЕ gistogramma_vector ---
-    // Сохраняем финальный набор границ (введенных или сгенерированных)
-    gistogramma_vector = bounds;
-
-    // Если нет интервалов (что маловероятно при N > 0), выходим
+    // Если нет интервалов, выходим
     if (k_intervals <= 0) {
         interval_series_results.clear();
         max_density_deviation = 0.0;
@@ -162,11 +176,8 @@ void MyMath::part_2(int m)
         double current_delta_prime = end - start;
 
         // 1. Подсчет частоты n_j: Используем std::upper_bound
-        // std::upper_bound находит первый элемент, строго больший чем end.
         auto next_it = std::upper_bound(current_it, sample.end(), end);
 
-        // Корректировка для последнего интервала [start, end]: 
-        // Включаем максимальный элемент выборки, даже если он равен 'end'.
         if (j == k_intervals - 1 && !sample.empty() && *(sample.end() - 1) == end) {
             next_it = sample.end();
         }
@@ -176,10 +187,8 @@ void MyMath::part_2(int m)
         // 2. Вычисление середины интервала и плотностей
         double zj = start + current_delta_prime / 2.0;
 
-        // f(z_j) = Теоретическая плотность
         double theoretical_density = theoretical_pdf(zj, Lambda);
 
-        // h_j = Выборочная плотность: n_j / (N * Δ')
         double empirical_density = 0.0;
         if (current_delta_prime > 1e-9) {
             empirical_density = (double)n_j_current / (N * current_delta_prime);
@@ -199,7 +208,6 @@ void MyMath::part_2(int m)
         double deviation = std::abs(empirical_density - theoretical_density);
         max_density_deviation = std::max(max_density_deviation, deviation);
 
-        // Передвигаем итератор к началу следующего интервала
         current_it = next_it;
     }
 }

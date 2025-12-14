@@ -709,7 +709,7 @@ namespace terverlaba2WF {
         // Создание нового объекта и выполнение part_1
         math = new MyMath(k_intervals, lambda_k, N);
         math->part_1(); // Моделирование, сортировка, расчет Lambda, E_eta, D_eta
-        math->part_2(m_default); // Расчет x_bar, S_sq, R_bar, Me_hat, D_statistic (выборочные характеристики)
+        math->part_2(); // Расчет x_bar, S_sq, R_bar, Me_hat, D_statistic (выборочные характеристики)
 
         // Вычисление абсолютных отклонений
         double abs_E_diff = abs(math->E_eta - math->x_bar);
@@ -738,10 +738,13 @@ namespace terverlaba2WF {
 
         List<double>^ defaultValues = nullptr;
 
-        if (this->lastUsedZNodes != nullptr && this->lastUsedZNodes->Count == required_nodes)
+        if (this->gistogramma_nodes != nullptr)
         {
-            // Если количество интервалов K-1 совпадает, используем старые значения
-            defaultValues = this->lastUsedZNodes;
+            // Очищаем и копируем содержимое неуправляемого вектора
+            math->gistogramma_vector.assign(this->gistogramma_nodes->begin(), this->gistogramma_nodes->end());
+
+            // ⭐ УДАЛИТЬ: ЭТОТ МЕХАНИЗМ СОХРАНЕНИЯ ИСТОРИИ НУЖНО УДАЛИТЬ ИЗ button_Start_Click! 
+            // this->lastUsedZNodes = inputList; 
         }
 
         // Изменение: Передаем defaultValues в конструктор InputForm
@@ -771,7 +774,7 @@ namespace terverlaba2WF {
                 this->chi_square_nodes->push_back(value);
             }
         }
-
+        math->part_2_gist(m_default);
         // =================================================================
         // 4. Обновление интерфейса (Таблицы и Графики)
         // =================================================================
@@ -842,7 +845,7 @@ namespace terverlaba2WF {
     System::Void ShowGistogrammaInputDialog(int M_intervals)
     {
         // M - это число интервалов. K-1 = M-1
-        int requiredNodes = M_intervals - 1;
+        int requiredNodes = M_intervals;
 
         
 
