@@ -45,7 +45,17 @@ namespace terverlaba2WF {
         System::Windows::Forms::DataGridView^ dataGridView_Results;
         // Вторая таблица: Сводка характеристик (ДОБАВЛЕНО)
         System::Windows::Forms::DataGridView^ dataGridView_Stats;
-        System::Windows::Forms::Label^ label_Criteria;
+
+
+
+
+
+
+
+
+
+
+
     private: System::Windows::Forms::DataGridViewTextBoxColumn^ i;
     private: System::Windows::Forms::DataGridViewTextBoxColumn^ X_i;
     private: System::Windows::Forms::DataGridViewTextBoxColumn^ E_eta;
@@ -54,8 +64,79 @@ namespace terverlaba2WF {
     private: System::Windows::Forms::DataGridViewTextBoxColumn^ D_eta;
     private: System::Windows::Forms::DataGridViewTextBoxColumn^ S_kvadrat;
     private: System::Windows::Forms::DataGridViewTextBoxColumn^ raznost_disp;
-    private: System::Windows::Forms::DataGridViewTextBoxColumn^ Mediana;
+    private: System::Windows::Forms::DataGridViewTextBoxColumn^ Me_eta;
+    private: System::Windows::Forms::DataGridViewTextBoxColumn^ Me_hat;
+    private: System::Windows::Forms::DataGridViewTextBoxColumn^ Me_diff;
     private: System::Windows::Forms::DataGridViewTextBoxColumn^ R;
+    private: ZedGraph::ZedGraphControl^ zedGraphControl1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         System::ComponentModel::IContainer^ components;
@@ -72,6 +153,7 @@ namespace terverlaba2WF {
         /// </summary>
         void InitializeComponent(void)
         {
+            this->components = (gcnew System::ComponentModel::Container());
             this->label_k = (gcnew System::Windows::Forms::Label());
             this->textBox_k = (gcnew System::Windows::Forms::TextBox());
             this->label_lambda = (gcnew System::Windows::Forms::Label());
@@ -80,7 +162,8 @@ namespace terverlaba2WF {
             this->textBox_N = (gcnew System::Windows::Forms::TextBox());
             this->button_Start = (gcnew System::Windows::Forms::Button());
             this->dataGridView_Results = (gcnew System::Windows::Forms::DataGridView());
-            this->label_Criteria = (gcnew System::Windows::Forms::Label());
+            this->i = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+            this->X_i = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
             this->dataGridView_Stats = (gcnew System::Windows::Forms::DataGridView());
             this->E_eta = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
             this->x = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
@@ -88,10 +171,11 @@ namespace terverlaba2WF {
             this->D_eta = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
             this->S_kvadrat = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
             this->raznost_disp = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-            this->Mediana = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+            this->Me_eta = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+            this->Me_hat = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+            this->Me_diff = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
             this->R = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-            this->i = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-            this->X_i = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+            this->zedGraphControl1 = (gcnew ZedGraph::ZedGraphControl());
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Results))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Stats))->BeginInit();
             this->SuspendLayout();
@@ -128,7 +212,7 @@ namespace terverlaba2WF {
             this->textBox_lambda->Name = L"textBox_lambda";
             this->textBox_lambda->Size = System::Drawing::Size(100, 20);
             this->textBox_lambda->TabIndex = 3;
-            this->textBox_lambda->Text = L"10.0";
+            this->textBox_lambda->Text = L"10,0";
             // 
             // label_N
             // 
@@ -159,6 +243,7 @@ namespace terverlaba2WF {
             // 
             // dataGridView_Results
             // 
+            this->dataGridView_Results->AllowUserToAddRows = false;
             this->dataGridView_Results->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
                 | System::Windows::Forms::AnchorStyles::Left)
                 | System::Windows::Forms::AnchorStyles::Right));
@@ -167,106 +252,149 @@ namespace terverlaba2WF {
                 this->i,
                     this->X_i
             });
-            this->dataGridView_Results->Location = System::Drawing::Point(12, 123);
+            this->dataGridView_Results->Location = System::Drawing::Point(23, 113);
             this->dataGridView_Results->Name = L"dataGridView_Results";
             this->dataGridView_Results->RowHeadersVisible = false;
-            this->dataGridView_Results->Size = System::Drawing::Size(207, 189);
+            this->dataGridView_Results->Size = System::Drawing::Size(117, 423);
             this->dataGridView_Results->TabIndex = 9;
             // 
-            // label_Criteria
+            // i
             // 
-            this->label_Criteria->AutoSize = true;
-            this->label_Criteria->Location = System::Drawing::Point(658, 275);
-            this->label_Criteria->Name = L"label_Criteria";
-            this->label_Criteria->Size = System::Drawing::Size(254, 13);
-            this->label_Criteria->TabIndex = 8;
-            this->label_Criteria->Text = L"Критерии: D = [Ожидание], Max Diff = [Ожидание]";
+            this->i->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::DisplayedCells;
+            this->i->HeaderText = L"i";
+            this->i->Name = L"i";
+            this->i->ReadOnly = true;
+            this->i->Resizable = System::Windows::Forms::DataGridViewTriState::True;
+            this->i->Width = 34;
+            // 
+            // X_i
+            // 
+            this->X_i->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::Fill;
+            this->X_i->HeaderText = L"X_i";
+            this->X_i->Name = L"X_i";
+            this->X_i->ReadOnly = true;
             // 
             // dataGridView_Stats
             // 
+            this->dataGridView_Stats->AllowUserToAddRows = false;
             this->dataGridView_Stats->AllowUserToDeleteRows = false;
             this->dataGridView_Stats->AllowUserToResizeColumns = false;
             this->dataGridView_Stats->AllowUserToResizeRows = false;
             this->dataGridView_Stats->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
                 | System::Windows::Forms::AnchorStyles::Right));
             this->dataGridView_Stats->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-            this->dataGridView_Stats->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(8) {
+            this->dataGridView_Stats->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(10) {
                 this->E_eta,
-                    this->x, this->raznost_E_eta_x, this->D_eta, this->S_kvadrat, this->raznost_disp, this->Mediana, this->R
+                    this->x, this->raznost_E_eta_x, this->D_eta, this->S_kvadrat, this->raznost_disp, this->Me_eta, this->Me_hat, this->Me_diff,
+                    this->R
             });
-            this->dataGridView_Stats->Location = System::Drawing::Point(12, 397);
+            this->dataGridView_Stats->Location = System::Drawing::Point(149, 113);
             this->dataGridView_Stats->Name = L"dataGridView_Stats";
             this->dataGridView_Stats->RowHeadersVisible = false;
-            this->dataGridView_Stats->Size = System::Drawing::Size(805, 47);
+            this->dataGridView_Stats->Size = System::Drawing::Size(778, 49);
             this->dataGridView_Stats->TabIndex = 7;
             // 
             // E_eta
             // 
+            this->E_eta->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::DisplayedCells;
             this->E_eta->HeaderText = L"E_eta";
             this->E_eta->Name = L"E_eta";
             this->E_eta->ReadOnly = true;
+            this->E_eta->Width = 60;
             // 
             // x
             // 
+            this->x->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::DisplayedCells;
             this->x->HeaderText = L"x";
             this->x->Name = L"x";
             this->x->ReadOnly = true;
+            this->x->Width = 37;
             // 
             // raznost_E_eta_x
             // 
+            this->raznost_E_eta_x->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::DisplayedCells;
             this->raznost_E_eta_x->HeaderText = L"| E_eta - x |";
             this->raznost_E_eta_x->Name = L"raznost_E_eta_x";
             this->raznost_E_eta_x->ReadOnly = true;
+            this->raznost_E_eta_x->Width = 84;
             // 
             // D_eta
             // 
+            this->D_eta->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::DisplayedCells;
             this->D_eta->HeaderText = L"D_eta";
             this->D_eta->Name = L"D_eta";
             this->D_eta->ReadOnly = true;
+            this->D_eta->Width = 61;
             // 
             // S_kvadrat
             // 
+            this->S_kvadrat->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::DisplayedCells;
             this->S_kvadrat->HeaderText = L"S_2";
             this->S_kvadrat->Name = L"S_kvadrat";
             this->S_kvadrat->ReadOnly = true;
+            this->S_kvadrat->Width = 51;
             // 
             // raznost_disp
             // 
+            this->raznost_disp->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::DisplayedCells;
             this->raznost_disp->HeaderText = L"| D_eta - S_2 |";
             this->raznost_disp->Name = L"raznost_disp";
             this->raznost_disp->ReadOnly = true;
+            this->raznost_disp->Width = 99;
             // 
-            // Mediana
+            // Me_eta
             // 
-            this->Mediana->HeaderText = L"Me";
-            this->Mediana->Name = L"Mediana";
-            this->Mediana->ReadOnly = true;
+            this->Me_eta->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::DisplayedCells;
+            this->Me_eta->HeaderText = L"Me_t";
+            this->Me_eta->Name = L"Me_eta";
+            this->Me_eta->ReadOnly = true;
+            this->Me_eta->Width = 56;
+            // 
+            // Me_hat
+            // 
+            this->Me_hat->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::DisplayedCells;
+            this->Me_hat->HeaderText = L"Me_s";
+            this->Me_hat->Name = L"Me_hat";
+            this->Me_hat->ReadOnly = true;
+            this->Me_hat->Width = 58;
+            // 
+            // Me_diff
+            // 
+            this->Me_diff->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::ColumnHeader;
+            this->Me_diff->HeaderText = L"| Me_t - Me_s |";
+            this->Me_diff->Name = L"Me_diff";
+            this->Me_diff->ReadOnly = true;
+            this->Me_diff->Width = 101;
             // 
             // R
             // 
+            this->R->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::Fill;
             this->R->HeaderText = L"R";
             this->R->Name = L"R";
             this->R->ReadOnly = true;
             // 
-            // i
+            // zedGraphControl1
             // 
-            this->i->HeaderText = L"i";
-            this->i->Name = L"i";
-            this->i->ReadOnly = true;
-            // 
-            // X_i
-            // 
-            this->X_i->HeaderText = L"X_i";
-            this->X_i->Name = L"X_i";
-            this->X_i->ReadOnly = true;
+            this->zedGraphControl1->Location = System::Drawing::Point(165, 177);
+            this->zedGraphControl1->Name = L"zedGraphControl1";
+            this->zedGraphControl1->ScrollGrace = 0;
+            this->zedGraphControl1->ScrollMaxX = 0;
+            this->zedGraphControl1->ScrollMaxY = 0;
+            this->zedGraphControl1->ScrollMaxY2 = 0;
+            this->zedGraphControl1->ScrollMinX = 0;
+            this->zedGraphControl1->ScrollMinY = 0;
+            this->zedGraphControl1->ScrollMinY2 = 0;
+            this->zedGraphControl1->Size = System::Drawing::Size(396, 339);
+            this->zedGraphControl1->TabIndex = 10;
+            this->zedGraphControl1->UseExtendedPrintDialog = true;
             // 
             // MyForm
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
             this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
             this->ClientSize = System::Drawing::Size(954, 652);
+            this->Controls->Add(this->zedGraphControl1);
             this->Controls->Add(this->dataGridView_Stats);
-            this->Controls->Add(this->label_Criteria);
             this->Controls->Add(this->dataGridView_Results);
             this->Controls->Add(this->button_Start);
             this->Controls->Add(this->textBox_N);
@@ -290,7 +418,9 @@ namespace terverlaba2WF {
         // ------------------------------------------------------------------
     private: System::Void button_Start_Click(System::Object^ sender, System::EventArgs^ e)
     {
-        // 1. Считывание и конвертация входных параметров
+        // =================================================================
+        // 1. Считывание и конвертация входных параметров (k, λk, N)
+        // =================================================================
         int k = 0;
         double lambda_k = 0.0;
         int N = 0;
@@ -313,82 +443,87 @@ namespace terverlaba2WF {
             return;
         }
 
-        // 2. Создание объекта и выполнение Части 1 и 2
+        // =================================================================
+        // 2. Расчет теоретических характеристик
+        // =================================================================
+        double E_eta_teor = lambda_k / k;
+        double D_eta_teor = pow(lambda_k / k, 2);
+
+        // Создание объекта и выполнение моделирования/расчетов
         MyMath* math = new MyMath(k, lambda_k, N);
+        math->part_1(); // Моделирование, сортировка
+        math->part_2(); // Расчет x_bar, S_sq, R_bar, Me_hat (выборочные характеристики)
 
-        math->part_1();
-        math->part_2();
+        // Вычисление абсолютных отклонений
+        double abs_E_diff = abs(E_eta_teor - math->x_bar);
+        double abs_D_diff = abs(D_eta_teor - math->S_sq);
 
+
+        // =================================================================
         // 3. ТАБЛИЦА 1: Упорядоченная выборка (dataGridView_Results)
+        // =================================================================
         dataGridView_Results->Rows->Clear();
-        dataGridView_Results->Columns->Clear();
 
-        dataGridView_Results->Columns->Add("Index", "j");
-        dataGridView_Results->Columns->Add("SampleValue", "x(j)");
-
-        dataGridView_Results->Columns[0]->Width = 50;
-        dataGridView_Results->Columns[1]->Width = 150;
-
+        // Заполнение данными (используем имена столбцов: "i" и "X_i")
         for (size_t i = 0; i < math->sample.size(); ++i)
         {
             int rowIndex = dataGridView_Results->Rows->Add();
-            dataGridView_Results->Rows[rowIndex]->Cells[0]->Value = (int)(i + 1);
-            dataGridView_Results->Rows[rowIndex]->Cells[1]->Value = math->sample[i].ToString("F6");
+            dataGridView_Results->Rows[rowIndex]->Cells[L"i"]->Value = (int)(i + 1);
+            dataGridView_Results->Rows[rowIndex]->Cells[L"X_i"]->Value = math->sample[i].ToString("F6");
         }
 
+        // Корректный режим AutoResizeColumns
+        dataGridView_Results->AutoResizeColumns(DataGridViewAutoSizeColumnsMode::DisplayedCells);
+
+
+        // =================================================================
         // 4. ТАБЛИЦА 2: Сводка характеристик (dataGridView_Stats)
+        // =================================================================
 
-        // Вычисление абсолютных отклонений
-        double abs_E_diff = abs(math->E_eta - math->x_bar);
-        double abs_D_diff = abs(math->D_eta - math->S_sq);
+        // Убеждаемся, что в таблице 2 строки (для Теор. и Выбор. данных)
+        if (dataGridView_Stats->RowCount != 1)
+        {
+            dataGridView_Stats->RowCount = 1;
+        }
 
-        dataGridView_Stats->Rows->Clear();
-        dataGridView_Stats->Columns->Clear();
+        // Очищаем только содержимое ячеек
+        for (int i = 0; i < dataGridView_Stats->RowCount; ++i)
+        {
+            for (int j = 0; j < dataGridView_Stats->ColumnCount; ++j)
+            {
+                dataGridView_Stats->Rows[i]->Cells[j]->Value = nullptr;
+            }
+        }
 
-        // Определение столбцов, как вы просили: Eη x̄ |Eη − x̄| Dη S² |Dη − S²| M̃η M̂e R̄
-        dataGridView_Stats->Columns->Add("E_eta", "Eη");
-        dataGridView_Stats->Columns->Add("X_bar", "x̄");
-        dataGridView_Stats->Columns->Add("E_diff", "|Eη − x̄|");
-        dataGridView_Stats->Columns->Add("D_eta", "Dη");
-        dataGridView_Stats->Columns->Add("S_sq", "S²");
-        dataGridView_Stats->Columns->Add("D_diff", "|Dη − S²|");
-        dataGridView_Stats->Columns->Add("Me_eta", "M̃η");
-        dataGridView_Stats->Columns->Add("Me_hat", "M̂e");
-        dataGridView_Stats->Columns->Add("R_bar", "R̄");
+        // --- Заполнение ПЕРВОЙ строки (Теоретические значения) ---
+        // Строка 0
+        dataGridView_Stats->Rows[0]->Cells[L"E_eta"]->Value = E_eta_teor.ToString("F6");
+        dataGridView_Stats->Rows[0]->Cells[L"D_eta"]->Value = D_eta_teor.ToString("F6");
 
-        // Настройка внешнего вида
-        dataGridView_Stats->RowHeadersVisible = true;
-        dataGridView_Stats->AllowUserToAddRows = false;
-        dataGridView_Stats->ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode::DisableResizing;
+        
 
-        // Добавляем две строки
-        dataGridView_Stats->RowCount = 2;
-        dataGridView_Stats->Rows[0]->HeaderCell->Value = "Теор.";
-        dataGridView_Stats->Rows[1]->HeaderCell->Value = "Выбор.";
+        
 
-        // Заполнение ТЕОРЕТИЧЕСКИХ значений (Первая строка - 'Теор.')
-        dataGridView_Stats->Rows[0]->Cells[0]->Value = math->E_eta.ToString("F6");
-        dataGridView_Stats->Rows[0]->Cells[3]->Value = math->D_eta.ToString("F6");
-        dataGridView_Stats->Rows[0]->Cells[6]->Value = math->Me_eta.ToString("F6");
+        dataGridView_Stats->Rows[0]->Cells[L"Me_eta"]->Value = math->Me_eta.ToString("F6");
+        
 
-        // Заполнение ВЫБОРОЧНЫХ значений и ОТКЛОНЕНИЙ (Вторая строка - 'Выбор.')
-        dataGridView_Stats->Rows[1]->Cells[1]->Value = math->x_bar.ToString("F6");
-        dataGridView_Stats->Rows[1]->Cells[2]->Value = abs_E_diff.ToString("F6");
-        dataGridView_Stats->Rows[1]->Cells[4]->Value = math->S_sq.ToString("F6");
-        dataGridView_Stats->Rows[1]->Cells[5]->Value = abs_D_diff.ToString("F6");
-        dataGridView_Stats->Rows[1]->Cells[7]->Value = math->Me_hat.ToString("F6");
-        dataGridView_Stats->Rows[1]->Cells[8]->Value = math->R_bar.ToString("F6");
+        // --- Заполнение ВТОРОЙ строки (Выборочные/Эмпирические значения) ---
+        // Строка 1
+        dataGridView_Stats->Rows[0]->Cells[L"x"]->Value = math->x_bar.ToString("F6");
+        dataGridView_Stats->Rows[0]->Cells[L"raznost_E_eta_x"]->Value = abs_E_diff.ToString("F6");
+        dataGridView_Stats->Rows[0]->Cells[L"S_kvadrat"]->Value = math->S_sq.ToString("F6");
+        dataGridView_Stats->Rows[0]->Cells[L"raznost_disp"]->Value = abs_D_diff.ToString("F6");
+        dataGridView_Stats->Rows[0]->Cells[L"R"]->Value = math->R_bar.ToString("F6");
 
-        // Автоматическая подгонка ширины столбцов
-        dataGridView_Stats->AutoResizeColumns(DataGridViewAutoSizeColumnsMode::AllCells);
+        
+        
+        dataGridView_Stats->Rows[0]->Cells[L"Me_hat"]->Value = math->Me_hat.ToString("F6");
+        dataGridView_Stats->Rows[0]->Cells[L"Me_diff"]->Value = abs(math->Me_hat - math->Me_eta).ToString("F6");
 
-        // 5. Вывод критериев в label_Criteria
-        System::String^ criteria_output =
-            "*** Критерии согласия (Раздел 2) ***\n" +
-            "Критерий Колмогорова-Смирнова (D) = " + math->D_statistic.ToString("F6") + "\n" +
-            "Макс. отклонение плотности (Max Diff) = " + math->max_density_deviation.ToString("F6");
+        // Корректный режим AutoResizeColumns
+        
 
-        label_Criteria->Text = criteria_output;
+       
 
         delete math;
     }
