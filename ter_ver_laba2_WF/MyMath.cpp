@@ -55,7 +55,7 @@ void MyMath::part_1()
 
 }
 
-void MyMath::part_2()
+void MyMath::part_2(int m)
 {
     if (N == 0) return;
 
@@ -98,9 +98,17 @@ void MyMath::part_2()
     // =================================================================
 
     // --- A. Определение числа интервалов (k_intervals = m) ---
+
+    
     int k_intervals;
     // Используем формулу Стерджеса: max(3, округление(1 + 3.322 * log10(N)))
     k_intervals = max(3, (int)round(1.0 + 3.322 * log10(N)));
+    if (m > 0) {
+        k_intervals = m;
+    }
+    else {
+        k_intervals = max(3, (int)round(1.0 + 3.322 * log10(N))); // Правило Стёрджеса
+    }
     // Убедимся, что k_intervals не меньше 1
     if (k_intervals == 0) k_intervals = 1;
 

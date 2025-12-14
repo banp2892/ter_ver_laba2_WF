@@ -63,6 +63,6 @@ public:
     double theoretical_pdf(double x, double Lambda);
 
     void part_1();
-    void part_2();
+    void part_2(int m);
     // void part_3(double alpha); // Для следующего шага
 };

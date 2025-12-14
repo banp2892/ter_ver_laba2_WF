@@ -73,6 +73,9 @@ namespace terverlaba2WF {
     private: System::Windows::Forms::DataGridView^ part2_table;
 
     private: System::Windows::Forms::Label^ label_max_density_deviation;
+    private: System::Windows::Forms::TextBox^ m_gist;
+
+    private: System::Windows::Forms::Label^ gist_label;
 
 
     private:
@@ -117,6 +120,8 @@ namespace terverlaba2WF {
             this->mera_rashojdenia = (gcnew System::Windows::Forms::Label());
             this->gistogramma = (gcnew ZedGraph::ZedGraphControl());
             this->part2_table = (gcnew System::Windows::Forms::DataGridView());
+            this->m_gist = (gcnew System::Windows::Forms::TextBox());
+            this->gist_label = (gcnew System::Windows::Forms::Label());
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Results))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Stats))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->part2_table))->BeginInit();
@@ -137,7 +142,7 @@ namespace terverlaba2WF {
             this->textBox_k->Name = L"textBox_k";
             this->textBox_k->Size = System::Drawing::Size(100, 20);
             this->textBox_k->TabIndex = 1;
-            this->textBox_k->Text = L"3";
+            this->textBox_k->Text = L"7";
             // 
             // label_lambda
             // 
@@ -154,7 +159,7 @@ namespace terverlaba2WF {
             this->textBox_lambda->Name = L"textBox_lambda";
             this->textBox_lambda->Size = System::Drawing::Size(100, 20);
             this->textBox_lambda->TabIndex = 3;
-            this->textBox_lambda->Text = L"10,0";
+            this->textBox_lambda->Text = L"12,0";
             // 
             // label_N
             // 
@@ -171,7 +176,7 @@ namespace terverlaba2WF {
             this->textBox_N->Name = L"textBox_N";
             this->textBox_N->Size = System::Drawing::Size(100, 20);
             this->textBox_N->TabIndex = 5;
-            this->textBox_N->Text = L"100";
+            this->textBox_N->Text = L"125";
             // 
             // button_Start
             // 
@@ -233,7 +238,7 @@ namespace terverlaba2WF {
             this->dataGridView_Stats->Location = System::Drawing::Point(179, 113);
             this->dataGridView_Stats->Name = L"dataGridView_Stats";
             this->dataGridView_Stats->RowHeadersVisible = false;
-            this->dataGridView_Stats->Size = System::Drawing::Size(654, 49);
+            this->dataGridView_Stats->Size = System::Drawing::Size(745, 49);
             this->dataGridView_Stats->TabIndex = 7;
             // 
             // E_eta
@@ -336,7 +341,7 @@ namespace terverlaba2WF {
             // mera_rashojdenia
             // 
             this->mera_rashojdenia->AutoSize = true;
-            this->mera_rashojdenia->Location = System::Drawing::Point(868, 113);
+            this->mera_rashojdenia->Location = System::Drawing::Point(930, 113);
             this->mera_rashojdenia->Name = L"mera_rashojdenia";
             this->mera_rashojdenia->Size = System::Drawing::Size(110, 13);
             this->mera_rashojdenia->TabIndex = 11;
@@ -358,7 +363,7 @@ namespace terverlaba2WF {
             this->gistogramma->ScrollMinY2 = 0;
             this->gistogramma->Size = System::Drawing::Size(479, 414);
             this->gistogramma->TabIndex = 12;
-            ;
+            
             // 
             // part2_table
             // 
@@ -372,14 +377,33 @@ namespace terverlaba2WF {
             this->part2_table->Location = System::Drawing::Point(179, 168);
             this->part2_table->Name = L"part2_table";
             this->part2_table->RowHeadersVisible = false;
-            this->part2_table->Size = System::Drawing::Size(654, 109);
+            this->part2_table->Size = System::Drawing::Size(745, 109);
             this->part2_table->TabIndex = 13;
+            // 
+            // m_gist
+            // 
+            this->m_gist->Location = System::Drawing::Point(582, 24);
+            this->m_gist->Name = L"m_gist";
+            this->m_gist->Size = System::Drawing::Size(100, 20);
+            this->m_gist->TabIndex = 14;
+            this->m_gist->Text = L"-1";
+            // 
+            // gist_label
+            // 
+            this->gist_label->AutoSize = true;
+            this->gist_label->Location = System::Drawing::Point(381, 24);
+            this->gist_label->Name = L"gist_label";
+            this->gist_label->Size = System::Drawing::Size(195, 13);
+            this->gist_label->TabIndex = 15;
+            this->gist_label->Text = L"Количество разбиений гистограммы";
             // 
             // MyForm
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
             this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
             this->ClientSize = System::Drawing::Size(1252, 709);
+            this->Controls->Add(this->gist_label);
+            this->Controls->Add(this->m_gist);
             this->Controls->Add(this->part2_table);
             this->Controls->Add(this->gistogramma);
             this->Controls->Add(this->mera_rashojdenia);
@@ -605,29 +629,30 @@ namespace terverlaba2WF {
         int k = 0;
         double lambda_k = 0.0;
         int N = 0;
-
+        int m_default = 10;
         try
         {
             k = Int32::Parse(textBox_k->Text);
             lambda_k = Double::Parse(textBox_lambda->Text);
             N = Int32::Parse(textBox_N->Text);
+            m_default = Int32::Parse(m_gist->Text);
         }
         catch (System::FormatException^)
         {
-            MessageBox::Show("Пожалуйста, введите корректные числа в поля ввода (k, λk, N).", "Ошибка ввода", MessageBoxButtons::OK, MessageBoxIcon::Error);
+            MessageBox::Show("Пожалуйста, введите корректные числа.", "Ошибка ввода", MessageBoxButtons::OK, MessageBoxIcon::Error);
             return;
         }
 
         if (k <= 0 || lambda_k <= 0.0 || N <= 0)
         {
-            MessageBox::Show("Параметры k, λk, N должны быть положительными.", "Ошибка данных", MessageBoxButtons::OK, MessageBoxIcon::Error);
+            MessageBox::Show("Параметры должны быть положительными.", "Ошибка данных", MessageBoxButtons::OK, MessageBoxIcon::Error);
             return;
         }
 
         // Создание объекта и выполнение моделирования/расчетов
         MyMath* math = new MyMath(k, lambda_k, N);
         math->part_1(); // Моделирование, сортировка, расчет Lambda, E_eta, D_eta
-        math->part_2(); // Расчет x_bar, S_sq, R_bar, Me_hat, D_statistic (выборочные характеристики)
+        math->part_2(m_default); // Расчет x_bar, S_sq, R_bar, Me_hat, D_statistic (выборочные характеристики)
 
         // Вычисление абсолютных отклонений
         double abs_E_diff = abs(math->E_eta - math->x_bar);
