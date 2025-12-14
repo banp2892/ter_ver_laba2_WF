@@ -22,11 +22,13 @@ namespace terverlaba2WF {
         double MaxSampleValue;
 
         // Конструктор: принимает требуемое количество узлов (K-1) и максимальное значение X
-        InputForm(int requiredNodes, double maxVal)
+        InputForm(int requiredNodes, double maxVal, List<double>^ defaultNodes)
         {
             this->MaxSampleValue = maxVal;
-            // ⭐ 2. СОХРАНЯЕМ ЗНАЧЕНИЕ в приватное поле
             this->actualRequiredNodes = requiredNodes;
+
+            // ⭐ Сохраняем значения по умолчанию
+            this->DefaultZNodes = defaultNodes;
 
             this->InitializeComponent(requiredNodes);
             this->InputValues = gcnew List<double>();
@@ -45,6 +47,7 @@ namespace terverlaba2WF {
     private:
         // ⭐ 1. ПРИВАТНОЕ ПОЛЕ для надежного хранения количества узлов
         int actualRequiredNodes;
+        List<double>^ DefaultZNodes;
 
         System::ComponentModel::Container^ components;
         System::Windows::Forms::Panel^ buttonsPanel;
@@ -63,7 +66,7 @@ namespace terverlaba2WF {
             this->inputTable = (gcnew System::Windows::Forms::TableLayoutPanel());
 
             // Настройка формы
-            this->Text = L"Ввод границ Z (K=" + (requiredNodes + 1).ToString() + L", Max X ≈ " + this->MaxSampleValue.ToString("F3") + L")";
+            this->Text = L"Ввод границ Z для части 3 (K=" + (requiredNodes + 1).ToString() + L", Max X ≈ " + this->MaxSampleValue.ToString("F3") + L")";
             this->ClientSize = System::Drawing::Size(370, 70 + requiredNodes * 30);
             this->MinimumSize = System::Drawing::Size(390, 150);
             this->StartPosition = System::Windows::Forms::FormStartPosition::CenterParent;
@@ -135,6 +138,28 @@ namespace terverlaba2WF {
             // Добавление контролов на форму
             this->Controls->Add(this->buttonsPanel);
             this->Controls->Add(this->inputTable);
+
+            // ⭐ НОВАЯ ЛОГИКА: Заполнение полей старыми значениями, если они есть
+            if (this->DefaultZNodes != nullptr && this->DefaultZNodes->Count == requiredNodes)
+            {
+                // Используем итерацию по Controls и проверку Tag для надежности
+                for each (Control ^ control in this->inputTable->Controls)
+                {
+                    System::Windows::Forms::TextBox^ tb = dynamic_cast<System::Windows::Forms::TextBox^>(control);
+
+                    if (tb != nullptr && tb->Tag != nullptr)
+                    {
+                        int index = safe_cast<int>(tb->Tag);
+
+                        if (index >= 0 && index < this->DefaultZNodes->Count)
+                        {
+                            // Записываем старое значение из списка
+                            tb->Text = this->DefaultZNodes[index].ToString("F6", System::Globalization::CultureInfo::CurrentCulture);
+                        }
+                    }
+                }
+            }
+            // ⭐ КОНЕЦ НОВОЙ ЛОГИКИ
         }
         // --- Конец генерируемого кода дизайнера ---
 

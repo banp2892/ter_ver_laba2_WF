@@ -468,6 +468,7 @@ namespace terverlaba2WF {
         MyMath* math;
         List<double>^ chiSquareNodes;
         std::vector<double>* chi_square_nodes;
+        System::Collections::Generic::List<double>^ lastUsedZNodes;
         // ------------------------------------------------------------------
         // РЕАЛИЗАЦИЯ МЕТОДА ОТРЕСОВКИ
         // ------------------------------------------------------------------
@@ -725,8 +726,16 @@ namespace terverlaba2WF {
 
         int required_nodes = k_intervals - 1;
 
-        // Используем семантику стека для InputForm
-        InputForm inputDialog(required_nodes, max_x_value);
+        List<double>^ defaultValues = nullptr;
+
+        if (this->lastUsedZNodes != nullptr && this->lastUsedZNodes->Count == required_nodes)
+        {
+            // Если количество интервалов K-1 совпадает, используем старые значения
+            defaultValues = this->lastUsedZNodes;
+        }
+
+        // Изменение: Передаем defaultValues в конструктор InputForm
+        InputForm inputDialog(required_nodes, max_x_value, defaultValues); // <--- ИЗМЕНЕНИЕ ЗДЕСЬ
 
         if (inputDialog.ShowDialog() == System::Windows::Forms::DialogResult::OK)
         {
@@ -740,9 +749,10 @@ namespace terverlaba2WF {
             // 2. Выделяем новую память для вектора
             this->chi_square_nodes = new std::vector<double>();
 
+
             // 3. Получаем управляемый список
             List<double>^ inputList = inputDialog.InputValues;
-
+            this->lastUsedZNodes = inputList;
             // 4. Заполняем через указатель
             this->chi_square_nodes->reserve(inputList->Count);
 
