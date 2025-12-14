@@ -355,7 +355,7 @@ namespace terverlaba2WF {
             this->zedGraphControl1->ScrollMinY2 = 0;
             this->zedGraphControl1->Size = System::Drawing::Size(493, 414);
             this->zedGraphControl1->TabIndex = 10;
-            this->zedGraphControl1->UseExtendedPrintDialog = true;
+            
             // 
             // mera_rashojdenia
             // 
@@ -382,7 +382,7 @@ namespace terverlaba2WF {
             this->gistogramma->ScrollMinY2 = 0;
             this->gistogramma->Size = System::Drawing::Size(493, 414);
             this->gistogramma->TabIndex = 12;
-            this->gistogramma->UseExtendedPrintDialog = true;
+            
             // 
             // part2_table
             // 
@@ -467,6 +467,7 @@ namespace terverlaba2WF {
 #pragma endregion
         MyMath* math;
         List<double>^ chiSquareNodes;
+        std::vector<double>* chi_square_nodes;
         // ------------------------------------------------------------------
         // РЕАЛИЗАЦИЯ МЕТОДА ОТРЕСОВКИ
         // ------------------------------------------------------------------
@@ -729,15 +730,26 @@ namespace terverlaba2WF {
 
         if (inputDialog.ShowDialog() == System::Windows::Forms::DialogResult::OK)
         {
-            // Сохраняем упорядоченные узлы в член класса
-            this->chiSquareNodes = inputDialog.InputValues;
-            MessageBox::Show(String::Format("Успешно введено {0} упорядоченных границ Z. Можно выполнять критерий Хи-квадрат.", chiSquareNodes->Count), "Успех", MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Information);
-        }
-        else
-        {
-            // Пользователь нажал Отмена или ошибка, сбрасываем узлы
-            this->chiSquareNodes = nullptr;
-            MessageBox::Show("Границы Z не были заданы. Расчет критерия Хи-квадрат будет использовать автоматическое разбиение, если оно реализовано.", "Внимание", MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Warning);
+            // 1. Очищаем старую память
+            if (this->chi_square_nodes != nullptr)
+            {
+                delete this->chi_square_nodes;
+                this->chi_square_nodes = nullptr; // Сбрасываем указатель после удаления
+            }
+
+            // 2. Выделяем новую память для вектора
+            this->chi_square_nodes = new std::vector<double>();
+
+            // 3. Получаем управляемый список
+            List<double>^ inputList = inputDialog.InputValues;
+
+            // 4. Заполняем через указатель
+            this->chi_square_nodes->reserve(inputList->Count);
+
+            for each (double value in inputList)
+            {
+                this->chi_square_nodes->push_back(value);
+            }
         }
 
         // =================================================================
