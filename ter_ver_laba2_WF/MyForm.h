@@ -469,6 +469,10 @@ namespace terverlaba2WF {
         List<double>^ chiSquareNodes;
         std::vector<double>* chi_square_nodes;
         System::Collections::Generic::List<double>^ lastUsedZNodes;
+        std::vector<double>* gistogramma_nodes;
+        System::Collections::Generic::List<double>^ lastGistogrammaNodes;
+
+
         // ------------------------------------------------------------------
         // РЕАЛИЗАЦИЯ МЕТОДА ОТРЕСОВКИ
         // ------------------------------------------------------------------
@@ -724,6 +728,12 @@ namespace terverlaba2WF {
             max_x_value = math->sample.back();
         }
 
+        if (m_default > 0)
+        {
+            // Вызываем нашу новую логику для ввода границ
+            ShowGistogrammaInputDialog(m_default);
+        }
+
         int required_nodes = k_intervals - 1;
 
         List<double>^ defaultValues = nullptr;
@@ -829,7 +839,69 @@ namespace terverlaba2WF {
     
 
 
-    
+    System::Void ShowGistogrammaInputDialog(int M_intervals)
+    {
+        // M - это число интервалов. K-1 = M-1
+        int requiredNodes = M_intervals - 1;
+
+        
+
+        if (requiredNodes <= 0)
+        {
+            MessageBox::Show("Для гистограммы требуется M >= 2.", "Ошибка ввода", MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Error);
+            return;
+        }
+
+
+        // Максимальное значение выборки (или безопасное значение, если sample пуст)
+        double max_x_value = (this->math && !this->math->sample.empty())
+            ? this->math->sample.back()
+            : 10.0;
+
+        // 1. Подготовка данных для передачи (если M совпадает с предыдущим)
+        List<double>^ defaultValues = nullptr;
+
+        // Используем lastUsedZNodes, если размер совпадает с ТРЕБУЕМЫМ
+        if (this->lastGistogrammaNodes != nullptr && this->lastGistogrammaNodes->Count == requiredNodes)
+        {
+            defaultValues = this->lastGistogrammaNodes;
+        }
+
+        // 2. Вызов формы
+        InputForm inputDialog(requiredNodes, max_x_value, defaultValues);
+        inputDialog.Text = L"Ввод границ Гистограммы (M=" + M_intervals.ToString() + L", Max X ≈ " + max_x_value.ToString("F3") + L")";
+
+        if (inputDialog.ShowDialog() == System::Windows::Forms::DialogResult::OK)
+        {
+            List<double>^ inputList = inputDialog.InputValues;
+
+            // 3. Сохранение данных в НОВЫЙ ВЕКТОР (gistogramma_nodes)
+
+            // Освобождаем старую память
+            if (this->gistogramma_nodes != nullptr)
+            {
+                delete this->gistogramma_nodes;
+            }
+
+            // Выделяем новую память и заполняем
+            this->gistogramma_nodes = new std::vector<double>();
+            this->gistogramma_nodes->reserve(inputList->Count);
+
+            for each (double value in inputList)
+            {
+                this->gistogramma_nodes->push_back(value);
+            }
+
+            // 4. Сохраняем значения для автозаполнения в следующий раз
+            this->lastGistogrammaNodes = inputList;; // Сохраняем ссылку на управляемый список
+
+            // 5. Вызываем пересчет part_2 с новыми границами
+            // math->part_2_with_custom_bounds(*this->gistogramma_nodes); 
+            // (Этот метод нужно будет создать)
+
+            MessageBox::Show("Границы гистограммы успешно сохранены.", "Готово", MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Information);
+        }
+    }
 
 
 

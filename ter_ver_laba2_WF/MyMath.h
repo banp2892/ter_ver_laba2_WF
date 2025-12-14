@@ -33,12 +33,7 @@ public:
     double D_statistic; // Статистика Колмогорова-Смирнова
     double max_density_deviation; // Максимальное отклонение плотности
 
-    struct ChiSquareResult {
-        double z_i;       // Граница интервала
-        double n_i;       // Эмпирическая частота
-        double q_i;       // Теоретическая вероятность (гипотеза)
-        double chi_sq_term; // Вклад в статистику
-    };
+    
 
     struct IntervalData {
         double z_j;          // Середина интервала
