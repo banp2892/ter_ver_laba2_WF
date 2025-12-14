@@ -4,7 +4,6 @@
 // Директива для компилятора C++/CLI, указывающая на сборку ZedGraph
 // Убедитесь, что файл ZedGraph.dll доступен по пути поиска или находится в папке проекта/сборки.
 #using <ZedGraph.dll>
-
 namespace terverlaba2WF {
 
     using namespace System;

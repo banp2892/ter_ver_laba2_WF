@@ -78,44 +78,44 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalUsingDirectories>E:\VisualStudio\ter_ver_laba2_WF\x64\Debug;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>$(ProjectDir)libs</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
-      <AdditionalLibraryDirectories>E:\VisualStudio\ter_ver_laba2_WF\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalUsingDirectories>E:\VisualStudio\ter_ver_laba2_WF\x64\Debug;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>$(ProjectDir)libs</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
-      <AdditionalLibraryDirectories>E:\VisualStudio\ter_ver_laba2_WF\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalUsingDirectories>E:\VisualStudio\ter_ver_laba2_WF\x64\Debug;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>$(ProjectDir)libs</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
-      <AdditionalLibraryDirectories>E:\VisualStudio\ter_ver_laba2_WF\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalUsingDirectories>E:\VisualStudio\ter_ver_laba2_WF\x64\Debug;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>$(ProjectDir)libs</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
-      <AdditionalLibraryDirectories>E:\VisualStudio\ter_ver_laba2_WF\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)libs</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -140,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="ZedGraph.dll" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MyForm.resx">
