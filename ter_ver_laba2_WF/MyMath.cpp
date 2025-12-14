@@ -1,15 +1,15 @@
-#include "MyMath.h"
+п»ї#include "MyMath.h"
 #include <cstdlib>
 #include <ctime>
 #include <iomanip>
 
 double MyMath::generate_exponential(double Lambda)
 {
-    // Использование time(0) в srand() гарантирует разную последовательность при каждом запуске
-    // Но rand() должна быть инициализирована только один раз в начале программы.
-    // Я оставляю srand(time(0)) в part_1() для простоты, как у вас было.
+    // РСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ time(0) РІ srand() РіР°СЂР°РЅС‚РёСЂСѓРµС‚ СЂР°Р·РЅСѓСЋ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ РїСЂРё РєР°Р¶РґРѕРј Р·Р°РїСѓСЃРєРµ
+    // РќРѕ rand() РґРѕР»Р¶РЅР° Р±С‹С‚СЊ РёРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°РЅР° С‚РѕР»СЊРєРѕ РѕРґРёРЅ СЂР°Р· РІ РЅР°С‡Р°Р»Рµ РїСЂРѕРіСЂР°РјРјС‹.
+    // РЇ РѕСЃС‚Р°РІР»СЏСЋ srand(time(0)) РІ part_1() РґР»СЏ РїСЂРѕСЃС‚РѕС‚С‹, РєР°Рє Сѓ РІР°СЃ Р±С‹Р»Рѕ.
     double U = rand() / (double)RAND_MAX;
-    // max(U, 1e-9) чтобы избежать log(0)
+    // max(U, 1e-9) С‡С‚РѕР±С‹ РёР·Р±РµР¶Р°С‚СЊ log(0)
     return -(1.0 / Lambda) * log(max(U, 1e-9));
 }
 
@@ -27,15 +27,15 @@ double MyMath::theoretical_pdf(double x, double Lambda)
 
 void MyMath::part_1()
 {
-    // --- 1. Проверка условий ---
+    // --- 1. РџСЂРѕРІРµСЂРєР° СѓСЃР»РѕРІРёР№ ---
     if (k <= 0 || lambda_k <= 0.0 || N <= 0) return;
 
-    // --- 2. Расчет теоретических характеристик ---
-    Lambda = (double)k / lambda_k; // Параметр Lambda = k * (1/lambda_k)
+    // --- 2. Р Р°СЃС‡РµС‚ С‚РµРѕСЂРµС‚РёС‡РµСЃРєРёС… С…Р°СЂР°РєС‚РµСЂРёСЃС‚РёРє ---
+    Lambda = (double)k / lambda_k; // РџР°СЂР°РјРµС‚СЂ Lambda = k * (1/lambda_k)
     E_eta = 1.0 / Lambda;
     D_eta = 1.0 / (Lambda * Lambda);
 
-    // --- 3. Моделирование (Розыгрыш значений) ---
+    // --- 3. РњРѕРґРµР»РёСЂРѕРІР°РЅРёРµ (Р РѕР·С‹РіСЂС‹С€ Р·РЅР°С‡РµРЅРёР№) ---
     srand((unsigned int)time(0));
     sample.clear();
     for (int i = 0; i < N; ++i) {
@@ -43,7 +43,7 @@ void MyMath::part_1()
     }
     sort(sample.begin(), sample.end());
 
-    // --- 4. Расчет выборочных характеристик (для Части 2) ---
+    // --- 4. Р Р°СЃС‡РµС‚ РІС‹Р±РѕСЂРѕС‡РЅС‹С… С…Р°СЂР°РєС‚РµСЂРёСЃС‚РёРє (РґР»СЏ Р§Р°СЃС‚Рё 2) ---
     sum = accumulate(sample.begin(), sample.end(), 0.0);
     x_bar = sum / N;
     double sum_sq_diff = 0.0;
@@ -57,24 +57,34 @@ void MyMath::part_1()
 
 void MyMath::part_2()
 {
-
     if (N == 0) return;
 
-    // 1. Расчет медиан (сохранение в членах класса)
+    // РџСЂРµРґРїРѕР»Р°РіР°РµРј, С‡С‚Рѕ sample (РІС‹Р±РѕСЂРєР°) СѓР¶Рµ РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅР° Рё N > 0.
+
+    // 1. Р Р°СЃС‡РµС‚ СЂР°Р·РјР°С…Р° РІС‹Р±РѕСЂРєРё R_bar
+    R_bar = sample.back() - sample.front();
+
+    // 2. Р Р°СЃС‡РµС‚ РјРµРґРёР°РЅ (РўРµРѕСЂРµС‚РёС‡РµСЃРєР°СЏ Рё Р’С‹Р±РѕСЂРѕС‡РЅР°СЏ)
     Me_eta = log(2.0) / Lambda;
     if (N % 2 != 0) {
+        // РќРµС‡РµС‚РЅС‹Р№ N: РњРµ = X_((N+1)/2)
         Me_hat = sample[N / 2];
     }
     else {
+        // Р§РµС‚РЅС‹Р№ N: РњРµ = (X_(N/2) + X_(N/2 + 1)) / 2
         Me_hat = (sample[N / 2 - 1] + sample[N / 2]) / 2.0;
     }
 
-    // 2. Статистика Колмогорова-Смирнова (D) (сохранение в члене класса)
+    // 3. РЎС‚Р°С‚РёСЃС‚РёРєР° РљРѕР»РјРѕРіРѕСЂРѕРІР°-РЎРјРёСЂРЅРѕРІР° (D)
     D_statistic = 0.0;
     for (int j = 1; j <= N; ++j) {
         double xj = sample[j - 1];
+        // F(x) = 1 - exp(-Lambda * x)
         double Fj_theoretical = theoretical_cdf(xj, Lambda);
+
+        // F_hat_j = j/N (РїРѕСЃР»Рµ СЃРєР°С‡РєР°)
         double F_hat_j = (double)j / N;
+        // F_hat_j_minus_1 = (j-1)/N (РїРµСЂРµРґ СЃРєР°С‡РєРѕРј)
         double F_hat_j_minus_1 = (double)(j - 1) / N;
 
         double D_top = abs(F_hat_j - Fj_theoretical);
@@ -83,47 +93,71 @@ void MyMath::part_2()
         D_statistic = max({ D_statistic, D_top, D_bottom });
     }
 
+    // =================================================================
+    // 4. Р РђРЎР§Р•Рў РРќРўР•Р Р’РђР›Р¬РќРћР“Рћ Р РЇР”Рђ (Р”Р›РЇ Р“РРЎРўРћР“Р РђРњРњР« Р РџР›РћРўРќРћРЎРўР)
+    // =================================================================
 
-    // 3. Расчет максимального отклонения плотности (Max Diff) (для гистограммы)
+    // --- A. РћРїСЂРµРґРµР»РµРЅРёРµ С‡РёСЃР»Р° РёРЅС‚РµСЂРІР°Р»РѕРІ (k_intervals = m) ---
     int k_intervals;
-    // Используем формулу Стерджеса для определения числа интервалов
+    // РСЃРїРѕР»СЊР·СѓРµРј С„РѕСЂРјСѓР»Сѓ РЎС‚РµСЂРґР¶РµСЃР°: max(3, РѕРєСЂСѓРіР»РµРЅРёРµ(1 + 3.322 * log10(N)))
     k_intervals = max(3, (int)round(1.0 + 3.322 * log10(N)));
-
+    // РЈР±РµРґРёРјСЃСЏ, С‡С‚Рѕ k_intervals РЅРµ РјРµРЅСЊС€Рµ 1
     if (k_intervals == 0) k_intervals = 1;
 
-    double safe_R_bar = (R_bar == 0.0) ? 1e-6 : R_bar;
-    double delta_prime = safe_R_bar / k_intervals;
+    // --- B. РћРїСЂРµРґРµР»РµРЅРёРµ РіСЂР°РЅРёС† Рё С€РёСЂРёРЅС‹ ---
+    double safe_R_bar = (R_bar <= 1e-9) ? 1e-6 : R_bar; // Р—Р°С‰РёС‚Р° РѕС‚ РЅСѓР»РµРІРѕРіРѕ СЂР°Р·РјР°С…Р°
+    double delta_prime = safe_R_bar / k_intervals;      // РЁРёСЂРёРЅР° РёРЅС‚РµСЂРІР°Р»Р° О”'
+    double a_j_start = sample.front();                  // РќР°С‡Р°Р»Рѕ РїРµСЂРІРѕРіРѕ РёРЅС‚РµСЂРІР°Р»Р°
 
-    // Расчет частот n_j
-    vector<int> n_j(k_intervals, 0);
-    double a_j_start = sample.front();
-
-    for (double x : sample) {
-        int index = 0;
-        if (delta_prime > 0) {
-            index = floor((x - a_j_start) / delta_prime);
-        }
-
-        if (index >= k_intervals) {
-            index = k_intervals - 1;
-        }
-
-        n_j[index]++;
-    }
-
-    // Расчет максимального отклонения плотности
+    interval_series_results.clear();
     max_density_deviation = 0.0;
-    for (int j = 0; j < k_intervals; ++j) {
-        double interval_start = a_j_start + j * delta_prime;
-        // z_j - середина интервала
-        double zj = interval_start + delta_prime / 2.0;
 
+    int current_sample_index = 0;
+
+    // --- C. Р¦РёРєР» РїРѕ РІСЃРµРј РёРЅС‚РµСЂРІР°Р»Р°Рј ---
+    for (int j = 0; j < k_intervals; ++j)
+    {
+        double start = a_j_start + (double)j * delta_prime;
+        double end = a_j_start + (double)(j + 1) * delta_prime;
+
+        // 1. РџРѕРґСЃС‡РµС‚ С‡Р°СЃС‚РѕС‚С‹ n_j
+        int n_j_current = 0;
+
+        while (current_sample_index < N) {
+            double x = sample[current_sample_index];
+
+            // РЈСЃР»РѕРІРёРµ РїРѕРїР°РґР°РЅРёСЏ: [start, end). РџРѕСЃР»РµРґРЅРёР№ РёРЅС‚РµСЂРІР°Р» РІРєР»СЋС‡Р°РµС‚ end.
+            bool includes_end = (j == k_intervals - 1);
+            if (x < end || (includes_end && x <= end)) {
+                n_j_current++;
+                current_sample_index++;
+            }
+            else {
+                break;
+            }
+        }
+
+        // 2. Р’С‹С‡РёСЃР»РµРЅРёРµ СЃРµСЂРµРґРёРЅР° РёРЅС‚РµСЂРІР°Р»Р° Рё РїР»РѕС‚РЅРѕСЃС‚РµР№
+        double zj = start + delta_prime / 2.0; // РЎРµСЂРµРґРёРЅР° РёРЅС‚РµСЂРІР°Р»Р° z_j
+
+        // f(z_j) = РўРµРѕСЂРµС‚РёС‡РµСЃРєР°СЏ РїР»РѕС‚РЅРѕСЃС‚СЊ (Lambda * exp(-Lambda * z_j))
         double theoretical_density = theoretical_pdf(zj, Lambda);
-        // Выборочная плотность: n_j / (N * длина_интервала)
-        double empirical_density = (double)n_j[j] / (N * delta_prime);
 
+        // h_j = Р’С‹Р±РѕСЂРѕС‡РЅР°СЏ РїР»РѕС‚РЅРѕСЃС‚СЊ (РІС‹СЃРѕС‚Р° СЃС‚РѕР»Р±С†Р° РіРёСЃС‚РѕРіСЂР°РјРјС‹)
+        double empirical_density = (double)n_j_current / (N * delta_prime);
+
+        // 3. РЎРѕС…СЂР°РЅСЏРµРј РґР°РЅРЅС‹Рµ РґР»СЏ РІС‹РІРѕРґР° РІ С‚Р°Р±Р»РёС†Сѓ Рё РіСЂР°С„РёРє
+        IntervalData data;
+        data.interval_start = start;
+        data.interval_end = end;
+        data.z_j = zj;
+        data.n_j = n_j_current;
+        data.f_teor = theoretical_density;
+
+        interval_series_results.push_back(data);
+
+        // 4. РћР±РЅРѕРІР»СЏРµРј РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ РѕС‚РєР»РѕРЅРµРЅРёРµ РїР»РѕС‚РЅРѕСЃС‚Рё
         double deviation = abs(empirical_density - theoretical_density);
         max_density_deviation = max(max_density_deviation, deviation);
     }
-
 }

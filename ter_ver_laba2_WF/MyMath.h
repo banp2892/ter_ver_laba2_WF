@@ -7,6 +7,9 @@
 
 using namespace std;
 
+
+
+
 class MyMath
 {
 
@@ -28,7 +31,18 @@ public:
     double D_statistic; // Статистика Колмогорова-Смирнова
     double max_density_deviation; // Максимальное отклонение плотности
 
+    struct IntervalData {
+        double z_j;          // Середина интервала
+        int n_j;             // Абсолютная частота
+        double f_teor;       // Теоретическая плотность f(z_j)
+        double interval_start; // Начало интервала
+        double interval_end;   // Конец интервала
+        // Если нужен критерий Пирсона:
+        double P_j;            // Теоретическая вероятность попадания в интервал
+    };
 
+    // Результаты интервального ряда
+    std::vector<IntervalData> interval_series_results;
 
     // Конструктор для инициализации
     MyMath(int k_val, double lambda_k_val, int N_val) :
@@ -37,6 +51,8 @@ public:
         D_statistic(0.0), max_density_deviation(0.0)
     {
     }
+
+
 
     double generate_exponential(double Lambda);
 

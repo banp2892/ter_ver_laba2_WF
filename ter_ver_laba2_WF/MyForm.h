@@ -69,7 +69,10 @@ namespace terverlaba2WF {
            // --- ОБЪЯВЛЕНИЕ ГРАФИЧЕСКОГО КОНТРОЛА И МЕТОДА ---
     private: ZedGraph::ZedGraphControl^ zedGraphControl1;
     private: System::Windows::Forms::Label^ mera_rashojdenia;
+    private: ZedGraph::ZedGraphControl^ gistogramma;
+    private: System::Windows::Forms::DataGridView^ part2_table;
 
+    private: System::Windows::Forms::Label^ label_max_density_deviation;
 
 
     private:
@@ -112,8 +115,11 @@ namespace terverlaba2WF {
             this->R = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
             this->zedGraphControl1 = (gcnew ZedGraph::ZedGraphControl());
             this->mera_rashojdenia = (gcnew System::Windows::Forms::Label());
+            this->gistogramma = (gcnew ZedGraph::ZedGraphControl());
+            this->part2_table = (gcnew System::Windows::Forms::DataGridView());
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Results))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Stats))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->part2_table))->BeginInit();
             this->SuspendLayout();
             // 
             // label_k
@@ -191,7 +197,7 @@ namespace terverlaba2WF {
             this->dataGridView_Results->Location = System::Drawing::Point(23, 113);
             this->dataGridView_Results->Name = L"dataGridView_Results";
             this->dataGridView_Results->RowHeadersVisible = false;
-            this->dataGridView_Results->Size = System::Drawing::Size(137, 480);
+            this->dataGridView_Results->Size = System::Drawing::Size(150, 480);
             this->dataGridView_Results->TabIndex = 9;
             // 
             // i
@@ -227,7 +233,7 @@ namespace terverlaba2WF {
             this->dataGridView_Stats->Location = System::Drawing::Point(179, 113);
             this->dataGridView_Stats->Name = L"dataGridView_Stats";
             this->dataGridView_Stats->RowHeadersVisible = false;
-            this->dataGridView_Stats->Size = System::Drawing::Size(731, 49);
+            this->dataGridView_Stats->Size = System::Drawing::Size(654, 49);
             this->dataGridView_Stats->TabIndex = 7;
             // 
             // E_eta
@@ -314,7 +320,7 @@ namespace terverlaba2WF {
             this->zedGraphControl1->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
                 | System::Windows::Forms::AnchorStyles::Left)
                 | System::Windows::Forms::AnchorStyles::Right));
-            this->zedGraphControl1->Location = System::Drawing::Point(188, 179);
+            this->zedGraphControl1->Location = System::Drawing::Point(179, 283);
             this->zedGraphControl1->Name = L"zedGraphControl1";
             this->zedGraphControl1->ScrollGrace = 0;
             this->zedGraphControl1->ScrollMaxX = 0;
@@ -323,24 +329,59 @@ namespace terverlaba2WF {
             this->zedGraphControl1->ScrollMinX = 0;
             this->zedGraphControl1->ScrollMinY = 0;
             this->zedGraphControl1->ScrollMinY2 = 0;
-            this->zedGraphControl1->Size = System::Drawing::Size(479, 414);
+            this->zedGraphControl1->Size = System::Drawing::Size(493, 414);
             this->zedGraphControl1->TabIndex = 10;
             
             // 
             // mera_rashojdenia
             // 
             this->mera_rashojdenia->AutoSize = true;
-            this->mera_rashojdenia->Location = System::Drawing::Point(687, 179);
+            this->mera_rashojdenia->Location = System::Drawing::Point(868, 113);
             this->mera_rashojdenia->Name = L"mera_rashojdenia";
             this->mera_rashojdenia->Size = System::Drawing::Size(110, 13);
             this->mera_rashojdenia->TabIndex = 11;
             this->mera_rashojdenia->Text = L"Мера расхождения: ";
             // 
+            // gistogramma
+            // 
+            this->gistogramma->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+                | System::Windows::Forms::AnchorStyles::Left)
+                | System::Windows::Forms::AnchorStyles::Right));
+            this->gistogramma->Location = System::Drawing::Point(678, 283);
+            this->gistogramma->Name = L"gistogramma";
+            this->gistogramma->ScrollGrace = 0;
+            this->gistogramma->ScrollMaxX = 0;
+            this->gistogramma->ScrollMaxY = 0;
+            this->gistogramma->ScrollMaxY2 = 0;
+            this->gistogramma->ScrollMinX = 0;
+            this->gistogramma->ScrollMinY = 0;
+            this->gistogramma->ScrollMinY2 = 0;
+            this->gistogramma->Size = System::Drawing::Size(479, 414);
+            this->gistogramma->TabIndex = 12;
+            ;
+            // 
+            // part2_table
+            // 
+            this->part2_table->AllowUserToAddRows = false;
+            this->part2_table->AllowUserToDeleteRows = false;
+            this->part2_table->AllowUserToResizeColumns = false;
+            this->part2_table->AllowUserToResizeRows = false;
+            this->part2_table->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
+                | System::Windows::Forms::AnchorStyles::Right));
+            this->part2_table->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+            this->part2_table->Location = System::Drawing::Point(179, 168);
+            this->part2_table->Name = L"part2_table";
+            this->part2_table->RowHeadersVisible = false;
+            this->part2_table->Size = System::Drawing::Size(654, 109);
+            this->part2_table->TabIndex = 13;
+            // 
             // MyForm
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
             this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-            this->ClientSize = System::Drawing::Size(1063, 709);
+            this->ClientSize = System::Drawing::Size(1252, 709);
+            this->Controls->Add(this->part2_table);
+            this->Controls->Add(this->gistogramma);
             this->Controls->Add(this->mera_rashojdenia);
             this->Controls->Add(this->zedGraphControl1);
             this->Controls->Add(this->dataGridView_Stats);
@@ -356,6 +397,7 @@ namespace terverlaba2WF {
             this->Text = L"Лабораторная работа 27: Экспоненциальное распределение";
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Results))->EndInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Stats))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->part2_table))->EndInit();
             this->ResumeLayout(false);
             this->PerformLayout();
 
@@ -419,7 +461,139 @@ namespace terverlaba2WF {
             zedGraphControl1->Invalidate();
         }
 
+        void FillDensityTable(const std::vector<MyMath::IntervalData>& data_series, int N_total, double lambda_param)
+        {
+            // Теперь part2_table доступен через "this->"
+            if (this->part2_table == nullptr) return;
 
+            // 1. Очистка и установка числа колонок
+            this->part2_table->Rows->Clear();
+            this->part2_table->Columns->Clear();
+            this->part2_table->ColumnCount = data_series.size() + 1; // +1 для заголовка строки
+
+            // 2. Установка заголовков столбцов (Интервалы 1, 2, 3...)
+            this->part2_table->Columns[0]->HeaderText = "Показатель";
+            this->part2_table->Columns[0]->ReadOnly = true;
+
+            for (size_t j = 0; j < data_series.size(); ++j)
+            {
+                this->part2_table->Columns[j + 1]->HeaderText = String::Format("Интервал {0}", (int)(j + 1));
+                this->part2_table->Columns[j + 1]->ReadOnly = true;
+            }
+
+            // 3. Добавление трех строк для данных (z_j, f(z_j), h_j)
+            this->part2_table->Rows->Add(3);
+
+            // Установка заголовков строк
+            this->part2_table->Rows[0]->Cells[0]->Value = "z_j (Середина)";
+            this->part2_table->Rows[1]->Cells[0]->Value = "f(z_j) (Теор. плотность)";
+            this->part2_table->Rows[2]->Cells[0]->Value = "h_j (Выб. плотность)";
+
+            // 4. Заполнение данных
+            double delta_prime = 0.0;
+            if (data_series.size() > 0) {
+                delta_prime = data_series[0].interval_end - data_series[0].interval_start;
+            }
+
+            // ⭐ ТЕОРЕТИЧЕСКАЯ ПЛОТНОСТЬ f(x) = lambda * exp(-lambda * x)
+            // В MyMath::IntervalData уже есть поле f_teor, используем его
+            // Если же нет, то нужно добавить в MyMath.h/cpp и рассчитать.
+
+            for (size_t j = 0; j < data_series.size(); ++j)
+            {
+                const auto& data = data_series[j];
+
+                // Выборочная плотность h_j = n_j / (N * delta_prime)
+                double empirical_density = 0.0;
+                if (N_total > 0 && delta_prime > 0) {
+                    empirical_density = (double)data.n_j / (N_total * delta_prime);
+                }
+
+                // Теоретическая плотность (расчет по середине интервала)
+                double theoretical_density = lambda_param * exp(-lambda_param * data.z_j);
+
+
+                int col = (int)j + 1;
+
+                // Строка 1: z_j
+                this->part2_table->Rows[0]->Cells[col]->Value = data.z_j.ToString("F4");
+
+                // Строка 2: f(z_j) (Теоретическая плотность)
+                this->part2_table->Rows[1]->Cells[col]->Value = theoretical_density.ToString("F6");
+
+                // Строка 3: h_j (Выборочная плотность)
+                this->part2_table->Rows[2]->Cells[col]->Value = empirical_density.ToString("F6");
+            }
+
+            this->part2_table->AutoResizeColumns(DataGridViewAutoSizeColumnsMode::DisplayedCells);
+        }
+
+
+        // ⭐ НОВЫЙ МЕТОД ДЛЯ ПОСТРОЕНИЯ ГИСТОГРАММЫ И ТЕОРЕТИЧЕСКОЙ ПЛОТНОСТИ
+        void DrawHistogram(const std::vector<MyMath::IntervalData>& data_series, int N_total, double lambda_param)
+        {
+            GraphPane^ myPane = gistogramma->GraphPane;
+            myPane->CurveList->Clear();
+            myPane->Title->Text = "Гистограмма относительных частот и f(x) распределения";
+            myPane->XAxis->Title->Text = "Интервалы";
+            myPane->YAxis->Title->Text = "Плотность";
+
+            // 1. Построение Гистограммы (Выборочная плотность h_j)
+            PointPairList^ histList = gcnew PointPairList();
+            double delta_prime = 0.0;
+            if (data_series.size() > 0) {
+                delta_prime = data_series[0].interval_end - data_series[0].interval_start;
+            }
+
+            for (const auto& data : data_series)
+            {
+                double empirical_density = 0.0;
+                if (N_total > 0 && delta_prime > 0) {
+                    empirical_density = (double)data.n_j / (N_total * delta_prime);
+                }
+                histList->Add(data.z_j, empirical_density);
+            }
+
+            // BarItem - это гистограмма
+            BarItem^ histCurve = myPane->AddBar("Выборочная плотность h_j", histList, Color::Green);
+            histCurve->Bar->Fill->IsVisible = false; // Отключаем заливку
+            histCurve->Bar->Border->IsVisible = true; // Включаем видимость границы
+            histCurve->Bar->Border->Color = Color::Black; // (Опционально) Устанавливаем черный цвет обводки
+            histCurve->Bar->Border->Width = 1.0f; // (Опционально) Толщина обводки
+            // ⭐ ИСПРАВЛЕНИЕ: Используем BarWidth, чтобы избежать ошибок ClusterScaleWidthTag и BarBase::Width
+            if (delta_prime > 0)
+            {
+                myPane->BarSettings->Base = BarBase::X;
+                myPane->BarSettings->Type = BarType::Overlay;
+                myPane->BarSettings->ClusterScaleWidth = delta_prime; // Универсальный способ задания ширины
+                myPane->BarSettings->MinClusterGap = 0.0f; // Столбцы без зазора
+            }
+
+            // 2. Построение Теоретической плотности (f(x) = lambda * exp(-lambda * x))
+            PointPairList^ theorDensityList = gcnew PointPairList();
+
+            // Диапазон для теоретической кривой
+            double maxX = data_series.empty() ? 10.0 : data_series.back().interval_end * 1.1;
+
+            for (int i = 0; i <= 100; ++i)
+            {
+                double x_teor = (double)i * maxX / 100.0;
+                // f(x) = lambda * exp(-lambda * x)
+                double f_teor = lambda_param * exp(-lambda_param * x_teor);
+                theorDensityList->Add(x_teor, f_teor);
+            }
+
+            LineItem^ teorCurve = myPane->AddCurve("Теоретическая плотность f(x)", theorDensityList, Color::Red, SymbolType::None);
+            teorCurve->Line->Width = 2.0f;
+            teorCurve->IsY2Axis = false;
+            
+            // 3. Обновление графика
+            myPane->XAxis->Scale->Min = 0.0;
+            myPane->YAxis->Scale->Min = 0.0;
+
+            gistogramma->AxisChange();
+            gistogramma->Invalidate();
+        }
         // ------------------------------------------------------------------
         // ОБРАБОТЧИК КНОПКИ
         // ------------------------------------------------------------------
@@ -512,6 +686,11 @@ namespace terverlaba2WF {
         mera_rashojdenia->Text = "Мера расхождения: "+math->D_statistic.ToString("F6");
         
         
+        
+        FillDensityTable(math->interval_series_results, N, math->Lambda);
+
+        // 2. Построение гистограммы (gistogramma)
+        DrawHistogram(math->interval_series_results, N, math->Lambda);
 
         // ⭐ ВЫЗОВ: Построение графиков CDF
         DrawCDFGraphs(math->sample, math->Lambda);
@@ -523,4 +702,7 @@ namespace terverlaba2WF {
     }
 
     };
+
+    
+
 }
