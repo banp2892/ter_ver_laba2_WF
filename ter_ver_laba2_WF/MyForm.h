@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "MyMath.h"
 
+#using <ZedGraph.dll>
+
 namespace terverlaba2WF {
 
     using namespace System;
@@ -9,7 +11,9 @@ namespace terverlaba2WF {
     using namespace System::Windows::Forms;
     using namespace System::Data;
     using namespace System::Drawing;
-
+    
+    using namespace ZedGraph;
+    using namespace System::Collections::Generic;
     /// <summary>
     /// Summary for MyForm
     /// </summary>
@@ -68,65 +72,6 @@ namespace terverlaba2WF {
     private: System::Windows::Forms::DataGridViewTextBoxColumn^ Me_hat;
     private: System::Windows::Forms::DataGridViewTextBoxColumn^ Me_diff;
     private: System::Windows::Forms::DataGridViewTextBoxColumn^ R;
-    private: ZedGraph::ZedGraphControl^ zedGraphControl1;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -153,7 +98,6 @@ namespace terverlaba2WF {
         /// </summary>
         void InitializeComponent(void)
         {
-            this->components = (gcnew System::ComponentModel::Container());
             this->label_k = (gcnew System::Windows::Forms::Label());
             this->textBox_k = (gcnew System::Windows::Forms::TextBox());
             this->label_lambda = (gcnew System::Windows::Forms::Label());
@@ -175,7 +119,6 @@ namespace terverlaba2WF {
             this->Me_hat = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
             this->Me_diff = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
             this->R = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-            this->zedGraphControl1 = (gcnew ZedGraph::ZedGraphControl());
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Results))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Stats))->BeginInit();
             this->SuspendLayout();
@@ -373,27 +316,11 @@ namespace terverlaba2WF {
             this->R->Name = L"R";
             this->R->ReadOnly = true;
             // 
-            // zedGraphControl1
-            // 
-            this->zedGraphControl1->Location = System::Drawing::Point(165, 177);
-            this->zedGraphControl1->Name = L"zedGraphControl1";
-            this->zedGraphControl1->ScrollGrace = 0;
-            this->zedGraphControl1->ScrollMaxX = 0;
-            this->zedGraphControl1->ScrollMaxY = 0;
-            this->zedGraphControl1->ScrollMaxY2 = 0;
-            this->zedGraphControl1->ScrollMinX = 0;
-            this->zedGraphControl1->ScrollMinY = 0;
-            this->zedGraphControl1->ScrollMinY2 = 0;
-            this->zedGraphControl1->Size = System::Drawing::Size(396, 339);
-            this->zedGraphControl1->TabIndex = 10;
-            this->zedGraphControl1->UseExtendedPrintDialog = true;
-            // 
             // MyForm
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
             this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
             this->ClientSize = System::Drawing::Size(954, 652);
-            this->Controls->Add(this->zedGraphControl1);
             this->Controls->Add(this->dataGridView_Stats);
             this->Controls->Add(this->dataGridView_Results);
             this->Controls->Add(this->button_Start);
@@ -454,9 +381,7 @@ namespace terverlaba2WF {
         math->part_1(); // Моделирование, сортировка
         math->part_2(); // Расчет x_bar, S_sq, R_bar, Me_hat (выборочные характеристики)
 
-        // Вычисление абсолютных отклонений
-        double abs_E_diff = abs(E_eta_teor - math->x_bar);
-        double abs_D_diff = abs(D_eta_teor - math->S_sq);
+        
 
 
         // =================================================================
@@ -497,18 +422,16 @@ namespace terverlaba2WF {
 
         // --- Заполнение ПЕРВОЙ строки (Теоретические значения) ---
         // Строка 0
+
+
+        double abs_E_diff = abs(math->E_eta - math->x_bar); // Используем math->E_eta
+        double abs_D_diff = abs(math->D_eta - math->S_sq);   // Используем math->D_eta
+        double abs_Me_diff = abs(math->Me_hat - math->Me_eta);
+
         dataGridView_Stats->Rows[0]->Cells[L"E_eta"]->Value = E_eta_teor.ToString("F6");
         dataGridView_Stats->Rows[0]->Cells[L"D_eta"]->Value = D_eta_teor.ToString("F6");
-
         
-
         
-
-        dataGridView_Stats->Rows[0]->Cells[L"Me_eta"]->Value = math->Me_eta.ToString("F6");
-        
-
-        // --- Заполнение ВТОРОЙ строки (Выборочные/Эмпирические значения) ---
-        // Строка 1
         dataGridView_Stats->Rows[0]->Cells[L"x"]->Value = math->x_bar.ToString("F6");
         dataGridView_Stats->Rows[0]->Cells[L"raznost_E_eta_x"]->Value = abs_E_diff.ToString("F6");
         dataGridView_Stats->Rows[0]->Cells[L"S_kvadrat"]->Value = math->S_sq.ToString("F6");
@@ -516,9 +439,9 @@ namespace terverlaba2WF {
         dataGridView_Stats->Rows[0]->Cells[L"R"]->Value = math->R_bar.ToString("F6");
 
         
-        
+        dataGridView_Stats->Rows[0]->Cells[L"Me_eta"]->Value = math->Me_eta.ToString("F6");
         dataGridView_Stats->Rows[0]->Cells[L"Me_hat"]->Value = math->Me_hat.ToString("F6");
-        dataGridView_Stats->Rows[0]->Cells[L"Me_diff"]->Value = abs(math->Me_hat - math->Me_eta).ToString("F6");
+        dataGridView_Stats->Rows[0]->Cells[L"Me_diff"]->Value = abs_Me_diff.ToString("F6");
 
         // Корректный режим AutoResizeColumns
         
@@ -527,5 +450,8 @@ namespace terverlaba2WF {
 
         delete math;
     }
+
+    
+
     };
 }
