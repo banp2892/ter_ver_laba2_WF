@@ -133,6 +133,7 @@
     <ClCompile Include="MyMath.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="InputForm.h" />
     <ClInclude Include="MyForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>

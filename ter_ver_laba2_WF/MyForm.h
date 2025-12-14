@@ -1,9 +1,11 @@
 ﻿#pragma once
 #include "MyMath.h"
+#include "InputForm.h" 
 
 // Директива для компилятора C++/CLI, указывающая на сборку ZedGraph
 // Убедитесь, что файл ZedGraph.dll доступен по пути поиска или находится в папке проекта/сборки.
 #using <ZedGraph.dll>
+
 namespace terverlaba2WF {
 
     using namespace System;
@@ -353,7 +355,7 @@ namespace terverlaba2WF {
             this->zedGraphControl1->ScrollMinY2 = 0;
             this->zedGraphControl1->Size = System::Drawing::Size(493, 414);
             this->zedGraphControl1->TabIndex = 10;
-            
+            this->zedGraphControl1->UseExtendedPrintDialog = true;
             // 
             // mera_rashojdenia
             // 
@@ -380,7 +382,7 @@ namespace terverlaba2WF {
             this->gistogramma->ScrollMinY2 = 0;
             this->gistogramma->Size = System::Drawing::Size(493, 414);
             this->gistogramma->TabIndex = 12;
-            
+            this->gistogramma->UseExtendedPrintDialog = true;
             // 
             // part2_table
             // 
@@ -417,7 +419,7 @@ namespace terverlaba2WF {
             // k_enterval_label
             // 
             this->k_enterval_label->AutoSize = true;
-            this->k_enterval_label->Location = System::Drawing::Point(719, 24);
+            this->k_enterval_label->Location = System::Drawing::Point(691, 20);
             this->k_enterval_label->Name = L"k_enterval_label";
             this->k_enterval_label->Size = System::Drawing::Size(195, 13);
             this->k_enterval_label->TabIndex = 16;
@@ -425,12 +427,11 @@ namespace terverlaba2WF {
             // 
             // k_intervalov_path_3
             // 
-            this->k_intervalov_path_3->Location = System::Drawing::Point(814, 50);
+            this->k_intervalov_path_3->Location = System::Drawing::Point(892, 17);
             this->k_intervalov_path_3->Name = L"k_intervalov_path_3";
             this->k_intervalov_path_3->Size = System::Drawing::Size(100, 20);
             this->k_intervalov_path_3->TabIndex = 17;
-            this->k_intervalov_path_3->Text = L"10";
-            
+            this->k_intervalov_path_3->Text = L"-1";
             // 
             // MyForm
             // 
@@ -464,7 +465,8 @@ namespace terverlaba2WF {
 
         }
 #pragma endregion
-
+        MyMath* math;
+        List<double>^ chiSquareNodes;
         // ------------------------------------------------------------------
         // РЕАЛИЗАЦИЯ МЕТОДА ОТРЕСОВКИ
         // ------------------------------------------------------------------
@@ -663,31 +665,43 @@ namespace terverlaba2WF {
         // =================================================================
         // 1. Считывание и конвертация входных параметров (k, λk, N)
         // =================================================================
-        int k = 0;
+        int k_intervals = 0; // Переименовал, чтобы не путать с локальной переменной k
         double lambda_k = 0.0;
         int N = 0;
         int m_default = 10;
+
         try
         {
-            k = Int32::Parse(textBox_k->Text);
+            k_intervals = Int32::Parse(k_intervalov_path_3->Text); // Использую правильное имя поля
             lambda_k = Double::Parse(textBox_lambda->Text);
             N = Int32::Parse(textBox_N->Text);
             m_default = Int32::Parse(m_gist->Text);
         }
         catch (System::FormatException^)
         {
-            MessageBox::Show("Пожалуйста, введите корректные числа.", "Ошибка ввода", MessageBoxButtons::OK, MessageBoxIcon::Error);
+            MessageBox::Show("Пожалуйста, введите корректные числа.", "Ошибка ввода", MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Error);
             return;
         }
 
-        if (k <= 0 || lambda_k <= 0.0 || N <= 0)
+        if (k_intervals <= 1 || lambda_k <= 0.0 || N <= 0)
         {
-            MessageBox::Show("Параметры должны быть положительными.", "Ошибка данных", MessageBoxButtons::OK, MessageBoxIcon::Error);
+            MessageBox::Show("Параметры должны быть положительными (k >= 2).", "Ошибка данных", MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Error);
             return;
         }
 
-        // Создание объекта и выполнение моделирования/расчетов
-        MyMath* math = new MyMath(k, lambda_k, N);
+        // =================================================================
+        // 2. Создание объекта, моделирование и расчеты
+        // =================================================================
+
+        // Удаляем старый объект, если он есть (т.к. math объявлен как член класса MyForm)
+        if (math)
+        {
+            delete math;
+            math = nullptr;
+        }
+
+        // Создание нового объекта и выполнение part_1
+        math = new MyMath(k_intervals, lambda_k, N);
         math->part_1(); // Моделирование, сортировка, расчет Lambda, E_eta, D_eta
         math->part_2(m_default); // Расчет x_bar, S_sq, R_bar, Me_hat, D_statistic (выборочные характеристики)
 
@@ -697,8 +711,40 @@ namespace terverlaba2WF {
         double abs_Me_diff = abs(math->Me_hat - math->Me_eta);
 
         // =================================================================
-        // 3. ТАБЛИЦА 1: Упорядоченная выборка (dataGridView_Results)
+        // 3. ВЫЗОВ: Ввод границ Z для Хи-квадрат (новая логика)
         // =================================================================
+
+        double max_x_value = 0.0;
+
+        // Если выборка существует (должна существовать после part_1), берем max_x
+        if (!math->sample.empty())
+        {
+            max_x_value = math->sample.back();
+        }
+
+        int required_nodes = k_intervals - 1;
+
+        // Используем семантику стека для InputForm
+        InputForm inputDialog(required_nodes, max_x_value);
+
+        if (inputDialog.ShowDialog() == System::Windows::Forms::DialogResult::OK)
+        {
+            // Сохраняем упорядоченные узлы в член класса
+            this->chiSquareNodes = inputDialog.InputValues;
+            MessageBox::Show(String::Format("Успешно введено {0} упорядоченных границ Z. Можно выполнять критерий Хи-квадрат.", chiSquareNodes->Count), "Успех", MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Information);
+        }
+        else
+        {
+            // Пользователь нажал Отмена или ошибка, сбрасываем узлы
+            this->chiSquareNodes = nullptr;
+            MessageBox::Show("Границы Z не были заданы. Расчет критерия Хи-квадрат будет использовать автоматическое разбиение, если оно реализовано.", "Внимание", MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Warning);
+        }
+
+        // =================================================================
+        // 4. Обновление интерфейса (Таблицы и Графики)
+        // =================================================================
+
+        // --- ТАБЛИЦА 1: Упорядоченная выборка (dataGridView_Results) ---
         dataGridView_Results->Rows->Clear();
 
         for (size_t i = 0; i < math->sample.size(); ++i)
@@ -708,59 +754,53 @@ namespace terverlaba2WF {
             dataGridView_Results->Rows[rowIndex]->Cells[L"X_i"]->Value = math->sample[i].ToString("F6");
         }
 
-        dataGridView_Results->AutoResizeColumns(DataGridViewAutoSizeColumnsMode::DisplayedCells);
+        dataGridView_Results->AutoResizeColumns(System::Windows::Forms::DataGridViewAutoSizeColumnsMode::DisplayedCells);
 
-        // =================================================================
-        // 4. ТАБЛИЦА 2: Сводка характеристик (dataGridView_Stats)
-        // =================================================================
+        // --- ТАБЛИЦА 2: Сводка характеристик (dataGridView_Stats) ---
         if (dataGridView_Stats->RowCount != 1)
         {
             dataGridView_Stats->RowCount = 1;
         }
 
         // Очищаем содержимое ячеек
-        for (int i = 0; i < dataGridView_Stats->RowCount; ++i)
+        for (int j = 0; j < dataGridView_Stats->ColumnCount; ++j)
         {
-            for (int j = 0; j < dataGridView_Stats->ColumnCount; ++j)
-            {
-                dataGridView_Stats->Rows[i]->Cells[j]->Value = nullptr;
-            }
+            dataGridView_Stats->Rows[0]->Cells[j]->Value = nullptr;
         }
 
         // --- Заполнение СТРОКИ 0 ---
-        dataGridView_Stats->Rows[0]->Cells[L"E_eta"]->Value = math->E_eta.ToString("F6"); // Теоретическое E
-        dataGridView_Stats->Rows[0]->Cells[L"D_eta"]->Value = math->D_eta.ToString("F6"); // Теоретическое D
+        dataGridView_Stats->Rows[0]->Cells[L"E_eta"]->Value = math->E_eta.ToString("F6");
+        dataGridView_Stats->Rows[0]->Cells[L"D_eta"]->Value = math->D_eta.ToString("F6");
 
-        dataGridView_Stats->Rows[0]->Cells[L"x"]->Value = math->x_bar.ToString("F6"); // Выборочное x
+        dataGridView_Stats->Rows[0]->Cells[L"x"]->Value = math->x_bar.ToString("F6");
         dataGridView_Stats->Rows[0]->Cells[L"raznost_E_eta_x"]->Value = abs_E_diff.ToString("F6");
 
-        dataGridView_Stats->Rows[0]->Cells[L"S_kvadrat"]->Value = math->S_sq.ToString("F6"); // Выборочное S^2
+        dataGridView_Stats->Rows[0]->Cells[L"S_kvadrat"]->Value = math->S_sq.ToString("F6");
         dataGridView_Stats->Rows[0]->Cells[L"raznost_disp"]->Value = abs_D_diff.ToString("F6");
 
-        dataGridView_Stats->Rows[0]->Cells[L"R"]->Value = math->R_bar.ToString("F6"); // Выборочное R
+        dataGridView_Stats->Rows[0]->Cells[L"R"]->Value = math->R_bar.ToString("F6");
 
-        dataGridView_Stats->Rows[0]->Cells[L"Me_eta"]->Value = math->Me_eta.ToString("F6"); // Теоретическая Me
-        dataGridView_Stats->Rows[0]->Cells[L"Me_hat"]->Value = math->Me_hat.ToString("F6"); // Выборочная Me
+        dataGridView_Stats->Rows[0]->Cells[L"Me_eta"]->Value = math->Me_eta.ToString("F6");
+        dataGridView_Stats->Rows[0]->Cells[L"Me_hat"]->Value = math->Me_hat.ToString("F6");
         dataGridView_Stats->Rows[0]->Cells[L"Me_diff"]->Value = abs_Me_diff.ToString("F6");
 
 
         // ⭐ МЕРА РАСХОЖДЕНИЯ D
-        mera_rashojdenia->Text = "Мера расхождения: "+math->D_statistic.ToString("F6");
-        
-        
-        
-        FillDensityTable(math->interval_series_results, N, math->Lambda);
+        mera_rashojdenia->Text = "Мера расхождения (Колмогорова): " + math->D_statistic.ToString("F6");
 
-        // 2. Построение гистограммы (gistogramma)
+
+        // --- Построение графиков и таблиц, зависимых от интервалов гистограммы ---
+        FillDensityTable(math->interval_series_results, N, math->Lambda);
         DrawHistogram(math->interval_series_results, N, math->Lambda);
 
-        // ⭐ ВЫЗОВ: Построение графиков CDF
+        // ⭐ ВЫЗОВ: Построение графиков CDF (функции распределения)
         DrawCDFGraphs(math->sample, math->Lambda);
 
         // Корректный режим AutoResizeColumns
         dataGridView_Stats->AutoResizeColumns(System::Windows::Forms::DataGridViewAutoSizeColumnsMode::AllCells);
 
-        delete math;
+        // ВАЖНО: delete math; убран отсюда. Теперь math - член класса, 
+        // и он будет использоваться в методе расчета Хи-квадрат.
     }
 
 
@@ -771,47 +811,12 @@ namespace terverlaba2WF {
 
 
 
-    private: System::Void TextBox_OnlyDouble_KeyPress(System::Object^ sender, System::Windows::Forms::KeyPressEventArgs^ e)
-{
-    // Получаем текущий десятичный разделитель (запятая или точка)
-    String^ decimalSeparator = System::Globalization::CultureInfo::CurrentCulture->NumberFormat->NumberDecimalSeparator;
+   
 
-    // Разрешаем цифры (0-9)
-    if (Char::IsDigit(e->KeyChar))
-    {
-        e->Handled = false;
-    }
-    // Разрешаем клавишу Backspace
-    else if (e->KeyChar == (char)Keys::Back)
-    {
-        e->Handled = false;
-    }
-    // Разрешаем десятичный разделитель
-    else if (e->KeyChar.ToString() == decimalSeparator)
-    {
-        // Разрешаем ввод разделителя только если его еще нет в тексте
-        System::Windows::Forms::TextBox^ tb = dynamic_cast<System::Windows::Forms::TextBox^>(sender);
-        if (tb != nullptr && tb->Text->Contains(decimalSeparator))
-        {
-            e->Handled = true; // Уже есть разделитель
-        }
-        else
-        {
-            e->Handled = false;
-        }
-    }
-    // Запрещаем все остальное
-    else
-    {
-        e->Handled = true;
-    }
-}
-    private: System::Void path_3_auto_Click(System::Object^ sender, System::EventArgs^ e) {
+    
 
 
 
-
-    }
 };
 
     
