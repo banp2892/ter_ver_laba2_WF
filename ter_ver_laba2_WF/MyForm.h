@@ -845,7 +845,7 @@ namespace terverlaba2WF {
     System::Void ShowGistogrammaInputDialog(int M_intervals)
     {
         // M - это число интервалов. K-1 = M-1
-        int requiredNodes = M_intervals;
+        int requiredNodes = M_intervals-1;
 
         
 
