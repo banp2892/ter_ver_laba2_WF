@@ -68,6 +68,10 @@ namespace terverlaba2WF {
 
            // --- ОБЪЯВЛЕНИЕ ГРАФИЧЕСКОГО КОНТРОЛА И МЕТОДА ---
     private: ZedGraph::ZedGraphControl^ zedGraphControl1;
+    private: System::Windows::Forms::Label^ mera_rashojdenia;
+
+
+
     private:
         
         // ----------------------------------------------------
@@ -107,6 +111,7 @@ namespace terverlaba2WF {
             this->Me_diff = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
             this->R = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
             this->zedGraphControl1 = (gcnew ZedGraph::ZedGraphControl());
+            this->mera_rashojdenia = (gcnew System::Windows::Forms::Label());
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Results))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Stats))->BeginInit();
             this->SuspendLayout();
@@ -322,11 +327,21 @@ namespace terverlaba2WF {
             this->zedGraphControl1->TabIndex = 10;
             
             // 
+            // mera_rashojdenia
+            // 
+            this->mera_rashojdenia->AutoSize = true;
+            this->mera_rashojdenia->Location = System::Drawing::Point(687, 179);
+            this->mera_rashojdenia->Name = L"mera_rashojdenia";
+            this->mera_rashojdenia->Size = System::Drawing::Size(110, 13);
+            this->mera_rashojdenia->TabIndex = 11;
+            this->mera_rashojdenia->Text = L"Мера расхождения: ";
+            // 
             // MyForm
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
             this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
             this->ClientSize = System::Drawing::Size(1063, 709);
+            this->Controls->Add(this->mera_rashojdenia);
             this->Controls->Add(this->zedGraphControl1);
             this->Controls->Add(this->dataGridView_Stats);
             this->Controls->Add(this->dataGridView_Results);
@@ -354,7 +369,7 @@ namespace terverlaba2WF {
         {
             GraphPane^ myPane = zedGraphControl1->GraphPane;
             myPane->CurveList->Clear();
-            myPane->Title->Text = "Теоретическая Fη(x) и выборочная F̂η(x) функции распределения";
+            myPane->Title->Text = "Теоретическая F_eta(x) и выборочная F_eta(x) функции распределения";
             myPane->XAxis->Title->Text = "x";
             myPane->YAxis->Title->Text = "F(x)";
 
@@ -364,7 +379,7 @@ namespace terverlaba2WF {
 
             empCDFList->Add(0.0, 0.0);
 
-            for (size_t i = 0; i < N; ++i)
+            for (size_t i = 0; i < N; ++i) // в каждой точке x у нас скачек вверх на 1/N
             {
                 double x = sample[i];
                 double F_val = (double)(i + 1) / N;
@@ -375,7 +390,7 @@ namespace terverlaba2WF {
                 empCDFList->Add(x, F_val);
             }
 
-            LineItem^ empCurve = myPane->AddCurve("Выборочная F̂η(x)", empCDFList, Color::Blue, SymbolType::None);
+            LineItem^ empCurve = myPane->AddCurve("Выборочная F_eta(x)", empCDFList, Color::Blue, SymbolType::None);
             empCurve->Line->StepType = StepType::ForwardStep;
 
 
@@ -392,7 +407,7 @@ namespace terverlaba2WF {
                 teorCDFList->Add(x_teor, F_teor);
             }
 
-            myPane->AddCurve("Теоретическая Fη(x)", teorCDFList, Color::Red, SymbolType::None);
+            myPane->AddCurve("Теоретическая F_eta(x)", teorCDFList, Color::Red, SymbolType::None);
 
 
             // 3. Обновление графика
@@ -494,7 +509,9 @@ namespace terverlaba2WF {
 
 
         // ⭐ МЕРА РАСХОЖДЕНИЯ D
-        MessageBox::Show("Мера расхождения D (Колмогорова-Смирнова): " + math->D_statistic.ToString("F6"), "Результат D", MessageBoxButtons::OK, MessageBoxIcon::Information);
+        mera_rashojdenia->Text = "Мера расхождения: "+math->D_statistic.ToString("F6");
+        
+        
 
         // ⭐ ВЫЗОВ: Построение графиков CDF
         DrawCDFGraphs(math->sample, math->Lambda);

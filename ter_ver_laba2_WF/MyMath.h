@@ -28,6 +28,8 @@ public:
     double D_statistic; // Статистика Колмогорова-Смирнова
     double max_density_deviation; // Максимальное отклонение плотности
 
+
+
     // Конструктор для инициализации
     MyMath(int k_val, double lambda_k_val, int N_val) :
         k(k_val), lambda_k(lambda_k_val), N(N_val), Lambda(0.0), E_eta(0.0), D_eta(0.0),
