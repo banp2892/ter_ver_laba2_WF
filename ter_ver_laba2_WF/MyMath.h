@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <numeric>
 
+
 using namespace std;
 
 
@@ -14,6 +15,7 @@ class MyMath
 {
 
 public:
+    vector<double> gistogramma_vector;
     int k;
     double lambda_k;
     int N;
@@ -30,6 +32,13 @@ public:
     double Me_hat; // Выборочная медиана
     double D_statistic; // Статистика Колмогорова-Смирнова
     double max_density_deviation; // Максимальное отклонение плотности
+
+    struct ChiSquareResult {
+        double z_i;       // Граница интервала
+        double n_i;       // Эмпирическая частота
+        double q_i;       // Теоретическая вероятность (гипотеза)
+        double chi_sq_term; // Вклад в статистику
+    };
 
     struct IntervalData {
         double z_j;          // Середина интервала
@@ -64,5 +73,6 @@ public:
 
     void part_1();
     void part_2(int m);
+    
     // void part_3(double alpha); // Для следующего шага
 };

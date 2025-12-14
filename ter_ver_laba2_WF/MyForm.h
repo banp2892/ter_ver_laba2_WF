@@ -26,7 +26,15 @@ namespace terverlaba2WF {
         MyForm(void)
         {
             InitializeComponent();
+
+            if (!String::IsNullOrEmpty(this->k_intervalov_path_3->Text))
+            {
+                // Принудительный вызов обработчика TextChanged для начальной инициализации
+                k_intervalov_path_3_TextChanged(this->k_intervalov_path_3, nullptr);
+            }
         }
+
+        
 
     protected:
         /// <summary>
@@ -76,6 +84,13 @@ namespace terverlaba2WF {
     private: System::Windows::Forms::TextBox^ m_gist;
 
     private: System::Windows::Forms::Label^ gist_label;
+    private: System::Windows::Forms::Label^ k_enterval_label;
+    private: System::Windows::Forms::TextBox^ k_intervalov_path_3;
+    private: System::Windows::Forms::DataGridView^ intervali_path_3_datagrid;
+
+
+
+
 
 
     private:
@@ -122,9 +137,13 @@ namespace terverlaba2WF {
             this->part2_table = (gcnew System::Windows::Forms::DataGridView());
             this->m_gist = (gcnew System::Windows::Forms::TextBox());
             this->gist_label = (gcnew System::Windows::Forms::Label());
+            this->k_enterval_label = (gcnew System::Windows::Forms::Label());
+            this->k_intervalov_path_3 = (gcnew System::Windows::Forms::TextBox());
+            this->intervali_path_3_datagrid = (gcnew System::Windows::Forms::DataGridView());
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Results))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Stats))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->part2_table))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->intervali_path_3_datagrid))->BeginInit();
             this->SuspendLayout();
             // 
             // label_k
@@ -238,7 +257,7 @@ namespace terverlaba2WF {
             this->dataGridView_Stats->Location = System::Drawing::Point(179, 113);
             this->dataGridView_Stats->Name = L"dataGridView_Stats";
             this->dataGridView_Stats->RowHeadersVisible = false;
-            this->dataGridView_Stats->Size = System::Drawing::Size(745, 49);
+            this->dataGridView_Stats->Size = System::Drawing::Size(735, 49);
             this->dataGridView_Stats->TabIndex = 7;
             // 
             // E_eta
@@ -336,7 +355,9 @@ namespace terverlaba2WF {
             this->zedGraphControl1->ScrollMinY2 = 0;
             this->zedGraphControl1->Size = System::Drawing::Size(493, 414);
             this->zedGraphControl1->TabIndex = 10;
-            
+            this->intervali_path_3_datagrid->AllowUserToResizeRows = false;
+            this->intervali_path_3_datagrid->AllowUserToResizeColumns = false;
+            this->intervali_path_3_datagrid->AllowUserToAddRows = false;
             // 
             // mera_rashojdenia
             // 
@@ -361,9 +382,9 @@ namespace terverlaba2WF {
             this->gistogramma->ScrollMinX = 0;
             this->gistogramma->ScrollMinY = 0;
             this->gistogramma->ScrollMinY2 = 0;
-            this->gistogramma->Size = System::Drawing::Size(479, 414);
+            this->gistogramma->Size = System::Drawing::Size(493, 414);
             this->gistogramma->TabIndex = 12;
-            
+           
             // 
             // part2_table
             // 
@@ -377,12 +398,12 @@ namespace terverlaba2WF {
             this->part2_table->Location = System::Drawing::Point(179, 168);
             this->part2_table->Name = L"part2_table";
             this->part2_table->RowHeadersVisible = false;
-            this->part2_table->Size = System::Drawing::Size(745, 109);
+            this->part2_table->Size = System::Drawing::Size(735, 109);
             this->part2_table->TabIndex = 13;
             // 
             // m_gist
             // 
-            this->m_gist->Location = System::Drawing::Point(582, 24);
+            this->m_gist->Location = System::Drawing::Point(585, 20);
             this->m_gist->Name = L"m_gist";
             this->m_gist->Size = System::Drawing::Size(100, 20);
             this->m_gist->TabIndex = 14;
@@ -391,17 +412,52 @@ namespace terverlaba2WF {
             // gist_label
             // 
             this->gist_label->AutoSize = true;
-            this->gist_label->Location = System::Drawing::Point(381, 24);
+            this->gist_label->Location = System::Drawing::Point(384, 20);
             this->gist_label->Name = L"gist_label";
             this->gist_label->Size = System::Drawing::Size(195, 13);
             this->gist_label->TabIndex = 15;
             this->gist_label->Text = L"Количество разбиений гистограммы";
             // 
+            // k_enterval_label
+            // 
+            this->k_enterval_label->AutoSize = true;
+            this->k_enterval_label->Location = System::Drawing::Point(1183, 113);
+            this->k_enterval_label->Name = L"k_enterval_label";
+            this->k_enterval_label->Size = System::Drawing::Size(195, 13);
+            this->k_enterval_label->TabIndex = 16;
+            this->k_enterval_label->Text = L"Количество интервалов для 3 пункта";
+            // 
+            // k_intervalov_path_3
+            // 
+            this->k_intervalov_path_3->Location = System::Drawing::Point(1278, 142);
+            this->k_intervalov_path_3->Name = L"k_intervalov_path_3";
+            this->k_intervalov_path_3->Size = System::Drawing::Size(100, 20);
+            this->k_intervalov_path_3->TabIndex = 17;
+            this->k_intervalov_path_3->Text = L"10";
+            this->k_intervalov_path_3->TextChanged += gcnew System::EventHandler(this, &MyForm::k_intervalov_path_3_TextChanged);
+            // 
+            // intervali_path_3_datagrid
+            // 
+            this->intervali_path_3_datagrid->AllowUserToAddRows = false;
+            this->intervali_path_3_datagrid->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+                | System::Windows::Forms::AnchorStyles::Left)
+                | System::Windows::Forms::AnchorStyles::Right));
+            this->intervali_path_3_datagrid->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+            this->intervali_path_3_datagrid->Location = System::Drawing::Point(1228, 168);
+            this->intervali_path_3_datagrid->Name = L"intervali_path_3_datagrid";
+            this->intervali_path_3_datagrid->RowHeadersVisible = false;
+            this->intervali_path_3_datagrid->Size = System::Drawing::Size(150, 480);
+            this->intervali_path_3_datagrid->TabIndex = 18;
+            this->intervali_path_3_datagrid->EditingControlShowing += gcnew System::Windows::Forms::DataGridViewEditingControlShowingEventHandler(this, &MyForm::intervali_path_3_datagrid_EditingControlShowing);
+            // 
             // MyForm
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
             this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-            this->ClientSize = System::Drawing::Size(1252, 709);
+            this->ClientSize = System::Drawing::Size(1453, 709);
+            this->Controls->Add(this->intervali_path_3_datagrid);
+            this->Controls->Add(this->k_intervalov_path_3);
+            this->Controls->Add(this->k_enterval_label);
             this->Controls->Add(this->gist_label);
             this->Controls->Add(this->m_gist);
             this->Controls->Add(this->part2_table);
@@ -422,6 +478,7 @@ namespace terverlaba2WF {
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Results))->EndInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Stats))->EndInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->part2_table))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->intervali_path_3_datagrid))->EndInit();
             this->ResumeLayout(false);
             this->PerformLayout();
 
@@ -726,6 +783,115 @@ namespace terverlaba2WF {
         delete math;
     }
 
+
+    private: System::Void k_intervalov_path_3_TextChanged(System::Object^ sender, System::EventArgs^ e)
+    {
+        int k_val = 0;
+
+        // 1. Попытка считать значение k
+        try
+        {
+            k_val = Int32::Parse(k_intervalov_path_3->Text);
+        }
+        catch (System::FormatException^)
+        {
+            return;
+        }
+
+        // 2. Проверка условия: k должно быть >= 2 (минимум 2 интервала для 1 границы)
+        if (k_val >= 2)
+        {
+            // Число границ, которые нужно ввести: k - 1
+            int required_rows = k_val - 1;
+
+            if (intervali_path_3_datagrid->RowCount != required_rows)
+            {
+                // 3. Инициализация таблицы для ввода границ z_i
+
+                intervali_path_3_datagrid->ReadOnly = false;
+                intervali_path_3_datagrid->Visible = true;
+
+                // Очистка и установка строк
+                intervali_path_3_datagrid->Rows->Clear();
+                intervali_path_3_datagrid->RowCount = required_rows;
+
+                // Установка подписи заголовка столбца
+                // Предполагаем, что столбец 0 называется dataGridViewTextBoxColumn_z_i
+                this->intervali_path_3_datagrid->Columns[0]->HeaderText = L"Узлы";
+
+                // Устанавливаем заголовки строк
+                for (int i = 0; i < required_rows; i++) {
+                    intervali_path_3_datagrid->Rows[i]->HeaderCell->Value = String::Format("Граница z{0}", i + 1);
+                }
+
+                // ... (Остальные настройки видимости столбцов) ...
+            }
+        }
+        // 4. Если k < 2, скрываем таблицу
+        else
+        {
+            intervali_path_3_datagrid->Rows->Clear();
+            intervali_path_3_datagrid->Visible = false;
+            intervali_path_3_datagrid->ReadOnly = true;
+        }
+    }
+
+
+    private: System::Void intervali_path_3_datagrid_EditingControlShowing(System::Object^ sender, System::Windows::Forms::DataGridViewEditingControlShowingEventArgs^ e)
+    {
+        // Проверяем, что редактируется ячейка в первом столбце (для ввода границы z_i)
+        if (intervali_path_3_datagrid->CurrentCell->ColumnIndex == 0)
+        {
+            System::Windows::Forms::TextBox^ tb = dynamic_cast<System::Windows::Forms::TextBox^>(e->Control);
+
+            if (tb != nullptr)
+            {
+                // Сначала отписываемся от предыдущих обработчиков
+                tb->KeyPress -= gcnew System::Windows::Forms::KeyPressEventHandler(this, &MyForm::TextBox_OnlyDouble_KeyPress);
+
+                // Привязываем наш обработчик, который разрешает только числа, Backspace и десятичный разделитель
+                tb->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &MyForm::TextBox_OnlyDouble_KeyPress);
+            }
+        }
+    }
+
+
+
+    private: System::Void TextBox_OnlyDouble_KeyPress(System::Object^ sender, System::Windows::Forms::KeyPressEventArgs^ e)
+{
+    // Получаем текущий десятичный разделитель (запятая или точка)
+    String^ decimalSeparator = System::Globalization::CultureInfo::CurrentCulture->NumberFormat->NumberDecimalSeparator;
+
+    // Разрешаем цифры (0-9)
+    if (Char::IsDigit(e->KeyChar))
+    {
+        e->Handled = false;
+    }
+    // Разрешаем клавишу Backspace
+    else if (e->KeyChar == (char)Keys::Back)
+    {
+        e->Handled = false;
+    }
+    // Разрешаем десятичный разделитель
+    else if (e->KeyChar.ToString() == decimalSeparator)
+    {
+        // Разрешаем ввод разделителя только если его еще нет в тексте
+        System::Windows::Forms::TextBox^ tb = dynamic_cast<System::Windows::Forms::TextBox^>(sender);
+        if (tb != nullptr && tb->Text->Contains(decimalSeparator))
+        {
+            e->Handled = true; // Уже есть разделитель
+        }
+        else
+        {
+            e->Handled = false;
+        }
+    }
+    // Запрещаем все остальное
+    else
+    {
+        e->Handled = true;
+    }
+}
     };
 
     
