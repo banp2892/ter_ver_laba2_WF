@@ -426,13 +426,13 @@ namespace terverlaba2WF {
             this->k_enterval_label->AutoSize = true;
             this->k_enterval_label->Location = System::Drawing::Point(691, 20);
             this->k_enterval_label->Name = L"k_enterval_label";
-            this->k_enterval_label->Size = System::Drawing::Size(195, 13);
+            this->k_enterval_label->Size = System::Drawing::Size(374, 13);
             this->k_enterval_label->TabIndex = 16;
-            this->k_enterval_label->Text = L"Количество интервалов для 3 пункта";
+            this->k_enterval_label->Text = L"Количество интервалов разбиения для вычисления функции хи-квадрат";
             // 
             // k_intervalov_path_3
             // 
-            this->k_intervalov_path_3->Location = System::Drawing::Point(892, 17);
+            this->k_intervalov_path_3->Location = System::Drawing::Point(1071, 17);
             this->k_intervalov_path_3->Name = L"k_intervalov_path_3";
             this->k_intervalov_path_3->Size = System::Drawing::Size(100, 20);
             this->k_intervalov_path_3->TabIndex = 17;
@@ -451,7 +451,7 @@ namespace terverlaba2WF {
             // 
             // textBox_alpha
             // 
-            this->textBox_alpha->Location = System::Drawing::Point(892, 50);
+            this->textBox_alpha->Location = System::Drawing::Point(949, 51);
             this->textBox_alpha->Name = L"textBox_alpha";
             this->textBox_alpha->Size = System::Drawing::Size(100, 20);
             this->textBox_alpha->TabIndex = 19;
@@ -462,14 +462,14 @@ namespace terverlaba2WF {
             this->label_alpha->AutoSize = true;
             this->label_alpha->Location = System::Drawing::Point(691, 54);
             this->label_alpha->Name = L"label_alpha";
-            this->label_alpha->Size = System::Drawing::Size(141, 13);
+            this->label_alpha->Size = System::Drawing::Size(252, 13);
             this->label_alpha->TabIndex = 20;
-            this->label_alpha->Text = L"Число альфа для 3 пункта";
+            this->label_alpha->Text = L"Уровень значимости (значение альфа от 0 до 1)";
             // 
             // part_3_res
             // 
             this->part_3_res->AutoSize = true;
-            this->part_3_res->Location = System::Drawing::Point(1005, 50);
+            this->part_3_res->Location = System::Drawing::Point(930, 139);
             this->part_3_res->Name = L"part_3_res";
             this->part_3_res->Size = System::Drawing::Size(65, 13);
             this->part_3_res->TabIndex = 21;
@@ -478,7 +478,7 @@ namespace terverlaba2WF {
             // gipoteza
             // 
             this->gipoteza->AutoSize = true;
-            this->gipoteza->Location = System::Drawing::Point(1005, 77);
+            this->gipoteza->Location = System::Drawing::Point(930, 168);
             this->gipoteza->Name = L"gipoteza";
             this->gipoteza->Size = System::Drawing::Size(105, 13);
             this->gipoteza->TabIndex = 23;
