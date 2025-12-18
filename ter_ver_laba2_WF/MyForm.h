@@ -84,6 +84,7 @@ namespace terverlaba2WF {
     private: System::Windows::Forms::Label^ gist_label;
     private: System::Windows::Forms::Label^ k_enterval_label;
     private: System::Windows::Forms::TextBox^ k_intervalov_path_3;
+    private: System::Windows::Forms::CheckBox^ checkBox_part1;
 
 
 
@@ -138,6 +139,7 @@ namespace terverlaba2WF {
             this->gist_label = (gcnew System::Windows::Forms::Label());
             this->k_enterval_label = (gcnew System::Windows::Forms::Label());
             this->k_intervalov_path_3 = (gcnew System::Windows::Forms::TextBox());
+            this->checkBox_part1 = (gcnew System::Windows::Forms::CheckBox());
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Results))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Stats))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->part2_table))->BeginInit();
@@ -431,11 +433,23 @@ namespace terverlaba2WF {
             this->k_intervalov_path_3->TabIndex = 17;
             this->k_intervalov_path_3->Text = L"5";
             // 
+            // checkBox_part1
+            // 
+            this->checkBox_part1->AutoSize = true;
+            this->checkBox_part1->Location = System::Drawing::Point(387, 80);
+            this->checkBox_part1->Name = L"checkBox_part1";
+            this->checkBox_part1->Size = System::Drawing::Size(130, 17);
+            this->checkBox_part1->TabIndex = 18;
+            this->checkBox_part1->Text = L"Закрепить значения";
+            this->checkBox_part1->UseVisualStyleBackColor = true;
+            this->checkBox_part1->CheckedChanged += gcnew System::EventHandler(this, &MyForm::checkBox_FixParameters_CheckedChanged);
+            // 
             // MyForm
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
             this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
             this->ClientSize = System::Drawing::Size(1453, 743);
+            this->Controls->Add(this->checkBox_part1);
             this->Controls->Add(this->k_intervalov_path_3);
             this->Controls->Add(this->k_enterval_label);
             this->Controls->Add(this->gist_label);
@@ -704,7 +718,7 @@ namespace terverlaba2WF {
         
 
 
-        bool needFullRebuild = (math == nullptr) || (lambda_k != lastLambda) || (N != lastN) || (k!= lastK_part_1);
+        bool needFullRebuild = (math == nullptr) || (lambda_k != lastLambda) || (N != lastN) || (k!= lastK_part_1) || (!checkBox_part1->Checked);
         // Создание нового объекта и выполнение part_1
         
         if (needFullRebuild)
@@ -857,7 +871,27 @@ namespace terverlaba2WF {
 
 
     
+    private: System::Void checkBox_FixParameters_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+        // Получаем состояние галочки
+        bool isChecked = checkBox_part1->Checked;
 
+        // Устанавливаем ReadOnly
+        textBox_k->ReadOnly = isChecked;
+        textBox_lambda->ReadOnly = isChecked;
+        textBox_N->ReadOnly = isChecked;
+
+        // Визуальный отклик (меняем цвет фона)
+        if (isChecked) {
+            textBox_k->BackColor = System::Drawing::SystemColors::Control; // Серый
+            textBox_lambda->BackColor = System::Drawing::SystemColors::Control;
+            textBox_N->BackColor = System::Drawing::SystemColors::Control;
+        }
+        else {
+            textBox_k->BackColor = System::Drawing::SystemColors::Window;  // Белый
+            textBox_lambda->BackColor = System::Drawing::SystemColors::Window;
+            textBox_N->BackColor = System::Drawing::SystemColors::Window;
+        }
+    }
 
 
    
