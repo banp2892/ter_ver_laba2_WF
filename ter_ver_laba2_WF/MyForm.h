@@ -88,8 +88,12 @@ namespace terverlaba2WF {
     private: System::Windows::Forms::TextBox^ textBox_alpha;
     private: System::Windows::Forms::Label^ label_alpha;
     private: System::Windows::Forms::Label^ part_3_res;
-    private: System::Windows::Forms::Label^ q_j_label;
+
     private: System::Windows::Forms::Label^ gipoteza;
+    private: System::Windows::Forms::DataGridView^ datagrid_part_3;
+
+    private: System::Windows::Forms::DataGridViewTextBoxColumn^ dataGridViewTextBoxColumn1;
+    private: System::Windows::Forms::DataGridViewTextBoxColumn^ dataGridViewTextBoxColumn2;
 
 
 
@@ -149,11 +153,14 @@ namespace terverlaba2WF {
             this->textBox_alpha = (gcnew System::Windows::Forms::TextBox());
             this->label_alpha = (gcnew System::Windows::Forms::Label());
             this->part_3_res = (gcnew System::Windows::Forms::Label());
-            this->q_j_label = (gcnew System::Windows::Forms::Label());
             this->gipoteza = (gcnew System::Windows::Forms::Label());
+            this->datagrid_part_3 = (gcnew System::Windows::Forms::DataGridView());
+            this->dataGridViewTextBoxColumn1 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+            this->dataGridViewTextBoxColumn2 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Results))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Stats))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->part2_table))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->datagrid_part_3))->BeginInit();
             this->SuspendLayout();
             // 
             // label_k
@@ -468,15 +475,6 @@ namespace terverlaba2WF {
             this->part_3_res->TabIndex = 21;
             this->part_3_res->Text = L"Результат: ";
             // 
-            // q_j_label
-            // 
-            this->q_j_label->AutoSize = true;
-            this->q_j_label->Location = System::Drawing::Point(1289, 50);
-            this->q_j_label->Name = L"q_j_label";
-            this->q_j_label->Size = System::Drawing::Size(61, 13);
-            this->q_j_label->TabIndex = 22;
-            this->q_j_label->Text = L"Список q_j";
-            // 
             // gipoteza
             // 
             this->gipoteza->AutoSize = true;
@@ -486,13 +484,46 @@ namespace terverlaba2WF {
             this->gipoteza->TabIndex = 23;
             this->gipoteza->Text = L"Приняли гипотезу: ";
             // 
+            // datagrid_part_3
+            // 
+            this->datagrid_part_3->AllowUserToAddRows = false;
+            this->datagrid_part_3->AllowUserToDeleteRows = false;
+            this->datagrid_part_3->AllowUserToResizeColumns = false;
+            this->datagrid_part_3->AllowUserToResizeRows = false;
+            this->datagrid_part_3->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+            this->datagrid_part_3->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(2) {
+                this->dataGridViewTextBoxColumn1,
+                    this->dataGridViewTextBoxColumn2
+            });
+            this->datagrid_part_3->Location = System::Drawing::Point(1291, 113);
+            this->datagrid_part_3->Name = L"datagrid_part_3";
+            this->datagrid_part_3->RowHeadersVisible = false;
+            this->datagrid_part_3->Size = System::Drawing::Size(150, 490);
+            this->datagrid_part_3->TabIndex = 24;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this->dataGridViewTextBoxColumn1->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::DisplayedCells;
+            this->dataGridViewTextBoxColumn1->HeaderText = L"i";
+            this->dataGridViewTextBoxColumn1->Name = L"dataGridViewTextBoxColumn1";
+            this->dataGridViewTextBoxColumn1->ReadOnly = true;
+            this->dataGridViewTextBoxColumn1->Resizable = System::Windows::Forms::DataGridViewTriState::True;
+            this->dataGridViewTextBoxColumn1->Width = 34;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this->dataGridViewTextBoxColumn2->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::Fill;
+            this->dataGridViewTextBoxColumn2->HeaderText = L"P_i";
+            this->dataGridViewTextBoxColumn2->Name = L"dataGridViewTextBoxColumn2";
+            this->dataGridViewTextBoxColumn2->ReadOnly = true;
+            // 
             // MyForm
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
             this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
             this->ClientSize = System::Drawing::Size(1453, 743);
+            this->Controls->Add(this->datagrid_part_3);
             this->Controls->Add(this->gipoteza);
-            this->Controls->Add(this->q_j_label);
             this->Controls->Add(this->part_3_res);
             this->Controls->Add(this->label_alpha);
             this->Controls->Add(this->textBox_alpha);
@@ -519,6 +550,7 @@ namespace terverlaba2WF {
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Results))->EndInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Stats))->EndInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->part2_table))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->datagrid_part_3))->EndInit();
             this->ResumeLayout(false);
             this->PerformLayout();
 
@@ -906,35 +938,33 @@ namespace terverlaba2WF {
         DrawCDFGraphs(math->sample, math->Lambda);
 
         dataGridView_Stats->AutoResizeColumns(System::Windows::Forms::DataGridViewAutoSizeColumnsMode::AllCells);
-
-
-        // =================================================================
-        // 5. ВЫВОД ТЕОРЕТИЧЕСКИХ ВЕРОЯТНОСТЕЙ q_j
-        // =================================================================
+        
         if (math->hypothesis_accepted) {
             gipoteza->Text = "Приняли гипотезу: приняли!";
         }
         else {
-            gipoteza->Text = "Приняли гипотезу: не приняли!";
+            gipoteza->Text = "Приняли гипотезу: отклонили!";
         }
+
         if (math != nullptr && !math->vector_q_j.empty())
         {
-            System::Text::StringBuilder^ sb = gcnew System::Text::StringBuilder();
-            sb->AppendLine("Теоретические вероятности:"); // Заголовок с переходом на новую строку
+            // Очищаем старые строки, если они были
+            datagrid_part_3->Rows->Clear();
 
             for (int i = 0; i < math->vector_q_j.size(); ++i)
             {
-                // Формат: q1 = 0.1234
-                sb->Append("q");
-                sb->Append(i + 1);
-                sb->Append(" = ");
-                sb->AppendLine(math->vector_q_j[i].ToString("F4")); // AppendLine сразу делает перенос
+                // Добавляем новую строку
+                int rowIndex = datagrid_part_3->Rows->Add();
+
+                // В первый столбец (индекс 0) пишем номер j (i+1)
+                datagrid_part_3->Rows[rowIndex]->Cells[0]->Value = (i + 1);
+
+                // Во второй столбец (индекс 1) пишем значение q_j
+                datagrid_part_3->Rows[rowIndex]->Cells[1]->Value = math->vector_q_j[i].ToString("F4");
             }
 
-            // Вывод в ваш лейбл
-            sb->Append("Сумма = ");
-            sb->Append(math->summa_qj);
-            q_j_label->Text = sb->ToString();
+            // Автоподбор ширины колонок для красоты
+            datagrid_part_3->AutoResizeColumns();
         }
 
         
