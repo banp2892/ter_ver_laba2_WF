@@ -221,7 +221,7 @@ namespace terverlaba2WF {
             this->dataGridView_Results->Location = System::Drawing::Point(23, 113);
             this->dataGridView_Results->Name = L"dataGridView_Results";
             this->dataGridView_Results->RowHeadersVisible = false;
-            this->dataGridView_Results->Size = System::Drawing::Size(150, 480);
+            this->dataGridView_Results->Size = System::Drawing::Size(150, 490);
             this->dataGridView_Results->TabIndex = 9;
             // 
             // i
@@ -353,7 +353,7 @@ namespace terverlaba2WF {
             this->zedGraphControl1->ScrollMinX = 0;
             this->zedGraphControl1->ScrollMinY = 0;
             this->zedGraphControl1->ScrollMinY2 = 0;
-            this->zedGraphControl1->Size = System::Drawing::Size(493, 414);
+            this->zedGraphControl1->Size = System::Drawing::Size(544, 448);
             this->zedGraphControl1->TabIndex = 10;
             // 
             // mera_rashojdenia
@@ -370,7 +370,7 @@ namespace terverlaba2WF {
             this->gistogramma->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
                 | System::Windows::Forms::AnchorStyles::Left)
                 | System::Windows::Forms::AnchorStyles::Right));
-            this->gistogramma->Location = System::Drawing::Point(678, 283);
+            this->gistogramma->Location = System::Drawing::Point(729, 283);
             this->gistogramma->Name = L"gistogramma";
             this->gistogramma->ScrollGrace = 0;
             this->gistogramma->ScrollMaxX = 0;
@@ -379,7 +379,7 @@ namespace terverlaba2WF {
             this->gistogramma->ScrollMinX = 0;
             this->gistogramma->ScrollMinY = 0;
             this->gistogramma->ScrollMinY2 = 0;
-            this->gistogramma->Size = System::Drawing::Size(493, 414);
+            this->gistogramma->Size = System::Drawing::Size(544, 448);
             this->gistogramma->TabIndex = 12;
             // 
             // part2_table
@@ -435,7 +435,7 @@ namespace terverlaba2WF {
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
             this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-            this->ClientSize = System::Drawing::Size(1453, 709);
+            this->ClientSize = System::Drawing::Size(1453, 743);
             this->Controls->Add(this->k_intervalov_path_3);
             this->Controls->Add(this->k_enterval_label);
             this->Controls->Add(this->gist_label);
@@ -467,6 +467,11 @@ namespace terverlaba2WF {
         List<double>^ chiSquareNodes;
         std::vector<double>* chi_square_nodes;
         System::Collections::Generic::List<double>^ lastUsedZNodes;
+
+        double lastLambda = -1.0;
+        int lastN = -1;
+        int lastK_part_1 = -1;
+
         // ------------------------------------------------------------------
         // РЕАЛИЗАЦИЯ МЕТОДА ОТРЕСОВКИ
         // ------------------------------------------------------------------
@@ -665,17 +670,20 @@ namespace terverlaba2WF {
         // =================================================================
         // 1. Считывание и конвертация входных параметров (k, λk, N)
         // =================================================================
-        int k_intervals = 0; // Переименовал, чтобы не путать с локальной переменной k
+        int k = 0; // Переименовал, чтобы не путать с локальной переменной k
+        int k_part_3 = 0;
         double lambda_k = 0.0;
         int N = 0;
         int m_default = 10;
 
         try
         {
-            k_intervals = Int32::Parse(k_intervalov_path_3->Text); // Использую правильное имя поля
+            k = Int32::Parse(textBox_k->Text); // Использую правильное имя поля
+            k_part_3 = Int32::Parse(k_intervalov_path_3->Text); // Использую правильное имя поля
             lambda_k = Double::Parse(textBox_lambda->Text);
             N = Int32::Parse(textBox_N->Text);
             m_default = Int32::Parse(m_gist->Text);
+
         }
         catch (System::FormatException^)
         {
@@ -683,7 +691,7 @@ namespace terverlaba2WF {
             return;
         }
 
-        if (k_intervals <= 1 || lambda_k <= 0.0 || N <= 0)
+        if (k_part_3 <= 1 || lambda_k <= 0.0 || N <= 0)
         {
             MessageBox::Show("Параметры должны быть положительными (k >= 2).", "Ошибка данных", MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Error);
             return;
@@ -693,16 +701,32 @@ namespace terverlaba2WF {
         // 2. Создание объекта, моделирование и расчеты
         // =================================================================
 
-        // Удаляем старый объект, если он есть (т.к. math объявлен как член класса MyForm)
-        if (math)
-        {
-            delete math;
-            math = nullptr;
-        }
+        
 
+
+        bool needFullRebuild = (math == nullptr) || (lambda_k != lastLambda) || (N != lastN) || (k!= lastK_part_1);
         // Создание нового объекта и выполнение part_1
-        math = new MyMath(k_intervals, lambda_k, N);
-        math->part_1(); // Моделирование, сортировка, расчет Lambda, E_eta, D_eta
+        
+        if (needFullRebuild)
+        {
+            if (math) delete math;
+
+            math = new MyMath(k, lambda_k, N);
+            math->part_1(); // Генерируем НОВУЮ выборку
+
+            // Запоминаем параметры
+            lastLambda = lambda_k;
+            lastN = N;
+            lastK_part_1 = k;
+        }
+        else
+        {
+            // Если параметры те же, мы просто обновляем k_intervals внутри существующего объекта,
+            // но НЕ вызываем моделирование заново.
+            math->k = k;
+            // Важно: если в MyMath Lambda вычисляется как оценка, 
+            // убедитесь, что вы не затираете её случайно.
+        }
         math->part_2(m_default); // Расчет x_bar, S_sq, R_bar, Me_hat, D_statistic (выборочные характеристики)
 
         // Вычисление абсолютных отклонений
@@ -722,7 +746,7 @@ namespace terverlaba2WF {
             max_x_value = math->sample.back();
         }
 
-        int required_nodes = k_intervals - 1;
+        int required_nodes = k_part_3 - 1;
 
         List<double>^ defaultValues = nullptr;
 
@@ -733,7 +757,7 @@ namespace terverlaba2WF {
         }
 
         // Изменение: Передаем defaultValues в конструктор InputForm
-        InputForm inputDialog(required_nodes, max_x_value, defaultValues); // <--- ИЗМЕНЕНИЕ ЗДЕСЬ
+        InputForm inputDialog(required_nodes, max_x_value, defaultValues, math->sample);
 
         if (inputDialog.ShowDialog() == System::Windows::Forms::DialogResult::OK)
         {
@@ -758,6 +782,11 @@ namespace terverlaba2WF {
             {
                 this->chi_square_nodes->push_back(value);
             }
+        }
+
+        if (math != nullptr && this->chi_square_nodes != nullptr) {
+            // Копируем узлы из формы в объект math
+            math->chi_square_bounds = *(this->chi_square_nodes);
         }
 
         // =================================================================

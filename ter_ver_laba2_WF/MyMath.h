@@ -16,6 +16,7 @@ class MyMath
 
 public:
     vector<double> gistogramma_vector;
+    vector<double> chi_square_bounds;
     int k;
     double lambda_k;
     int N;

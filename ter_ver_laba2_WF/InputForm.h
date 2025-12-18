@@ -21,12 +21,14 @@ namespace terverlaba2WF {
         // Свойство для хранения максимального значения выборки, переданного из MyForm
         double MaxSampleValue;
 
+        std::vector<double>* currentSample;
+
         // Конструктор: принимает требуемое количество узлов (K-1) и максимальное значение X
-        InputForm(int requiredNodes, double maxVal, List<double>^ defaultNodes)
+        InputForm(int requiredNodes, double maxVal, List<double>^ defaultNodes, const std::vector<double>& sample)
         {
             this->MaxSampleValue = maxVal;
             this->actualRequiredNodes = requiredNodes;
-
+            this->currentSample = new std::vector<double>(sample);
             // ⭐ Сохраняем значения по умолчанию
             this->DefaultZNodes = defaultNodes;
 
@@ -119,7 +121,7 @@ namespace terverlaba2WF {
             // Настройка кнопок
             int buttonWidth = 90;
 
-            this->btnGenerate->Text = L"Сгенерировать";
+            this->btnGenerate->Text = L"Заполнить";
             this->btnGenerate->Size = System::Drawing::Size(buttonWidth, 30);
             this->btnGenerate->Margin = System::Windows::Forms::Padding(0, 5, 0, 15);
             this->btnGenerate->Click += gcnew System::EventHandler(this, &InputForm::btnGenerate_Click);
@@ -190,53 +192,49 @@ namespace terverlaba2WF {
             }
         }
 
-        // Обработчик кнопки "Сгенерировать" (Используем Tag для гарантированной записи)
+        // ОБНОВЛЕННЫЙ МЕТОД ГЕНЕРАЦИИ:
         System::Void btnGenerate_Click(System::Object^ sender, System::EventArgs^ e)
         {
-            // ⭐ Используем actualRequiredNodes вместо this->inputTable->RowCount
             int requiredNodes = this->actualRequiredNodes;
+            int k_intervals = requiredNodes + 1; // Общее число интервалов
 
-            // Проверка, что есть что генерировать
-            if (requiredNodes <= 0)
-            {
-                MessageBox::Show("Для генерации требуется K >= 2.", "Ошибка", MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Error);
+            if (this->currentSample == nullptr || this->currentSample->empty()) {
+                MessageBox::Show("Выборка пуста. Невозможно рассчитать границы.", "Ошибка");
                 return;
             }
 
-            double max_value = (this->MaxSampleValue > 0.0) ? this->MaxSampleValue : 10.0;
+            int N = (int)this->currentSample->size();
+            std::vector<double> smart_zi_values;
+            smart_zi_values.reserve(requiredNodes);
 
-            System::Random^ rand = gcnew System::Random();
-            std::vector<double> random_zi_values;
-            random_zi_values.reserve(requiredNodes);
-
-            // 1. Генерация
-            for (int i = 0; i < requiredNodes; ++i)
+            // Логика: берем элементы выборки через равные шаги N/K
+            for (int i = 1; i <= requiredNodes; ++i)
             {
-                double random_value = rand->NextDouble() * max_value;
-                random_zi_values.push_back(random_value);
+                // Вычисляем индекс элемента, который станет границей
+                // Используем double для точности, затем округляем
+                int index = (int)(i * N / k_intervals);
+
+                if (index >= N) index = N - 1;
+
+                double val = (*this->currentSample)[index];
+                smart_zi_values.push_back(val);
             }
 
-            // 2. Сортировка сгенерированных узлов
-            std::sort(random_zi_values.begin(), random_zi_values.end());
-
-            // 3. Гарантированная запись в TextBox'ы через Tag
+            // Записываем в TextBox'ы (этот кусок у вас уже есть, используем его)
             for each (Control ^ control in this->inputTable->Controls)
             {
                 System::Windows::Forms::TextBox^ tb = dynamic_cast<System::Windows::Forms::TextBox^>(control);
-
                 if (tb != nullptr && tb->Tag != nullptr)
                 {
                     int index = safe_cast<int>(tb->Tag);
-
-                    if (index >= 0 && index < random_zi_values.size())
+                    if (index >= 0 && index < (int)smart_zi_values.size())
                     {
-                        // Запись i-го сгенерированного значения в TextBox с Tag=i
-                        tb->Text = random_zi_values[index].ToString("F6", System::Globalization::CultureInfo::CurrentCulture);
+                        tb->Text = smart_zi_values[index].ToString("F6", System::Globalization::CultureInfo::CurrentCulture);
                     }
                 }
             }
 
-            MessageBox::Show(String::Format("Сгенерировано {0} случайных упорядоченных границ Z в диапазоне [0, {1:F3}].", requiredNodes, max_value), "Готово", MessageBoxButtons::OK, System::Windows::Forms::MessageBoxIcon::Information);
+            
         }
 
         // Обработчик нажатия OK: собираем, парсим и проверяем данные 

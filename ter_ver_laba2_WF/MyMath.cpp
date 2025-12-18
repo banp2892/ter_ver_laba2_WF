@@ -99,7 +99,7 @@ void MyMath::part_2(int m)
     double a_j_start = sample.front();
 
     // --- ПРИОРИТЕТ 1: m > 0. Используем gistogramma_vector, если он заполнен ---
-    if (m > 0 && gistogramma_vector.size() > 1)
+    if (m == gistogramma_vector.size())
     {
         // 1. Используем границы, введенные пользователем через форму (они уже в gistogramma_vector)
         bounds = gistogramma_vector;
@@ -204,11 +204,50 @@ void MyMath::part_2(int m)
     }
 }
 
-void MyMath::part_3(double alpha)
-{
+void MyMath::part_3(double alpha) {
+    if (chi_square_bounds.empty()) return;
 
+    // Сортируем на всякий случай, если пользователь ввел не по порядку
+    std::sort(chi_square_bounds.begin(), chi_square_bounds.end());
 
+    // Формируем интервалы согласно методичке:
+    // Delta_1 = [0, z1)
+    // Delta_2 = [z1, z2) ...
+    // Delta_k = [zk-1, inf)
 
+    int k_chi = chi_square_bounds.size() + 1; // Число интервалов
+    R0_statistic = 0.0;
+
+    // Временный вектор для хранения всех границ, включая 0 и "бесконечность"
+    std::vector<double> full_bounds;
+    full_bounds.push_back(0.0);
+    for (double z : chi_square_bounds) full_bounds.push_back(z);
+    full_bounds.push_back(1e18); // "Бесконечность"
+
+    for (int j = 0; j < k_chi; ++j) {
+        double start = full_bounds[j];
+        double end = full_bounds[j + 1];
+
+        // 1. Теоретическая вероятность q_j
+        double q_j = theoretical_cdf(end, Lambda) - theoretical_cdf(start, Lambda);
+
+        // 2. Считаем n_j (сколько элементов выборки попало в [start, end))
+        // Используем std::lower_bound для эффективного поиска в отсортированной выборке sample
+        auto it_start = std::lower_bound(sample.begin(), sample.end(), start);
+        auto it_end = std::lower_bound(sample.begin(), sample.end(), end);
+        int n_j = std::distance(it_start, it_end);
+
+        // 3. Считаем вклад в R0
+        if (q_j > 0) {
+            double expected = (double)N * q_j;
+            R0_statistic += pow(n_j - expected, 2) / expected;
+        }
+    }
+
+    // Степени свободы df = k - 1. Так как k = nodes + 1, то df = nodes.
+    int df = chi_square_bounds.size();
+    p_value = chi_square_p_value(R0_statistic, df);
+    hypothesis_accepted = (p_value >= alpha);
 }
 
 
