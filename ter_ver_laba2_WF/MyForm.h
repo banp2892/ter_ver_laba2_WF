@@ -85,6 +85,9 @@ namespace terverlaba2WF {
     private: System::Windows::Forms::Label^ k_enterval_label;
     private: System::Windows::Forms::TextBox^ k_intervalov_path_3;
     private: System::Windows::Forms::CheckBox^ checkBox_part1;
+    private: System::Windows::Forms::TextBox^ textBox_alpha;
+    private: System::Windows::Forms::Label^ label_alpha;
+    private: System::Windows::Forms::Label^ part_3_res;
 
 
 
@@ -140,6 +143,9 @@ namespace terverlaba2WF {
             this->k_enterval_label = (gcnew System::Windows::Forms::Label());
             this->k_intervalov_path_3 = (gcnew System::Windows::Forms::TextBox());
             this->checkBox_part1 = (gcnew System::Windows::Forms::CheckBox());
+            this->textBox_alpha = (gcnew System::Windows::Forms::TextBox());
+            this->label_alpha = (gcnew System::Windows::Forms::Label());
+            this->part_3_res = (gcnew System::Windows::Forms::Label());
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Results))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Stats))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->part2_table))->BeginInit();
@@ -405,7 +411,7 @@ namespace terverlaba2WF {
             this->m_gist->Name = L"m_gist";
             this->m_gist->Size = System::Drawing::Size(100, 20);
             this->m_gist->TabIndex = 14;
-            this->m_gist->Text = L"-1";
+            this->m_gist->Text = L"8";
             // 
             // gist_label
             // 
@@ -444,11 +450,40 @@ namespace terverlaba2WF {
             this->checkBox_part1->UseVisualStyleBackColor = true;
             this->checkBox_part1->CheckedChanged += gcnew System::EventHandler(this, &MyForm::checkBox_FixParameters_CheckedChanged);
             // 
+            // textBox_alpha
+            // 
+            this->textBox_alpha->Location = System::Drawing::Point(892, 50);
+            this->textBox_alpha->Name = L"textBox_alpha";
+            this->textBox_alpha->Size = System::Drawing::Size(100, 20);
+            this->textBox_alpha->TabIndex = 19;
+            this->textBox_alpha->Text = L"0,05";
+            // 
+            // label_alpha
+            // 
+            this->label_alpha->AutoSize = true;
+            this->label_alpha->Location = System::Drawing::Point(691, 54);
+            this->label_alpha->Name = L"label_alpha";
+            this->label_alpha->Size = System::Drawing::Size(141, 13);
+            this->label_alpha->TabIndex = 20;
+            this->label_alpha->Text = L"Число альфа для 3 пункта";
+            // 
+            // part_3_res
+            // 
+            this->part_3_res->AutoSize = true;
+            this->part_3_res->Location = System::Drawing::Point(1005, 50);
+            this->part_3_res->Name = L"part_3_res";
+            this->part_3_res->Size = System::Drawing::Size(65, 13);
+            this->part_3_res->TabIndex = 21;
+            this->part_3_res->Text = L"Результат: ";
+            // 
             // MyForm
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
             this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
             this->ClientSize = System::Drawing::Size(1453, 743);
+            this->Controls->Add(this->part_3_res);
+            this->Controls->Add(this->label_alpha);
+            this->Controls->Add(this->textBox_alpha);
             this->Controls->Add(this->checkBox_part1);
             this->Controls->Add(this->k_intervalov_path_3);
             this->Controls->Add(this->k_enterval_label);
@@ -689,6 +724,7 @@ namespace terverlaba2WF {
         double lambda_k = 0.0;
         int N = 0;
         int m_default = 10;
+        double alpha = 0.0;
 
         try
         {
@@ -697,6 +733,7 @@ namespace terverlaba2WF {
             lambda_k = Double::Parse(textBox_lambda->Text);
             N = Int32::Parse(textBox_N->Text);
             m_default = Int32::Parse(m_gist->Text);
+            alpha = Double::Parse(textBox_alpha->Text);
 
         }
         catch (System::FormatException^)
@@ -803,6 +840,8 @@ namespace terverlaba2WF {
             math->chi_square_bounds = *(this->chi_square_nodes);
         }
 
+        math->part_3(alpha);
+        part_3_res->Text = "Результат (значение p_value): " + math->p_value.ToString();
         // =================================================================
         // 4. Обновление интерфейса (Таблицы и Графики)
         // =================================================================

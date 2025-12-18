@@ -223,7 +223,7 @@ void MyMath::part_3(double alpha) {
     full_bounds.push_back(0.0);
     for (double z : chi_square_bounds) full_bounds.push_back(z);
     full_bounds.push_back(1e18); // "Бесконечность"
-
+    double summa_qj = 0.0;
     for (int j = 0; j < k_chi; ++j) {
         double start = full_bounds[j];
         double end = full_bounds[j + 1];
@@ -231,6 +231,8 @@ void MyMath::part_3(double alpha) {
         // 1. Теоретическая вероятность q_j
         double q_j = theoretical_cdf(end, Lambda) - theoretical_cdf(start, Lambda);
 
+        summa_qj += q_j;
+        cout << summa_qj << endl;
         // 2. Считаем n_j (сколько элементов выборки попало в [start, end))
         // Используем std::lower_bound для эффективного поиска в отсортированной выборке sample
         auto it_start = std::lower_bound(sample.begin(), sample.end(), start);
