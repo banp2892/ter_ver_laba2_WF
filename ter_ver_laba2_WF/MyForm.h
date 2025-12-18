@@ -355,7 +355,6 @@ namespace terverlaba2WF {
             this->zedGraphControl1->ScrollMinY2 = 0;
             this->zedGraphControl1->Size = System::Drawing::Size(493, 414);
             this->zedGraphControl1->TabIndex = 10;
-            
             // 
             // mera_rashojdenia
             // 
@@ -382,7 +381,6 @@ namespace terverlaba2WF {
             this->gistogramma->ScrollMinY2 = 0;
             this->gistogramma->Size = System::Drawing::Size(493, 414);
             this->gistogramma->TabIndex = 12;
-            
             // 
             // part2_table
             // 
@@ -431,7 +429,7 @@ namespace terverlaba2WF {
             this->k_intervalov_path_3->Name = L"k_intervalov_path_3";
             this->k_intervalov_path_3->Size = System::Drawing::Size(100, 20);
             this->k_intervalov_path_3->TabIndex = 17;
-            this->k_intervalov_path_3->Text = L"-1";
+            this->k_intervalov_path_3->Text = L"5";
             // 
             // MyForm
             // 

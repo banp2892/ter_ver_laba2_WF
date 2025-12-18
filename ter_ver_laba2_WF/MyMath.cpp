@@ -204,4 +204,53 @@ void MyMath::part_2(int m)
     }
 }
 
+void MyMath::part_3(double alpha)
+{
+
+
+
+}
+
+
+double MyMath::chi_square_p_value(double R0, int df) {
+    if (R0 < 0 || df < 1) return 1.0;
+
+    // Для экспоненциального хвоста при больших R0 и малых df 
+    // используем формулу связи с неполной гамма-функцией.
+    // Если df четное: df = 2m
+    if (df % 2 == 0) {
+        double m = df / 2.0;
+        double sum = 1.0;
+        double term = 1.0;
+        for (int i = 1; i < m; i++) {
+            term *= (R0 / 2.0) / i;
+            sum += term;
+        }
+        return sum * exp(-R0 / 2.0);
+    }
+    // Если df нечетное: используем приближение через функцию ошибок (erfc)
+    // или более общий ряд Тейлора. 
+    else {
+        // Для простоты и точности воспользуемся общим алгоритмом для любого df
+        return regularized_upper_incomplete_gamma(df / 2.0, R0 / 2.0);
+    }
+}
+
+double MyMath::regularized_upper_incomplete_gamma(double a, double x) {
+    if (x <= 0) return 1.0;
+
+    // Разложение в ряд для P(a, x) = (x^a * e^-x) / Gamma(a) * sum(...)
+    // Q(a, x) = 1 - P(a, x)
+    double sum = 1.0 / a;
+    double term = sum;
+    for (int i = 1; i < 100; i++) {
+        term *= x / (a + i);
+        sum += term;
+        if (term < 1e-12) break; // Точность
+    }
+
+    double result = sum * pow(x, a) * exp(-x) / tgamma(a);
+    return 1.0 - result;
+}
+
 

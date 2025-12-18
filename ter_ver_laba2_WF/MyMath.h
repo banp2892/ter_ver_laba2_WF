@@ -33,12 +33,11 @@ public:
     double D_statistic; // Статистика Колмогорова-Смирнова
     double max_density_deviation; // Максимальное отклонение плотности
 
-    struct ChiSquareResult {
-        double z_i;       // Граница интервала
-        double n_i;       // Эмпирическая частота
-        double q_i;       // Теоретическая вероятность (гипотеза)
-        double chi_sq_term; // Вклад в статистику
-    };
+    double R0_statistic; // Значение R0
+    double p_value;      // Вычисленное F(R0)
+    bool hypothesis_accepted; // Итог: true - принимаем, false - отвергаем
+
+    
 
     struct IntervalData {
         double z_j;          // Середина интервала
@@ -73,6 +72,9 @@ public:
 
     void part_1();
     void part_2(int m);
+    void part_3(double alpha);
+    double chi_square_p_value(double R0, int df);
+    double regularized_upper_incomplete_gamma(double a, double x);
     
     // void part_3(double alpha); // Для следующего шага
 };
