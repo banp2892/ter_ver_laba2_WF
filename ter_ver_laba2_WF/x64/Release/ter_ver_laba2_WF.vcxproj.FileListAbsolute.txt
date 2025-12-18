@@ -1,0 +1,4 @@
+E:\VisualStudio\ter_ver_laba2_WF\ter_ver_laba2_WF\x64\Release\ter_ver_laba2_WF.vcxproj.AssemblyReference.cache
+E:\VisualStudio\ter_ver_laba2_WF\ter_ver_laba2_WF\x64\Release\terverlaba2WF.MyForm.resources
+E:\VisualStudio\ter_ver_laba2_WF\ter_ver_laba2_WF\x64\Release\ter_ver_laba2_WF.vcxproj.GenerateResource.cache
+E:\VisualStudio\ter_ver_laba2_WF\ter_ver_laba2_WF\x64\Release\ter_ver_.BEA3E380.Up2Date
