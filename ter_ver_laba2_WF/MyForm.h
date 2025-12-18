@@ -88,6 +88,9 @@ namespace terverlaba2WF {
     private: System::Windows::Forms::TextBox^ textBox_alpha;
     private: System::Windows::Forms::Label^ label_alpha;
     private: System::Windows::Forms::Label^ part_3_res;
+    private: System::Windows::Forms::Label^ q_j_label;
+    private: System::Windows::Forms::Label^ gipoteza;
+
 
 
 
@@ -146,6 +149,8 @@ namespace terverlaba2WF {
             this->textBox_alpha = (gcnew System::Windows::Forms::TextBox());
             this->label_alpha = (gcnew System::Windows::Forms::Label());
             this->part_3_res = (gcnew System::Windows::Forms::Label());
+            this->q_j_label = (gcnew System::Windows::Forms::Label());
+            this->gipoteza = (gcnew System::Windows::Forms::Label());
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Results))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Stats))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->part2_table))->BeginInit();
@@ -218,9 +223,6 @@ namespace terverlaba2WF {
             this->dataGridView_Results->AllowUserToDeleteRows = false;
             this->dataGridView_Results->AllowUserToResizeColumns = false;
             this->dataGridView_Results->AllowUserToResizeRows = false;
-            this->dataGridView_Results->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
-                | System::Windows::Forms::AnchorStyles::Left)
-                | System::Windows::Forms::AnchorStyles::Right));
             this->dataGridView_Results->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
             this->dataGridView_Results->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(2) {
                 this->i,
@@ -254,8 +256,6 @@ namespace terverlaba2WF {
             this->dataGridView_Stats->AllowUserToDeleteRows = false;
             this->dataGridView_Stats->AllowUserToResizeColumns = false;
             this->dataGridView_Stats->AllowUserToResizeRows = false;
-            this->dataGridView_Stats->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
-                | System::Windows::Forms::AnchorStyles::Right));
             this->dataGridView_Stats->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
             this->dataGridView_Stats->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(10) {
                 this->E_eta,
@@ -349,9 +349,6 @@ namespace terverlaba2WF {
             // 
             // zedGraphControl1
             // 
-            this->zedGraphControl1->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
-                | System::Windows::Forms::AnchorStyles::Left)
-                | System::Windows::Forms::AnchorStyles::Right));
             this->zedGraphControl1->Location = System::Drawing::Point(179, 283);
             this->zedGraphControl1->Name = L"zedGraphControl1";
             this->zedGraphControl1->ScrollGrace = 0;
@@ -375,9 +372,6 @@ namespace terverlaba2WF {
             // 
             // gistogramma
             // 
-            this->gistogramma->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
-                | System::Windows::Forms::AnchorStyles::Left)
-                | System::Windows::Forms::AnchorStyles::Right));
             this->gistogramma->Location = System::Drawing::Point(729, 283);
             this->gistogramma->Name = L"gistogramma";
             this->gistogramma->ScrollGrace = 0;
@@ -396,8 +390,6 @@ namespace terverlaba2WF {
             this->part2_table->AllowUserToDeleteRows = false;
             this->part2_table->AllowUserToResizeColumns = false;
             this->part2_table->AllowUserToResizeRows = false;
-            this->part2_table->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left)
-                | System::Windows::Forms::AnchorStyles::Right));
             this->part2_table->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
             this->part2_table->Location = System::Drawing::Point(179, 168);
             this->part2_table->Name = L"part2_table";
@@ -476,11 +468,31 @@ namespace terverlaba2WF {
             this->part_3_res->TabIndex = 21;
             this->part_3_res->Text = L"Результат: ";
             // 
+            // q_j_label
+            // 
+            this->q_j_label->AutoSize = true;
+            this->q_j_label->Location = System::Drawing::Point(1289, 50);
+            this->q_j_label->Name = L"q_j_label";
+            this->q_j_label->Size = System::Drawing::Size(61, 13);
+            this->q_j_label->TabIndex = 22;
+            this->q_j_label->Text = L"Список q_j";
+            // 
+            // gipoteza
+            // 
+            this->gipoteza->AutoSize = true;
+            this->gipoteza->Location = System::Drawing::Point(1005, 77);
+            this->gipoteza->Name = L"gipoteza";
+            this->gipoteza->Size = System::Drawing::Size(105, 13);
+            this->gipoteza->TabIndex = 23;
+            this->gipoteza->Text = L"Приняли гипотезу: ";
+            // 
             // MyForm
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
             this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
             this->ClientSize = System::Drawing::Size(1453, 743);
+            this->Controls->Add(this->gipoteza);
+            this->Controls->Add(this->q_j_label);
             this->Controls->Add(this->part_3_res);
             this->Controls->Add(this->label_alpha);
             this->Controls->Add(this->textBox_alpha);
@@ -858,19 +870,18 @@ namespace terverlaba2WF {
 
         dataGridView_Results->AutoResizeColumns(System::Windows::Forms::DataGridViewAutoSizeColumnsMode::DisplayedCells);
 
-        // --- ТАБЛИЦА 2: Сводка характеристик (dataGridView_Stats) ---
+       
         if (dataGridView_Stats->RowCount != 1)
         {
             dataGridView_Stats->RowCount = 1;
         }
 
-        // Очищаем содержимое ячеек
+
         for (int j = 0; j < dataGridView_Stats->ColumnCount; ++j)
         {
             dataGridView_Stats->Rows[0]->Cells[j]->Value = nullptr;
         }
 
-        // --- Заполнение СТРОКИ 0 ---
         dataGridView_Stats->Rows[0]->Cells[L"E_eta"]->Value = math->E_eta.ToString("F6");
         dataGridView_Stats->Rows[0]->Cells[L"D_eta"]->Value = math->D_eta.ToString("F6");
 
@@ -886,23 +897,48 @@ namespace terverlaba2WF {
         dataGridView_Stats->Rows[0]->Cells[L"Me_hat"]->Value = math->Me_hat.ToString("F6");
         dataGridView_Stats->Rows[0]->Cells[L"Me_diff"]->Value = abs_Me_diff.ToString("F6");
 
-
-        // ⭐ МЕРА РАСХОЖДЕНИЯ D
         mera_rashojdenia->Text = "Мера расхождения (Колмогорова): " + math->D_statistic.ToString("F6");
 
 
-        // --- Построение графиков и таблиц, зависимых от интервалов гистограммы ---
         FillDensityTable(math->interval_series_results, N, math->Lambda);
         DrawHistogram(math->interval_series_results, N, math->Lambda);
 
-        // ⭐ ВЫЗОВ: Построение графиков CDF (функции распределения)
         DrawCDFGraphs(math->sample, math->Lambda);
 
-        // Корректный режим AutoResizeColumns
         dataGridView_Stats->AutoResizeColumns(System::Windows::Forms::DataGridViewAutoSizeColumnsMode::AllCells);
 
-        // ВАЖНО: delete math; убран отсюда. Теперь math - член класса, 
-        // и он будет использоваться в методе расчета Хи-квадрат.
+
+        // =================================================================
+        // 5. ВЫВОД ТЕОРЕТИЧЕСКИХ ВЕРОЯТНОСТЕЙ q_j
+        // =================================================================
+        if (math->hypothesis_accepted) {
+            gipoteza->Text = "Приняли гипотезу: приняли!";
+        }
+        else {
+            gipoteza->Text = "Приняли гипотезу: не приняли!";
+        }
+        if (math != nullptr && !math->vector_q_j.empty())
+        {
+            System::Text::StringBuilder^ sb = gcnew System::Text::StringBuilder();
+            sb->AppendLine("Теоретические вероятности:"); // Заголовок с переходом на новую строку
+
+            for (int i = 0; i < math->vector_q_j.size(); ++i)
+            {
+                // Формат: q1 = 0.1234
+                sb->Append("q");
+                sb->Append(i + 1);
+                sb->Append(" = ");
+                sb->AppendLine(math->vector_q_j[i].ToString("F4")); // AppendLine сразу делает перенос
+            }
+
+            // Вывод в ваш лейбл
+            sb->Append("Сумма = ");
+            sb->Append(math->summa_qj);
+            q_j_label->Text = sb->ToString();
+        }
+
+        
+
     }
 
 

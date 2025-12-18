@@ -205,6 +205,7 @@ void MyMath::part_2(int m)
 }
 
 void MyMath::part_3(double alpha) {
+    vector_q_j.clear();
     if (chi_square_bounds.empty()) return;
 
     // Сортируем на всякий случай, если пользователь ввел не по порядку
@@ -223,7 +224,7 @@ void MyMath::part_3(double alpha) {
     full_bounds.push_back(0.0);
     for (double z : chi_square_bounds) full_bounds.push_back(z);
     full_bounds.push_back(1e18); // "Бесконечность"
-    double summa_qj = 0.0;
+    
     for (int j = 0; j < k_chi; ++j) {
         double start = full_bounds[j];
         double end = full_bounds[j + 1];
@@ -231,8 +232,9 @@ void MyMath::part_3(double alpha) {
         // 1. Теоретическая вероятность q_j
         double q_j = theoretical_cdf(end, Lambda) - theoretical_cdf(start, Lambda);
 
+        vector_q_j.push_back(q_j);
         summa_qj += q_j;
-        cout << summa_qj << endl;
+       
         // 2. Считаем n_j (сколько элементов выборки попало в [start, end))
         // Используем std::lower_bound для эффективного поиска в отсортированной выборке sample
         auto it_start = std::lower_bound(sample.begin(), sample.end(), start);
@@ -249,7 +251,11 @@ void MyMath::part_3(double alpha) {
     // Степени свободы df = k - 1. Так как k = nodes + 1, то df = nodes.
     int df = chi_square_bounds.size();
     p_value = chi_square_p_value(R0_statistic, df);
+    cout << "Stepeni svobodi = " << df << endl;
+    cout << "R0_statistic = " << R0_statistic << endl;
+
     hypothesis_accepted = (p_value >= alpha);
+    cout << "P_value = " << p_value << endl;
 }
 
 
@@ -277,7 +283,7 @@ double MyMath::chi_square_p_value(double R0, int df) {
     }
 }
 
-double MyMath::regularized_upper_incomplete_gamma(double a, double x) {
+double MyMath::regularized_upper_incomplete_gamma(double a, double x) { // 
     if (x <= 0) return 1.0;
 
     // Разложение в ряд для P(a, x) = (x^a * e^-x) / Gamma(a) * sum(...)

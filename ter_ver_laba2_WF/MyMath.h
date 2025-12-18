@@ -17,6 +17,10 @@ class MyMath
 public:
     vector<double> gistogramma_vector;
     vector<double> chi_square_bounds;
+    vector<double> vector_q_j;
+
+    
+
     int k;
     double lambda_k;
     int N;
@@ -34,6 +38,7 @@ public:
     double D_statistic; // Статистика Колмогорова-Смирнова
     double max_density_deviation; // Максимальное отклонение плотности
 
+    double summa_qj = 0.0;
     double R0_statistic; // Значение R0
     double p_value;      // Вычисленное F(R0)
     bool hypothesis_accepted; // Итог: true - принимаем, false - отвергаем
