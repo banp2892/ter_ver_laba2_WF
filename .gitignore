@@ -16,13 +16,23 @@
 # Mono auto generated files
 mono_crash.*
 
+
+# Разрешаем папки со сборками
+!Debug/
+!Release/
+!x64/
+!x86/
+
+# Разрешаем все .exe файлы в этих папках
+!*.exe
+
 # Build results
-[Dd]ebug/
+#[Dd]ebug/
 [Dd]ebugPublic/
-[Rr]elease/
+#[Rr]elease/
 [Rr]eleases/
-x64/
-x86/
+#x64/
+#x86/
 [Ww][Ii][Nn]32/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
