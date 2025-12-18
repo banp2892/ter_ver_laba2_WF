@@ -35,8 +35,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="ZedGraph.dll">
-      <Filter>Source Files</Filter>
-    </None>
+    <None Include="..\ZedGraph.dll" />
   </ItemGroup>
 </Project>

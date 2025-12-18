@@ -5,9 +5,7 @@
 
 double MyMath::generate_exponential(double Lambda)
 {
-    // Использование time(0) в srand() гарантирует разную последовательность при каждом запуске
-    // Но rand() должна быть инициализирована только один раз в начале программы.
-    // Я оставляю srand(time(0)) в part_1() для простоты, как у вас было.
+    
     double U = rand() / (double)RAND_MAX;
     // max(U, 1e-9) чтобы избежать log(0)
     return -(1.0 / Lambda) * log(max(U, 1e-9));
@@ -27,7 +25,7 @@ double MyMath::theoretical_pdf(double x, double Lambda)
 
 void MyMath::part_1()
 {
-    // --- 1. Проверка условий ---
+
     if (k <= 0 || lambda_k <= 0.0 || N <= 0) return;
 
     // --- 2. Расчет теоретических характеристик ---
@@ -89,19 +87,16 @@ void MyMath::part_2(int m)
         D_statistic = std::max({ D_statistic, D_top, D_bottom });
     }
 
-    // =================================================================
-    // 4. ОПРЕДЕЛЕНИЕ ИНТЕРВАЛЬНОГО РЯДА (ЛОГИКА ВЫБОРА ГРАНИЦ)
-    // =================================================================
 
     std::vector<double> bounds;
     int k_intervals = 0;
     double safe_R_bar = (R_bar <= 1e-9) ? 1e-6 : R_bar;
     double a_j_start = sample.front();
 
-    // --- ПРИОРИТЕТ 1: m > 0. Используем gistogramma_vector, если он заполнен ---
+
     if (m == gistogramma_vector.size())
     {
-        // 1. Используем границы, введенные пользователем через форму (они уже в gistogramma_vector)
+        
         bounds = gistogramma_vector;
         k_intervals = bounds.size() - 1;
 
