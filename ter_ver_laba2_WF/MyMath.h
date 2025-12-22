@@ -35,7 +35,10 @@ public:
     // Добавленные поля для результатов Части 2
     double Me_eta; // Теоретическая медиана
     double Me_hat; // Выборочная медиана
-    double D_statistic; // Статистика Колмогорова-Смирнова
+    double D_statistic; // Мера Д
+    double x_mera_d;
+    int j_mera_d;
+
     double max_density_deviation; // Максимальное отклонение плотности
 
     double summa_qj = 0.0;

@@ -8,8 +8,12 @@ double MyMath::generate_exponential(double Lambda)
     
     double U = rand() / (double)RAND_MAX;
     // max(U, 1e-9) чтобы избежать log(0)
-    return -(1.0 / Lambda) * log(max(U, 1e-9));
+    double log1 = log(U);
+    return -(1.0 / Lambda) * log1;
 }
+
+
+
 
 double MyMath::theoretical_cdf(double x, double Lambda)
 {
@@ -28,22 +32,46 @@ void MyMath::part_1()
 
     if (k <= 0 || lambda_k <= 0.0 || N <= 0) return;
 
-    // --- 2. Расчет теоретических характеристик ---
-    Lambda = (double)k / lambda_k; // Параметр Lambda = k * (1/lambda_k)
-    E_eta = 1.0 / Lambda;
-    D_eta = 1.0 / (Lambda * Lambda);
-
-    // --- 3. Моделирование (Розыгрыш значений) ---
+    
     srand((unsigned int)time(0));
     sample.clear();
     for (int i = 0; i < N; ++i) {
-        sample.push_back(generate_exponential(Lambda));
+        double min_val = INFINITY;
+        for (int j = 0; j < k; j++) {
+            double generate_x = generate_exponential(lambda_k);
+            if (min_val > generate_x) {
+                min_val = generate_x;
+            }
+            
+        }
+        sample.push_back(min_val);
     }
     sort(sample.begin(), sample.end());
 
-    // --- 4. Расчет выборочных характеристик (для Части 2) ---
+    
+    
+}
+
+void MyMath::part_2(int m)
+{
+
+    if (N == 0 || sample.empty()) return;
+
+    R_bar = sample.back() - sample.front();
+    Lambda = k * lambda_k;
+    E_eta = 1.0 / Lambda;
+    D_eta = 1.0 / (Lambda * Lambda);
+    Me_eta = log(2.0) / Lambda;
+    if (N % 2 != 0) {
+        Me_hat = sample[N / 2];
+    }
+    else {
+        Me_hat = (sample[N / 2 - 1] + sample[N / 2]) / 2.0;
+    }
+
     sum = accumulate(sample.begin(), sample.end(), 0.0);
     x_bar = sum / N;
+
     double sum_sq_diff = 0.0;
     for (double x : sample) {
         sum_sq_diff += pow(x - x_bar, 2);
@@ -51,31 +79,7 @@ void MyMath::part_1()
     S_sq = sum_sq_diff / N;
     R_bar = sample.empty() ? 0.0 : sample.back() - sample.front();
 
-}
 
-void MyMath::part_2(int m)
-{
-    // Проверка на пустую выборку
-    if (N == 0 || sample.empty()) return;
-
-    // 1. Расчет размаха выборки R_bar (необходим для автоматического разбиения)
-    R_bar = sample.back() - sample.front();
-
-    // 2. Расчет медиан
-    // Теоретическая медиана для экспоненциального распределения: Me = ln(2) / Lambda
-    Me_eta = log(2.0) / Lambda;
-
-    if (N % 2 != 0) {
-        // Нечетное N: берем средний элемент
-        Me_hat = sample[N / 2];
-    }
-    else {
-        // Четное N: берем среднее двух центральных элементов
-        Me_hat = (sample[N / 2 - 1] + sample[N / 2]) / 2.0;
-    }
-
-    // 3. Статистика Колмогорова-Смирнова (D)
-    D_statistic = 0.0;
     for (int j = 1; j <= N; ++j) {
         double xj = sample[j - 1];
         double Fj_theoretical = theoretical_cdf(xj, Lambda);
@@ -84,7 +88,20 @@ void MyMath::part_2(int m)
 
         double D_top = abs(F_hat_j - Fj_theoretical);
         double D_bottom = abs(Fj_theoretical - F_hat_j_minus_1);
-        D_statistic = std::max({ D_statistic, D_top, D_bottom });
+
+        // Проверяем отклонение в верхней точке ступеньки
+        if (D_top > D_statistic) {
+            D_statistic = D_top;
+            x_mera_d = xj;
+            j_mera_d = j; // Сохраняем порядковый номер
+        }
+
+        // Проверяем отклонение в нижней точке ступеньки
+        if (D_bottom > D_statistic) {
+            D_statistic = D_bottom;
+            x_mera_d = xj;
+            j_mera_d = j; // Сохраняем порядковый номер
+        }
     }
 
 
@@ -104,20 +121,11 @@ void MyMath::part_2(int m)
         std::sort(bounds.begin(), bounds.end());
         R_bar = bounds.back() - bounds.front();
     }
-    else // m <= 0 ИЛИ m > 0, но пользователь не ввел границы (gistogramma_vector пуст)
+    else 
     {
-        // 2. АВТОМАТИЧЕСКАЯ ГЕНЕРАЦИЯ ГРАНИЦ
-
-        if (m > 0) {
-            // Если m > 0, но границ нет, используем m как число интервалов (равномерно)
-            k_intervals = m;
-        }
-        else {
-            // Если m <= 0, используем правило Стёрджесса
-            k_intervals = std::max(3, (int)std::round(1.0 + 3.322 * std::log10(N)));
-        }
-
-        k_intervals = std::max(1, k_intervals); // Минимум 1 интервал
+        
+        
+        k_intervals = std::max(1, m); 
 
         // Расчет равномерных границ
         double delta_prime = safe_R_bar / k_intervals;
@@ -129,26 +137,22 @@ void MyMath::part_2(int m)
         R_bar = safe_R_bar;
     }
 
-    // --- ОБЯЗАТЕЛЬНОЕ ЗАПОЛНЕНИЕ gistogramma_vector ---
-    // Сохраняем финальный набор границ (введенных или сгенерированных)
+
     gistogramma_vector = bounds;
 
-    // Если нет интервалов (что маловероятно при N > 0), выходим
+
     if (k_intervals <= 0) {
         interval_series_results.clear();
         max_density_deviation = 0.0;
         return;
     }
 
-    // =================================================================
-    // 5. ПОДСЧЕТ ЧАСТОТ И СРАВНЕНИЕ ПЛОТНОСТЕЙ (ОБЩАЯ ЛОГИКА)
-    // =================================================================
 
     interval_series_results.clear();
     max_density_deviation = 0.0;
     auto current_it = sample.begin();
 
-    // --- Цикл по всем интервалам ---
+
     for (int j = 0; j < k_intervals; ++j)
     {
         double start = bounds[j];

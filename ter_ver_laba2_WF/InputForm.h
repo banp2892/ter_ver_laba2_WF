@@ -273,32 +273,32 @@ namespace terverlaba2WF {
                 return;
             }
 
-            for (int i = 0; i < tempValues->Count; ++i)
-            {
-                // Проверка на неотрицательность
-                if (tempValues[i] < 0)
-                {
-                    MessageBox::Show("Ошибка: Граница z" + (i + 1).ToString() + " (" + tempValues[i].ToString() + ") не может быть отрицательной.",
-                        "Ошибка значения", MessageBoxButtons::OK, MessageBoxIcon::Error);
-                    this->DialogResult = System::Windows::Forms::DialogResult::None;
-                    return;
-                }
+            //for (int i = 0; i < tempValues->Count; ++i)
+            //{
+            //    // Проверка на неотрицательность
+            //    if (tempValues[i] < 0)
+            //    {
+            //        MessageBox::Show("Ошибка: Граница z" + (i + 1).ToString() + " (" + tempValues[i].ToString() + ") не может быть отрицательной.",
+            //            "Ошибка значения", MessageBoxButtons::OK, MessageBoxIcon::Error);
+            //        this->DialogResult = System::Windows::Forms::DialogResult::None;
+            //        return;
+            //    }
 
-                // Проверка на строгое возрастание
-                if (i < tempValues->Count - 1 && tempValues[i] >= tempValues[i + 1])
-                {
-                    // Выводим конкретные номера границ и их значения
-                    String^ errorMsg = String::Format("Ошибка порядка:\n\n" +
-                        "Граница z{0} ({1}) должна быть МЕНЬШЕ, чем граница z{2} ({3}).\n\n" +
-                        "Пожалуйста, исправьте значения.",
-                        (i + 1), tempValues[i], (i + 2), tempValues[i + 1]);
+            //    // Проверка на строгое возрастание
+            //    if (i < tempValues->Count - 1 && tempValues[i] >= tempValues[i + 1])
+            //    {
+            //        // Выводим конкретные номера границ и их значения
+            //        String^ errorMsg = String::Format("Ошибка порядка:\n\n" +
+            //            "Граница z{0} ({1}) должна быть МЕНЬШЕ, чем граница z{2} ({3}).\n\n" +
+            //            "Пожалуйста, исправьте значения.",
+            //            (i + 1), tempValues[i], (i + 2), tempValues[i + 1]);
 
-                    MessageBox::Show(errorMsg, "Ошибка порядка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+            //        MessageBox::Show(errorMsg, "Ошибка порядка", MessageBoxButtons::OK, MessageBoxIcon::Error);
 
-                    this->DialogResult = System::Windows::Forms::DialogResult::None;
-                    return;
-                }
-            }
+            //        this->DialogResult = System::Windows::Forms::DialogResult::None;
+            //        return;
+            //    }
+            //}
 
             // Если все OK, сохраняем результат
             this->InputValues = tempValues;

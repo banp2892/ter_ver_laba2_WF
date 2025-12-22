@@ -94,6 +94,11 @@ namespace terverlaba2WF {
 
     private: System::Windows::Forms::DataGridViewTextBoxColumn^ dataGridViewTextBoxColumn1;
     private: System::Windows::Forms::DataGridViewTextBoxColumn^ dataGridViewTextBoxColumn2;
+    private: System::Windows::Forms::DataGridView^ dataGridView1;
+    private: System::Windows::Forms::DataGridViewTextBoxColumn^ dataGridViewTextBoxColumn3;
+    private: System::Windows::Forms::DataGridViewTextBoxColumn^ dataGridViewTextBoxColumn4;
+
+
 
 
 
@@ -157,10 +162,14 @@ namespace terverlaba2WF {
             this->datagrid_part_3 = (gcnew System::Windows::Forms::DataGridView());
             this->dataGridViewTextBoxColumn1 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
             this->dataGridViewTextBoxColumn2 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+            this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
+            this->dataGridViewTextBoxColumn3 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+            this->dataGridViewTextBoxColumn4 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Results))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Stats))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->part2_table))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->datagrid_part_3))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
             this->SuspendLayout();
             // 
             // label_k
@@ -195,7 +204,7 @@ namespace terverlaba2WF {
             this->textBox_lambda->Name = L"textBox_lambda";
             this->textBox_lambda->Size = System::Drawing::Size(100, 20);
             this->textBox_lambda->TabIndex = 3;
-            this->textBox_lambda->Text = L"12,0";
+            this->textBox_lambda->Text = L"0,5";
             // 
             // label_N
             // 
@@ -373,9 +382,9 @@ namespace terverlaba2WF {
             this->mera_rashojdenia->AutoSize = true;
             this->mera_rashojdenia->Location = System::Drawing::Point(930, 113);
             this->mera_rashojdenia->Name = L"mera_rashojdenia";
-            this->mera_rashojdenia->Size = System::Drawing::Size(110, 13);
+            this->mera_rashojdenia->Size = System::Drawing::Size(51, 13);
             this->mera_rashojdenia->TabIndex = 11;
-            this->mera_rashojdenia->Text = L"Мера расхождения: ";
+            this->mera_rashojdenia->Text = L"Мера D: ";
             // 
             // gistogramma
             // 
@@ -495,10 +504,10 @@ namespace terverlaba2WF {
                 this->dataGridViewTextBoxColumn1,
                     this->dataGridViewTextBoxColumn2
             });
-            this->datagrid_part_3->Location = System::Drawing::Point(1291, 113);
+            this->datagrid_part_3->Location = System::Drawing::Point(1291, 283);
             this->datagrid_part_3->Name = L"datagrid_part_3";
             this->datagrid_part_3->RowHeadersVisible = false;
-            this->datagrid_part_3->Size = System::Drawing::Size(150, 490);
+            this->datagrid_part_3->Size = System::Drawing::Size(150, 448);
             this->datagrid_part_3->TabIndex = 24;
             // 
             // dataGridViewTextBoxColumn1
@@ -517,11 +526,45 @@ namespace terverlaba2WF {
             this->dataGridViewTextBoxColumn2->Name = L"dataGridViewTextBoxColumn2";
             this->dataGridViewTextBoxColumn2->ReadOnly = true;
             // 
+            // dataGridView1
+            // 
+            this->dataGridView1->AllowUserToAddRows = false;
+            this->dataGridView1->AllowUserToDeleteRows = false;
+            this->dataGridView1->AllowUserToResizeColumns = false;
+            this->dataGridView1->AllowUserToResizeRows = false;
+            this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+            this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(2) {
+                this->dataGridViewTextBoxColumn3,
+                    this->dataGridViewTextBoxColumn4
+            });
+            this->dataGridView1->Location = System::Drawing::Point(1116, 80);
+            this->dataGridView1->Name = L"dataGridView1";
+            this->dataGridView1->RowHeadersVisible = false;
+            this->dataGridView1->Size = System::Drawing::Size(325, 187);
+            this->dataGridView1->TabIndex = 25;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this->dataGridViewTextBoxColumn3->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::DisplayedCells;
+            this->dataGridViewTextBoxColumn3->HeaderText = L"i";
+            this->dataGridViewTextBoxColumn3->Name = L"dataGridViewTextBoxColumn3";
+            this->dataGridViewTextBoxColumn3->ReadOnly = true;
+            this->dataGridViewTextBoxColumn3->Resizable = System::Windows::Forms::DataGridViewTriState::True;
+            this->dataGridViewTextBoxColumn3->Width = 34;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this->dataGridViewTextBoxColumn4->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::Fill;
+            this->dataGridViewTextBoxColumn4->HeaderText = L"P_i";
+            this->dataGridViewTextBoxColumn4->Name = L"dataGridViewTextBoxColumn4";
+            this->dataGridViewTextBoxColumn4->ReadOnly = true;
+            // 
             // MyForm
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
             this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-            this->ClientSize = System::Drawing::Size(1453, 743);
+            this->ClientSize = System::Drawing::Size(1461, 743);
+            this->Controls->Add(this->dataGridView1);
             this->Controls->Add(this->datagrid_part_3);
             this->Controls->Add(this->gipoteza);
             this->Controls->Add(this->part_3_res);
@@ -551,6 +594,7 @@ namespace terverlaba2WF {
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Stats))->EndInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->part2_table))->EndInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->datagrid_part_3))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
             this->ResumeLayout(false);
             this->PerformLayout();
 
@@ -572,20 +616,29 @@ namespace terverlaba2WF {
         {
             GraphPane^ myPane = zedGraphControl1->GraphPane;
             myPane->CurveList->Clear();
-            myPane->Title->Text = "Теоретическая F_eta(x) и выборочная F_eta(x) функции распределения";
-            myPane->XAxis->Title->Text = "x";
-            myPane->YAxis->Title->Text = "F(x)";
 
-            // 1. Построение Эмпирической функции распределения (F_hat)
+            // 1. Расчет масштаба
+            // Для CDF логика та же: после 4-х мат. ожиданий функция уже практически равна 1.0
+            double theoretical_mean = 1.0 / lambda_param;
+            double smartMaxX = theoretical_mean * 4.0;
+
+            // Если выборка пуста, maxX берем из теории, если нет — из конца отсортированного массива
+            // (ВАЖНО: sample должен быть отсортирован по возрастанию!)
+            double actual_data_max = sample.empty() ? smartMaxX : sample.back();
+            double final_maxX = (actual_data_max > smartMaxX) ? actual_data_max : smartMaxX;
+
+            // 2. Построение Эмпирической функции (ступеньки)
             PointPairList^ empCDFList = gcnew PointPairList();
             double N = (double)sample.size();
 
             empCDFList->Add(0.0, 0.0);
-
-            for (size_t i = 0; i < N; ++i) // в каждой точке x у нас скачек вверх на 1/N
+            for (size_t i = 0; i < sample.size(); ++i)
             {
                 double x = sample[i];
                 double F_val = (double)(i + 1) / N;
+
+                // Рисуем только то, что попадает в видимую область
+                if (x > final_maxX * 1.5) break;
 
                 if (i > 0) {
                     empCDFList->Add(x, (double)i / N);
@@ -596,27 +649,33 @@ namespace terverlaba2WF {
             LineItem^ empCurve = myPane->AddCurve("Выборочная F_eta(x)", empCDFList, Color::Blue, SymbolType::None);
             empCurve->Line->StepType = StepType::ForwardStep;
 
-
-            // 2. Построение Теоретической функции распределения (F)
+            // 3. Построение Теоретической функции (F(x) = 1 - e^(-Lx))
             PointPairList^ teorCDFList = gcnew PointPairList();
+            int points_count = 500; // Больше точек для плавного изгиба
 
-            double maxX = sample.empty() ? 10.0 : sample.back() * 1.1;
-
-            for (int i = 0; i <= 100; ++i)
+            for (int i = 0; i <= points_count; ++i)
             {
-                double x_teor = (double)i * maxX / 100.0;
-                // F(x) = 1 - exp(-lambda * x)
+                double x_teor = (double)i * final_maxX / (double)points_count;
                 double F_teor = 1.0 - exp(-lambda_param * x_teor);
                 teorCDFList->Add(x_teor, F_teor);
             }
 
-            myPane->AddCurve("Теоретическая F_eta(x)", teorCDFList, Color::Red, SymbolType::None);
+            LineItem^ teorCurve = myPane->AddCurve("Теоретическая F_eta(x)", teorCDFList, Color::Red, SymbolType::None);
+            teorCurve->Line->Width = 2.0f;
 
 
-            // 3. Обновление графика
+            myPane->Title->Text = "Функции распределения (Lambda = " + lambda_param.ToString("F2") + ")";
+            myPane->XAxis->Title->Text = "x";
+            myPane->YAxis->Title->Text = "F(x)";
+
+
             myPane->XAxis->Scale->Min = 0.0;
+            myPane->XAxis->Scale->Max = smartMaxX;
+            myPane->XAxis->Scale->MagAuto = true; 
+            myPane->XAxis->Scale->Format = "g";
+
             myPane->YAxis->Scale->Min = 0.0;
-            myPane->YAxis->Scale->Max = 1.0;
+            myPane->YAxis->Scale->Max = 1.5; 
 
             zedGraphControl1->AxisChange();
             zedGraphControl1->Invalidate();
@@ -690,19 +749,27 @@ namespace terverlaba2WF {
         }
 
 
-        // ⭐ НОВЫЙ МЕТОД ДЛЯ ПОСТРОЕНИЯ ГИСТОГРАММЫ И ТЕОРЕТИЧЕСКОЙ ПЛОТНОСТИ
         void DrawHistogram(const std::vector<MyMath::IntervalData>& data_series, int N_total, double lambda_param)
         {
             GraphPane^ myPane = gistogramma->GraphPane;
             myPane->CurveList->Clear();
-            myPane->Title->Text = "Гистограмма относительных частот и f(x) распределения";
-            myPane->XAxis->Title->Text = "Интервалы";
-            myPane->YAxis->Title->Text = "Плотность";
 
-            // 1. Построение Гистограммы (Выборочная плотность h_j)
+            // 1. Динамический расчет границ
+            // При лямбда = 1000, среднее = 0.001. 
+            // Весь изгиб экспоненты виден на промежутке 3-4 мат. ожиданий.
+            double theoretical_mean = 1.0 / lambda_param;
+            double smartMaxX = theoretical_mean * 4.0;
+
+            int series_size = static_cast<int>(data_series.size());
+
+            // Берем максимум между данными и теоретическим пределом, чтобы график не был "сплюснутым"
+            double actual_data_max = (series_size == 0) ? smartMaxX : data_series[series_size - 1].interval_end;
+            double final_maxX = (actual_data_max > smartMaxX) ? actual_data_max : smartMaxX;
+
+            // 2. Построение Гистограммы (столбиков)
             PointPairList^ histList = gcnew PointPairList();
             double delta_prime = 0.0;
-            if (data_series.size() > 0) {
+            if (series_size > 0) {
                 delta_prime = data_series[0].interval_end - data_series[0].interval_start;
             }
 
@@ -710,48 +777,57 @@ namespace terverlaba2WF {
             {
                 double empirical_density = 0.0;
                 if (N_total > 0 && delta_prime > 0) {
+                    // Нормировка высоты под площадь = 1
                     empirical_density = (double)data.n_j / (N_total * delta_prime);
                 }
                 histList->Add(data.z_j, empirical_density);
             }
 
-            // BarItem - это гистограмма
-            BarItem^ histCurve = myPane->AddBar("Выборочная плотность h_j", histList, Color::Green);
-            histCurve->Bar->Fill->IsVisible = false; // Отключаем заливку
-            histCurve->Bar->Border->IsVisible = true; // Включаем видимость границы
-            histCurve->Bar->Border->Color = Color::Black; // (Опционально) Устанавливаем черный цвет обводки
-            histCurve->Bar->Border->Width = 1.0f; // (Опционально) Толщина обводки
-            // ⭐ ИСПРАВЛЕНИЕ: Используем BarWidth, чтобы избежать ошибок ClusterScaleWidthTag и BarBase::Width
+            BarItem^ histBar = myPane->AddBar("Выборочная плотность", histList, Color::LightGreen);
+            histBar->Bar->Fill->IsVisible = true;
+            histBar->Bar->Fill->Color = Color::FromArgb(150, Color::LightGreen);
+            histBar->Bar->Border->Color = Color::Black;
+
             if (delta_prime > 0)
             {
                 myPane->BarSettings->Base = BarBase::X;
                 myPane->BarSettings->Type = BarType::Overlay;
-                myPane->BarSettings->ClusterScaleWidth = delta_prime; // Универсальный способ задания ширины
-                myPane->BarSettings->MinClusterGap = 0.0f; // Столбцы без зазора
+                myPane->BarSettings->ClusterScaleWidth = delta_prime;
+                myPane->BarSettings->MinClusterGap = 0.0f;
             }
 
-            // 2. Построение Теоретической плотности (f(x) = lambda * exp(-lambda * x))
+            // 3. Построение Теоретической кривой (красная линия)
             PointPairList^ theorDensityList = gcnew PointPairList();
-
-            // Диапазон для теоретической кривой
-            double maxX = data_series.empty() ? 10.0 : data_series.back().interval_end * 1.1;
-
-            for (int i = 0; i <= 100; ++i)
+            int points_count = 500; // Увеличиваем детализацию для крутых изгибов
+            for (int i = 0; i <= points_count; ++i)
             {
-                double x_teor = (double)i * maxX / 100.0;
-                // f(x) = lambda * exp(-lambda * x)
+                double x_teor = (double)i * final_maxX / (double)points_count;
                 double f_teor = lambda_param * exp(-lambda_param * x_teor);
                 theorDensityList->Add(x_teor, f_teor);
             }
 
-            LineItem^ teorCurve = myPane->AddCurve("Теоретическая плотность f(x)", theorDensityList, Color::Red, SymbolType::None);
-            teorCurve->Line->Width = 2.0f;
-            teorCurve->IsY2Axis = false;
-            
-            // 3. Обновление графика
-            myPane->XAxis->Scale->Min = 0.0;
-            myPane->YAxis->Scale->Min = 0.0;
+            LineItem^ teorCurve = myPane->AddCurve("Теория: f(x)", theorDensityList, Color::Red, SymbolType::None);
+            teorCurve->Line->Width = 2.5f;
 
+            // 4. НАСТРОЙКА ОСЕЙ (Масштабирование)
+            myPane->Title->Text = "Распределение минимума (Lambda = " + lambda_param.ToString("F2") + ")";
+            myPane->XAxis->Title->Text = "Время x";
+            myPane->YAxis->Title->Text = "Плотность";
+
+            // Фиксируем X так, чтобы видеть изгиб, а не бесконечный пустой хвост
+            myPane->XAxis->Scale->Min = 0.0;
+            myPane->XAxis->Scale->Max = smartMaxX;
+
+            // Включаем "научный" формат: если числа < 0.1, появится множитель 10^-3
+            myPane->XAxis->Scale->MagAuto = true;
+            myPane->XAxis->Scale->Format = "g";
+
+            // Фиксируем Y по пику лямбды
+            myPane->YAxis->Scale->Min = 0.0;
+            myPane->YAxis->Scale->Max = lambda_param * 1.1;
+            myPane->YAxis->Scale->MagAuto = true;
+
+            // 5. Обновление
             gistogramma->AxisChange();
             gistogramma->Invalidate();
         }
@@ -929,7 +1005,7 @@ namespace terverlaba2WF {
         dataGridView_Stats->Rows[0]->Cells[L"Me_hat"]->Value = math->Me_hat.ToString("F6");
         dataGridView_Stats->Rows[0]->Cells[L"Me_diff"]->Value = abs_Me_diff.ToString("F6");
 
-        mera_rashojdenia->Text = "Мера расхождения (Колмогорова): " + math->D_statistic.ToString("F6");
+        mera_rashojdenia->Text = "Мера D: " + math->D_statistic.ToString("F6") + " в точке " + math->x_mera_d + " j = " + math->j_mera_d;
 
 
         FillDensityTable(math->interval_series_results, N, math->Lambda);
