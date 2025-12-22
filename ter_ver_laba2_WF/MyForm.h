@@ -94,9 +94,20 @@ namespace terverlaba2WF {
 
     private: System::Windows::Forms::DataGridViewTextBoxColumn^ dataGridViewTextBoxColumn1;
     private: System::Windows::Forms::DataGridViewTextBoxColumn^ dataGridViewTextBoxColumn2;
-    private: System::Windows::Forms::DataGridView^ dataGridView1;
-    private: System::Windows::Forms::DataGridViewTextBoxColumn^ dataGridViewTextBoxColumn3;
-    private: System::Windows::Forms::DataGridViewTextBoxColumn^ dataGridViewTextBoxColumn4;
+    private: System::Windows::Forms::DataGridView^ grid_part_3;
+    private: System::Windows::Forms::DataGridViewTextBoxColumn^ alpha_column;
+    private: System::Windows::Forms::DataGridViewTextBoxColumn^ p;
+    private: System::Windows::Forms::Label^ path_3_number_of_try;
+    private: System::Windows::Forms::TextBox^ text_box_part_3_aaa;
+
+
+
+
+
+
+
+
+
 
 
 
@@ -162,14 +173,16 @@ namespace terverlaba2WF {
             this->datagrid_part_3 = (gcnew System::Windows::Forms::DataGridView());
             this->dataGridViewTextBoxColumn1 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
             this->dataGridViewTextBoxColumn2 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-            this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
-            this->dataGridViewTextBoxColumn3 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
-            this->dataGridViewTextBoxColumn4 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+            this->grid_part_3 = (gcnew System::Windows::Forms::DataGridView());
+            this->alpha_column = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+            this->p = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+            this->path_3_number_of_try = (gcnew System::Windows::Forms::Label());
+            this->text_box_part_3_aaa = (gcnew System::Windows::Forms::TextBox());
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Results))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Stats))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->part2_table))->BeginInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->datagrid_part_3))->BeginInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->grid_part_3))->BeginInit();
             this->SuspendLayout();
             // 
             // label_k
@@ -380,7 +393,7 @@ namespace terverlaba2WF {
             // mera_rashojdenia
             // 
             this->mera_rashojdenia->AutoSize = true;
-            this->mera_rashojdenia->Location = System::Drawing::Point(930, 113);
+            this->mera_rashojdenia->Location = System::Drawing::Point(1288, 112);
             this->mera_rashojdenia->Name = L"mera_rashojdenia";
             this->mera_rashojdenia->Size = System::Drawing::Size(51, 13);
             this->mera_rashojdenia->TabIndex = 11;
@@ -478,7 +491,7 @@ namespace terverlaba2WF {
             // part_3_res
             // 
             this->part_3_res->AutoSize = true;
-            this->part_3_res->Location = System::Drawing::Point(930, 139);
+            this->part_3_res->Location = System::Drawing::Point(1288, 138);
             this->part_3_res->Name = L"part_3_res";
             this->part_3_res->Size = System::Drawing::Size(65, 13);
             this->part_3_res->TabIndex = 21;
@@ -487,7 +500,7 @@ namespace terverlaba2WF {
             // gipoteza
             // 
             this->gipoteza->AutoSize = true;
-            this->gipoteza->Location = System::Drawing::Point(930, 168);
+            this->gipoteza->Location = System::Drawing::Point(1288, 167);
             this->gipoteza->Name = L"gipoteza";
             this->gipoteza->Size = System::Drawing::Size(105, 13);
             this->gipoteza->TabIndex = 23;
@@ -526,45 +539,60 @@ namespace terverlaba2WF {
             this->dataGridViewTextBoxColumn2->Name = L"dataGridViewTextBoxColumn2";
             this->dataGridViewTextBoxColumn2->ReadOnly = true;
             // 
-            // dataGridView1
+            // grid_part_3
             // 
-            this->dataGridView1->AllowUserToAddRows = false;
-            this->dataGridView1->AllowUserToDeleteRows = false;
-            this->dataGridView1->AllowUserToResizeColumns = false;
-            this->dataGridView1->AllowUserToResizeRows = false;
-            this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
-            this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(2) {
-                this->dataGridViewTextBoxColumn3,
-                    this->dataGridViewTextBoxColumn4
+            this->grid_part_3->AllowUserToAddRows = false;
+            this->grid_part_3->AllowUserToDeleteRows = false;
+            this->grid_part_3->AllowUserToResizeColumns = false;
+            this->grid_part_3->AllowUserToResizeRows = false;
+            this->grid_part_3->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
+            this->grid_part_3->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(2) {
+                this->alpha_column,
+                    this->p
             });
-            this->dataGridView1->Location = System::Drawing::Point(1116, 80);
-            this->dataGridView1->Name = L"dataGridView1";
-            this->dataGridView1->RowHeadersVisible = false;
-            this->dataGridView1->Size = System::Drawing::Size(325, 187);
-            this->dataGridView1->TabIndex = 25;
+            this->grid_part_3->Location = System::Drawing::Point(927, 113);
+            this->grid_part_3->Name = L"grid_part_3";
+            this->grid_part_3->RowHeadersVisible = false;
+            this->grid_part_3->Size = System::Drawing::Size(346, 164);
+            this->grid_part_3->TabIndex = 25;
             // 
-            // dataGridViewTextBoxColumn3
+            // alpha_column
             // 
-            this->dataGridViewTextBoxColumn3->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::DisplayedCells;
-            this->dataGridViewTextBoxColumn3->HeaderText = L"i";
-            this->dataGridViewTextBoxColumn3->Name = L"dataGridViewTextBoxColumn3";
-            this->dataGridViewTextBoxColumn3->ReadOnly = true;
-            this->dataGridViewTextBoxColumn3->Resizable = System::Windows::Forms::DataGridViewTriState::True;
-            this->dataGridViewTextBoxColumn3->Width = 34;
+            this->alpha_column->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::Fill;
+            this->alpha_column->HeaderText = L"№ Попытки / p-value";
+            this->alpha_column->Name = L"alpha_column";
             // 
-            // dataGridViewTextBoxColumn4
+            // p
             // 
-            this->dataGridViewTextBoxColumn4->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::Fill;
-            this->dataGridViewTextBoxColumn4->HeaderText = L"P_i";
-            this->dataGridViewTextBoxColumn4->Name = L"dataGridViewTextBoxColumn4";
-            this->dataGridViewTextBoxColumn4->ReadOnly = true;
+            this->p->AutoSizeMode = System::Windows::Forms::DataGridViewAutoSizeColumnMode::Fill;
+            this->p->HeaderText = L"Результат (H0)";
+            this->p->Name = L"p";
+            // 
+            // path_3_number_of_try
+            // 
+            this->path_3_number_of_try->AutoSize = true;
+            this->path_3_number_of_try->Location = System::Drawing::Point(1163, 51);
+            this->path_3_number_of_try->Name = L"path_3_number_of_try";
+            this->path_3_number_of_try->Size = System::Drawing::Size(148, 13);
+            this->path_3_number_of_try->TabIndex = 26;
+            this->path_3_number_of_try->Text = L"Количество эксперементов";
+            // 
+            // text_box_part_3_aaa
+            // 
+            this->text_box_part_3_aaa->Location = System::Drawing::Point(1057, 50);
+            this->text_box_part_3_aaa->Name = L"text_box_part_3_aaa";
+            this->text_box_part_3_aaa->Size = System::Drawing::Size(100, 20);
+            this->text_box_part_3_aaa->TabIndex = 27;
+            this->text_box_part_3_aaa->Text = L"100";
             // 
             // MyForm
             // 
             this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
             this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-            this->ClientSize = System::Drawing::Size(1461, 743);
-            this->Controls->Add(this->dataGridView1);
+            this->ClientSize = System::Drawing::Size(1561, 743);
+            this->Controls->Add(this->text_box_part_3_aaa);
+            this->Controls->Add(this->path_3_number_of_try);
+            this->Controls->Add(this->grid_part_3);
             this->Controls->Add(this->datagrid_part_3);
             this->Controls->Add(this->gipoteza);
             this->Controls->Add(this->part_3_res);
@@ -594,7 +622,7 @@ namespace terverlaba2WF {
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_Stats))->EndInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->part2_table))->EndInit();
             (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->datagrid_part_3))->EndInit();
-            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
+            (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->grid_part_3))->EndInit();
             this->ResumeLayout(false);
             this->PerformLayout();
 
@@ -977,7 +1005,7 @@ namespace terverlaba2WF {
         }
 
         dataGridView_Results->AutoResizeColumns(System::Windows::Forms::DataGridViewAutoSizeColumnsMode::DisplayedCells);
-
+        RunHypothesisTestCycles(100, alpha, grid_part_3);
        
         if (dataGridView_Stats->RowCount != 1)
         {
@@ -1044,11 +1072,57 @@ namespace terverlaba2WF {
         }
 
         
+        
 
     }
 
 
-    
+    void RunHypothesisTestCycles(int num_cycles, double alpha, DataGridView^ grid) {
+        grid->Rows->Clear();
+
+        // Инициализируем генератор ОДИН раз здесь (из part_1 удали!)
+        srand((unsigned int)time(0));
+
+        // 1. Создаем первую строку для итогов
+        int summaryRowIdx = grid->Rows->Add();
+        grid->Rows[summaryRowIdx]->Cells[0]->Value = "ИТОГО ПРИНЯТО:";
+        grid->Rows[summaryRowIdx]->Cells[1]->Value = "0 из " + num_cycles;
+
+        // Выделяем жирным и синим цветом для заметности
+        System::Drawing::Font^ boldFont = gcnew System::Drawing::Font(grid->Font, System::Drawing::FontStyle::Bold);
+        grid->Rows[summaryRowIdx]->DefaultCellStyle->Font = boldFont;
+        grid->Rows[summaryRowIdx]->DefaultCellStyle->ForeColor = System::Drawing::Color::Blue;
+
+        int accepted_count = 0;
+
+        for (int i = 0; i < num_cycles; ++i) {
+            math->part_1();
+            math->part_2(10);
+            math->part_3(alpha);
+
+            // 2. Добавляем строку попытки (она пойдет под итог)
+            int rowIdx = grid->Rows->Add();
+
+            grid->Rows[rowIdx]->Cells[0]->Value = "Попытка " + (i + 1) + " (p=" + math->p_value.ToString("F4") + ")";
+
+            if (math->hypothesis_accepted) {
+                grid->Rows[rowIdx]->Cells[1]->Value = "Принята";
+                grid->Rows[rowIdx]->DefaultCellStyle->BackColor = System::Drawing::Color::LightGreen;
+                accepted_count++;
+            }
+            else {
+                grid->Rows[rowIdx]->Cells[1]->Value = "Отвергнута";
+                grid->Rows[rowIdx]->DefaultCellStyle->BackColor = System::Drawing::Color::MistyRose;
+            }
+
+            // 3. Обновляем значение в самой первой строке прямо на лету
+            grid->Rows[summaryRowIdx]->Cells[1]->Value = accepted_count + " из " + num_cycles +
+                " (" + ((double)accepted_count / (i + 1) * 100.0).ToString("F1") + "%)";
+
+            // Чтобы таблица обновлялась плавно во время расчетов
+            if (i % 5 == 0) Application::DoEvents();
+        }
+    }
 
 
     

@@ -67,6 +67,8 @@ public:
         sum(0.0), x_bar(0.0), S_sq(0.0), R_bar(0.0), Me_eta(0.0), Me_hat(0.0),
         D_statistic(0.0), max_density_deviation(0.0)
     {
+
+        srand((unsigned int)time(0));
     }
 
 

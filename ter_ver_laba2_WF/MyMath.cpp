@@ -33,7 +33,7 @@ void MyMath::part_1()
     if (k <= 0 || lambda_k <= 0.0 || N <= 0) return;
 
     
-    srand((unsigned int)time(0));
+    
     sample.clear();
     for (int i = 0; i < N; ++i) {
         double min_val = INFINITY;
