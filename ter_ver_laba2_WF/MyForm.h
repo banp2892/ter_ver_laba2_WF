@@ -571,11 +571,11 @@ namespace terverlaba2WF {
             // path_3_number_of_try
             // 
             this->path_3_number_of_try->AutoSize = true;
-            this->path_3_number_of_try->Location = System::Drawing::Point(1163, 51);
+            this->path_3_number_of_try->Location = System::Drawing::Point(1163, 54);
             this->path_3_number_of_try->Name = L"path_3_number_of_try";
-            this->path_3_number_of_try->Size = System::Drawing::Size(148, 13);
+            this->path_3_number_of_try->Size = System::Drawing::Size(105, 13);
             this->path_3_number_of_try->TabIndex = 26;
-            this->path_3_number_of_try->Text = L"Количество эксперементов";
+            this->path_3_number_of_try->Text = L"Количество циклов";
             // 
             // text_box_part_3_aaa
             // 
@@ -1005,7 +1005,7 @@ namespace terverlaba2WF {
         }
 
         dataGridView_Results->AutoResizeColumns(System::Windows::Forms::DataGridViewAutoSizeColumnsMode::DisplayedCells);
-        RunHypothesisTestCycles(100, alpha, grid_part_3);
+        RunHypothesisTestCycles(grid_part_3);
        
         if (dataGridView_Stats->RowCount != 1)
         {
@@ -1077,33 +1077,53 @@ namespace terverlaba2WF {
     }
 
 
-    void RunHypothesisTestCycles(int num_cycles, double alpha, DataGridView^ grid) {
+    void RunHypothesisTestCycles(DataGridView^ grid) {
+        // 1. Считываем количество циклов из твоего поля
+        int num_cycles;
+        try {
+            num_cycles = Int32::Parse(text_box_part_3_aaa->Text);
+        }
+        catch (...) {
+            MessageBox::Show("Введите целое число циклов (например, 100)");
+            return;
+        }
+
+
+        if (num_cycles <= 0) {
+            num_cycles = 0;
+        }
+        // Уровень значимости берем из основного поля (например, textBox_alpha)
+        double current_alpha = Double::Parse(textBox_alpha->Text);
+
         grid->Rows->Clear();
 
-        // Инициализируем генератор ОДИН раз здесь (из part_1 удали!)
+        // Инициализируем генератор ОДИН раз (из part_1 удали!)
         srand((unsigned int)time(0));
 
-        // 1. Создаем первую строку для итогов
+        // Настраиваем заголовки
+        grid->Columns[0]->HeaderText = "Попытка (p-value)";
+        grid->Columns[1]->HeaderText = "Вердикт (a=" + current_alpha.ToString("F2") + ")";
+
+        // 2. Создаем верхнюю строку для ИТОГОВ
         int summaryRowIdx = grid->Rows->Add();
         grid->Rows[summaryRowIdx]->Cells[0]->Value = "ИТОГО ПРИНЯТО:";
         grid->Rows[summaryRowIdx]->Cells[1]->Value = "0 из " + num_cycles;
 
-        // Выделяем жирным и синим цветом для заметности
+        // Стили для итога
         System::Drawing::Font^ boldFont = gcnew System::Drawing::Font(grid->Font, System::Drawing::FontStyle::Bold);
         grid->Rows[summaryRowIdx]->DefaultCellStyle->Font = boldFont;
         grid->Rows[summaryRowIdx]->DefaultCellStyle->ForeColor = System::Drawing::Color::Blue;
 
         int accepted_count = 0;
 
+        // 3. Основной цикл по количеству из text_box_part_3_aaa
         for (int i = 0; i < num_cycles; ++i) {
             math->part_1();
             math->part_2(10);
-            math->part_3(alpha);
+            math->part_3(current_alpha);
 
-            // 2. Добавляем строку попытки (она пойдет под итог)
             int rowIdx = grid->Rows->Add();
-
-            grid->Rows[rowIdx]->Cells[0]->Value = "Попытка " + (i + 1) + " (p=" + math->p_value.ToString("F4") + ")";
+            grid->Rows[rowIdx]->Cells[0]->Value = "№" + (i + 1) + " (p=" + math->p_value.ToString("F4") + ")";
 
             if (math->hypothesis_accepted) {
                 grid->Rows[rowIdx]->Cells[1]->Value = "Принята";
@@ -1115,12 +1135,13 @@ namespace terverlaba2WF {
                 grid->Rows[rowIdx]->DefaultCellStyle->BackColor = System::Drawing::Color::MistyRose;
             }
 
-            // 3. Обновляем значение в самой первой строке прямо на лету
-            grid->Rows[summaryRowIdx]->Cells[1]->Value = accepted_count + " из " + num_cycles +
-                " (" + ((double)accepted_count / (i + 1) * 100.0).ToString("F1") + "%)";
+            // Обновляем итоги в первой строке на каждой итерации
+            double current_percent = ((double)accepted_count / (i + 1) * 100.0);
+            grid->Rows[summaryRowIdx]->Cells[1]->Value = accepted_count + " из " + (i + 1) +
+                " (" + current_percent.ToString("F1") + "%)";
 
-            // Чтобы таблица обновлялась плавно во время расчетов
-            if (i % 5 == 0) Application::DoEvents();
+            // Чтобы форма не зависала при больших числах (например, 500 циклов)
+            if (i % 10 == 0) Application::DoEvents();
         }
     }
 
@@ -1152,6 +1173,7 @@ namespace terverlaba2WF {
    
 
     
+
 
 
 
